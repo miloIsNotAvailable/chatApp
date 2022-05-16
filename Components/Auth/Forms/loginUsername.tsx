@@ -1,11 +1,19 @@
 import { FC } from "react";
 import LoginForm from "./loginForm";
+import { LoginFormType } from "../../interfaces/formInterfaces";
 
-const LoginUsername: FC = () => {
+const LoginUsername: FC<LoginFormType> 
+= ( {
+    handleChange, 
+    loginFormRef
+} ) => {
 
     return(
         <div>
-            <LoginForm title={ 'username' } />
+            <LoginForm 
+            title={ 'username' } 
+            handleChange={ handleChange }
+            loginFormRef={ loginFormRef }/>
         </div>
     )
 }

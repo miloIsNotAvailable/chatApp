@@ -3,7 +3,8 @@ import { getRegisterInfoState } from "./interfaces";
 
 const initialState: getRegisterInfoState = {
     email: '',
-    username: ''
+    username: '',
+    password: '',
 }
 
 const getRegisterInfoSlice = createSlice( {
@@ -16,9 +17,11 @@ const getRegisterInfoSlice = createSlice( {
             ) => {
                 state.email = action.payload.email
                 state.username = action.payload.username
+                state.password = action.payload.password
             }
-    }   
-} )
+        }   
+    } 
+)
 
 export const { setUserData } = getRegisterInfoSlice.actions
 export default getRegisterInfoSlice.reducer

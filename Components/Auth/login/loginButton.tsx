@@ -1,20 +1,28 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { styles } from "./loginStyles"
-import { getRegisterInfoState } from "../../store/interfaces";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setUserData } from "../../store/getRegisterInfo";
+import { getRegisterInfoSelector } from "../../interfaces/formInterfaces";
 
-interface getRegisterInfoSelector {
-    getRegisterInfo: getRegisterInfoState
+interface LoginButtonProps {
+    emailLogin?: string
+    passwordLogin?: string
 }
 
-const LoginButton: FC = () => {
+const LoginButton: FC<LoginButtonProps> 
+= ( { emailLogin, passwordLogin } ) => {
 
-    const selector = useAppSelector( ( state: getRegisterInfoSelector ) => state?.getRegisterInfo )
+    const dispatch = useAppDispatch()
 
+    const Submit = () => dispatch( setUserData( {
+        email: emailLogin, 
+        password: passwordLogin
+    } ) )
+    
     return(
         <div 
             className={ styles.login_button }
-            onClick={ () => console.log( selector ) }>
+            onClick={ Submit }>
             login
         </div>
     )
