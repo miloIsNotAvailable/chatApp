@@ -1,0 +1,71 @@
+.register_form_wrap {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg);
+    color: white; 
+    font-family: 'Outfit';
+    font-size: 1vw;
+    z-index: -1;
+    background-color: var(--light-green);
+}
+
+.register_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var( --bg );
+    border-radius: 0 50px 50px 0;
+}
+
+.register_bg {
+    display: grid;
+    grid-template-rows: 10% auto 10%;
+    padding: 0 2rem;
+}
+
+.register_bg_title {
+    color: var(--pink);
+    font-weight: 600;
+    font-size: 5vw;
+}
+
+.account {
+    display: flex;
+    flex-direction: row;
+}
+
+@keyframes jump {
+    0% {
+        transform: translate(0, 0);
+    } 50% {
+        transform: translate(0, -80%);
+    } 100% {
+        transform: translate(0, 0);
+    }
+}
+
+.string {
+    animation: jump 600ms ease-in-out;
+}
+
+.step {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 1.5vw;
+    font-weight: 600;
+    margin: 0 1rem;
+}
+
+.proceed_button {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 3vw;
+    font-weight: 600;
+    margin: 0 1rem;
+}
