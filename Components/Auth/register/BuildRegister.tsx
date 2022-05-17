@@ -14,6 +14,7 @@ import {
     LoginPassword, 
     LoginUsername 
 } from '../Forms'
+import { handleChange } from "../Forms/handleChange";
 import AnimatedString from "./AnimatedString";
 import Proceed from "./proceedButton";
 
@@ -26,15 +27,15 @@ import { styles } from "./registerStyles";
 const BuildRegister: FC = () => {
 
     // get ref for every form type so you can get the input
-    const registerFormEmail = useRef<HTMLInputElement>( null )
-    const registerFormPassword = useRef<HTMLInputElement>( null )
-    const registerFormUsername = useRef<HTMLInputElement>( null )
+    const registerFormEmail = useRef< | null>( null )
+    const registerFormPassword = useRef< | null>( null )
+    const registerFormUsername = useRef< | null>( null )
 
     // store 'em in a state 
     // ( they'll return undefined otherwise )
-    const[ email, setEmail ] = useState<string | undefined>( "" )
-    const[ password, setPassword ] = useState<string | undefined>( "" )
-    const[ username, setUsername ] = useState<string | undefined>( "" )
+    const[ email, setEmail ] = useState<string | null>( null )
+    const[ password, setPassword ] = useState<string | null>( null )
+    const[ username, setUsername ] = useState<string | null>( null )
 
     // this won't stay here it's just a test 
     const selector = useAppSelector( ( state: getRegisterInfoSelector ) => state?.getRegisterInfo )
@@ -49,15 +50,15 @@ const BuildRegister: FC = () => {
                 <LoginForm
                     title={ "email" }
                     loginFormRef={ registerFormEmail }
-                    handleChange={ () => setEmail( registerFormEmail.current?.value ) }/>
+                    handleChange={ handleChange( registerFormEmail.current, setEmail ) }/>
                 <LoginForm
                     title={ "password" }
                     loginFormRef={ registerFormPassword }
-                    handleChange={ () => setPassword( registerFormPassword.current?.value ) }/>                
+                    handleChange={ handleChange( registerFormPassword.current, setPassword ) }/>                
                 <LoginForm
                     title={ "username" }
                     loginFormRef={ registerFormUsername }
-                    handleChange={ () => setUsername( registerFormUsername.current?.value ) }/>
+                    handleChange={ handleChange( registerFormUsername.current, setUsername ) }/>
                 
             </div>
             <div className={ styles.register_bg }>

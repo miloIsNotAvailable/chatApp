@@ -9,9 +9,9 @@ import createUser from "./createUser";
 import { styles } from "./registerStyles";
 
 interface ProceedProps {
-    registerEmail: string | undefined
-    registerPassword: string | undefined
-    registerUsername: string | undefined
+    registerEmail: string | null
+    registerPassword: string | null
+    registerUsername: string | null
 }
 
 const Proceed: FC<ProceedProps> 
