@@ -3,13 +3,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 // import prisma from '../../lib/prisma'
 
 type Data = {
-  name: string
+  name: any
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
-  // console.log( prisma )
-  res.status(200).json({ name: 'John Doe' })
+  res.json({ name: "John Doe" })
 }
