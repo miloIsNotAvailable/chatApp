@@ -17,8 +17,6 @@ export default async function handler(
         }
     } )
 
-// json lies the data gets posted here
-// do not trust json 
-if( user ) res.json( { data: user, error: undefined } )
-if( !user ) res.json( { data: undefined, error: "user not found" } )
+    if( user ) res.json( { data: user } )
+    if( !user ) res.json( { error: "user not found" } )
 }

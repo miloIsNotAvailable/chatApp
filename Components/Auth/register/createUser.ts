@@ -1,11 +1,7 @@
-import { getRegisterInfoSelector } from "../../interfaces/formInterfaces"
 import { getRegisterInfoState } from "../../store/interfaces"
 
-interface userDataProps {
-    id: string | undefined, 
-    email?: string | undefined, 
-    username?: string | undefined, 
-    password?: string | undefined, 
+interface userDataProps extends getRegisterInfoState{
+    id: string | null, 
 }
 
 const createUser = async( userData: userDataProps ) => {

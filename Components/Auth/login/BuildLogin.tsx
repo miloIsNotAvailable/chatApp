@@ -20,26 +20,18 @@ import LoginButton from "./loginButton";
 import { useAppSelector } from "../../store/hooks";
 import { getRegisterInfoSelector } from "../../interfaces/formInterfaces";
 import { handleChange } from "../Forms/handleChange";
+import LoginForm from "../Forms/loginForm";
 
 const BuildLogin: FC = () => {
 
     // get ref for every form type so you can get the input
-    const loginFormEmail = useRef<HTMLInputElement>( null )
-    const loginFormPassword = useRef<HTMLInputElement>( null )
-    const loginFormUsername = useRef<HTMLInputElement>( null )
+    const loginFormEmail = useRef<HTMLInputElement | null>( null )
+    const loginFormPassword = useRef<HTMLInputElement | null>( null )
 
     // store 'em in a state 
     // ( they'll return undefined otherwise )
-    const[ email, setEmail ] = useState<string | undefined>( "" )
-    const[ password, setPassword ] = useState<string | undefined>( "" )
-    const[ username, setUsername ] = useState<string | undefined>( "" )
-
-    // this won't stay here it's just a test 
-    const selector = useAppSelector( ( state: getRegisterInfoSelector ) => state?.getRegisterInfo )
-
-    useEffect( () => {
-        console.log( selector )
-    }, [ selector ] )
+    const[ email, setEmail ] = useState<string | null>( null )
+    const[ password, setPassword ] = useState<string | null>( null )
 
     /*
      * load the DOM before 
@@ -50,12 +42,14 @@ const BuildLogin: FC = () => {
     return(
         <div className={ styles.login_form_wrap }>
             <div className={ styles.login_form }>
-                <LoginEmail
+                <LoginForm
+                    title={ "email" }
                     handleChange={ handleChange( loginFormEmail.current, setEmail ) } 
                     loginFormRef={ loginFormEmail }/>            
-                <LoginPassword 
+                <LoginForm
+                    title={ "password" } 
                     loginFormRef={ loginFormPassword }
-                    handleChange={ () => setPassword( loginFormPassword.current?.value ) }/>
+                    handleChange={ handleChange( loginFormPassword.current, setPassword ) }/>
                 <LoginButton 
                     emailLogin={ email }
                     passwordLogin={ password }/>

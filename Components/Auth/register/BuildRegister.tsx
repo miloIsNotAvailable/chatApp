@@ -10,6 +10,7 @@ import { useAppSelector } from "../../store/hooks";
 
 import { 
     LoginEmail, 
+    LoginForm, 
     LoginPassword, 
     LoginUsername 
 } from '../Forms'
@@ -45,13 +46,16 @@ const BuildRegister: FC = () => {
     return(
         <div className={ styles.register_form_wrap }>
             <div className={ styles.register_form }>
-                <LoginEmail
+                <LoginForm
+                    title={ "email" }
                     loginFormRef={ registerFormEmail }
                     handleChange={ () => setEmail( registerFormEmail.current?.value ) }/>
-                <LoginPassword
+                <LoginForm
+                    title={ "password" }
                     loginFormRef={ registerFormPassword }
                     handleChange={ () => setPassword( registerFormPassword.current?.value ) }/>                
-                <LoginUsername
+                <LoginForm
+                    title={ "username" }
                     loginFormRef={ registerFormUsername }
                     handleChange={ () => setUsername( registerFormUsername.current?.value ) }/>
                 

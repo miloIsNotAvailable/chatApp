@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
 import { FC, useEffect } from "react";
 import { auth } from "../../constants/firebaseConfig";
@@ -23,7 +23,10 @@ const Proceed: FC<ProceedProps>
 
     const dispatch = useAppDispatch()
 
-    const selector = useAppSelector( ( state: getRegisterInfoSelector ) => state?.getRegisterInfo )
+    const selector = useAppSelector( ( 
+        state: getRegisterInfoSelector 
+        ) => state?.getRegisterInfo 
+    )
     const router = useRouter()
 
     useEffect( () => {
@@ -37,7 +40,18 @@ const Proceed: FC<ProceedProps>
             selector.email, 
             selector?.password ).then( () => {
                 router.push( "/home" )
-            }  ).then( () => createUser( { ...selector, id: auth.currentUser?.uid } ) )
+            }  ).then( () => {
+                
+                // so that  uid doesnt return undefined
+                if( !auth.currentUser?.uid ) return 
+                
+                // this gets all the inputs and fetches them 
+                // to api/post where a user is created
+                createUser( { 
+                    ...selector, 
+                    id: auth.currentUser?.uid 
+                } )  
+            } )
             .catch( e => console.log( e ) )
 
         // createUser( { ...selector, id: "1234" } )

@@ -8,8 +8,8 @@ import { auth } from "../../constants/firebaseConfig";
 import { useRouter } from "next/router";
 
 interface LoginButtonProps {
-    emailLogin?: string
-    passwordLogin?: string
+    emailLogin: string | null
+    passwordLogin: string | null
 }
 
 const LoginButton: FC<LoginButtonProps> 
@@ -22,21 +22,27 @@ const LoginButton: FC<LoginButtonProps>
 
     useEffect( () => {
         
+        /**
+         * because values passed into 
+         * signInWidthEmailAndPassword
+         * cant be null or undefined
+         */
         if( !selector?.email || !selector?.password ) return
 
         console.log( selector )
 
-        signInWithEmailAndPassword( 
-            auth, 
-            selector.email, 
-            selector?.password ).then( () => {
-                router.push( "/home" )
-            }  ).catch( e => console.log( e ) )
+        // signInWithEmailAndPassword( 
+        //     auth, 
+        //     selector.email, 
+        //     selector?.password ).then( () => {
+        //         router.push( "/home" )
+        //     }  ).catch( e => console.log( e ) )
     }, [ selector, router ] )
 
-    const Submit = () => dispatch( setUserData( {
-        email: emailLogin, 
-        password: passwordLogin
+    const Submit = () => dispatch( 
+        setUserData( {
+            email: emailLogin, 
+            password: passwordLogin
     } ) )
     
     return(
