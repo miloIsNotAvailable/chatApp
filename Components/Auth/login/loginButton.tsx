@@ -5,6 +5,7 @@ import {  SelectorType } from "../../interfaces/formInterfaces";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from "../../constants/firebaseConfig";
 import { useRouter } from "next/router";
+import { signIn } from 'next-auth/react'
 
 const LoginButton: FC = () => {
 
@@ -33,7 +34,10 @@ const LoginButton: FC = () => {
         //     }  ).catch( e => console.log( e ) )
     }, [ selector, router ] )
 
-    const Submit = () => console.log( selector )
+    const Submit = () => fetch( "/api/post", {
+            method: "POST", 
+            body: JSON.stringify( selector )
+        } ).then( e => e.json() ).then( v => console.log( v ) )
     
     return(
         <div 
