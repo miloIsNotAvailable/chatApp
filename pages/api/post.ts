@@ -51,7 +51,7 @@ export default async function handler(
         } )
     )
 
-    const e = req.cookies
+    const e = req.cookies.sessionToken || null
 
     res.json( e )
 }

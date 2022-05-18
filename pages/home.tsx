@@ -6,12 +6,22 @@ import jwt from "jsonwebtoken"
 export const getServerSideProps: 
 GetServerSideProps = async( { req, res } ) => {
 
+    /**
+     * get current jwt token saved in cookies 
+     * as sessionToken, and return null 
+     * in case user's logged out
+     */
     const session = req.cookies.sessionToken || null
+    
+    // decode so you can access current users data
     const jwtDecoded = session && jwt.verify( 
         session, 
+        // this is current session's key 
+        // ill move it to .env later
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"  
     ) || null 
 
+    // encoded jwt token
     const sessionLogout = session || 'hey'
 
     return {
@@ -42,7 +52,6 @@ interface MainChatProps {
 const MainChat: FC<MainChatProps> = ( { jwtDecoded, sessionLogout } ) => {
 
     const router = useRouter()
-    // console.log( sessionLogout )
 
     /**
      * basically what @function handleLogOut does 
@@ -50,7 +59,7 @@ const MainChat: FC<MainChatProps> = ( { jwtDecoded, sessionLogout } ) => {
      * later the cookie containing the jwt session token 
      * is updated to have expiry date set to 0 
      * thus deleting it and logging the user out 
-     * and moving him back to login screen
+     * and moving them back to login screen
      */
 
     const handleLogOut = () => {

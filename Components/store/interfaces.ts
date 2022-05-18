@@ -4,3 +4,7 @@ export interface getRegisterInfoState {
     username?: string | null
     password?: string | null
 }
+
+export interface isFetchingState {
+    isFetching: boolean
+}

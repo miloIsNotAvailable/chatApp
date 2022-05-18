@@ -4,6 +4,7 @@ import getRegisterInfo from "./getRegisterInfo";
 import getPassword from "./getPassword";
 import getEmail from "./getEmail";
 import getUsername from "./getUsername";
+import checkForFetching from "./isFetching";
 
 export const store = configureStore( {
     reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore( {
             getEmail, 
             getPassword, 
             getUsername 
-        } )
+        } ),
+        fetching: checkForFetching
     }
 } )
 

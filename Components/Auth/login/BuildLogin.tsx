@@ -14,6 +14,9 @@ import RedirectToRegister from "./RedirectToRegister";
 import Bg from './svgBg'
 import RotateSvg from "./rotateSvg";
 import LoginButton from "./loginButton";
+import { useAppSelector } from "../../store/hooks";
+import { isFetchingState } from "../../store/interfaces";
+import { fetchingType } from "../../interfaces/formInterfaces";
 
 const BuildLogin: FC = () => {
 
@@ -23,6 +26,12 @@ const BuildLogin: FC = () => {
      */
     useEffect( () => RotateSvg(), [] )
 
+    const selector = useAppSelector( 
+        ( { fetching: { 
+            isFetching 
+        } }: fetchingType ) => isFetching
+     )
+
     return(
         <div className={ styles.login_form_wrap }>
             <div className={ styles.login_form }>
@@ -30,6 +39,7 @@ const BuildLogin: FC = () => {
                 <LoginPassword />
                 <LoginButton />
                 <RedirectToRegister/>
+                { selector && <div>loading data...</div> }
             </div>
             <Bg/>            
         </div>

@@ -1,11 +1,9 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { styles } from "./loginStyles"
-import { useAppSelector } from "../../store/hooks";
-import {  SelectorType } from "../../interfaces/formInterfaces";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from "../../constants/firebaseConfig";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { SelectorType } from "../../interfaces/formInterfaces";
 import { useRouter } from "next/router";
-import { signIn } from 'next-auth/react'
+import { isFetching } from "../../store/isFetching";
 
 const LoginButton: FC = () => {
 
@@ -19,13 +17,21 @@ const LoginButton: FC = () => {
     const selector = useAppSelector( 
         ( { formReducer }: SelectorType ) => formReducer
      )
+    const dispatch = useAppDispatch()
 
     const router = useRouter()
-    
-    const Submit = () => fetch( "/api/post", {
+
+    const Submit = () => {
+
+        dispatch( isFetching( { isFetching: true } ) )
+
+        fetch( "/api/post", {
             method: "POST", 
             body: JSON.stringify( selector )
-        } ).then( () => router.push( "/home" ) )
+        } ).then( v => v.json() )
+        .then( v => router.push( "/home" ) )
+        .then( () => dispatch( isFetching( { isFetching: false } ) ) )
+    } 
     
     return(
         <div 
