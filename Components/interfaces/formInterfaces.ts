@@ -1,3 +1,4 @@
+import { CombinedState } from "@reduxjs/toolkit";
 import { ChangeEvent, RefObject } from "react";
 import { getRegisterInfoState } from "../store/interfaces";
 
@@ -9,4 +10,14 @@ export interface LoginFormType {
 
 export interface getRegisterInfoSelector {
     getRegisterInfo: getRegisterInfoState
+}
+
+export type CombinedStateTypes = {
+    getEmail: getRegisterInfoState; 
+    getPassword: getRegisterInfoState;
+    getUsername: getRegisterInfoState;
+}
+
+export type SelectorType = {
+    formReducer: CombinedState<CombinedStateTypes>
 }

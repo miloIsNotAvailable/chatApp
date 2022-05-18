@@ -1,35 +1,29 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { styles } from "./loginStyles"
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setUserData } from "../../store/getRegisterInfo";
-import { getRegisterInfoSelector } from "../../interfaces/formInterfaces";
+import { useAppSelector } from "../../store/hooks";
+import {  SelectorType } from "../../interfaces/formInterfaces";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from "../../constants/firebaseConfig";
 import { useRouter } from "next/router";
 
-interface LoginButtonProps {
-    emailLogin: string | null
-    passwordLogin: string | null
-}
+const LoginButton: FC = () => {
 
-const LoginButton: FC<LoginButtonProps> 
-= ( { emailLogin, passwordLogin } ) => {
+    /**
+     * @param selector
+     * @returns the state of combined redcuer 
+     * containing specified email address, 
+     * password, and username 
+     */
 
-    const dispatch = useAppDispatch()
+    const selector = useAppSelector( 
+        ( { formReducer }: SelectorType ) => formReducer
+     )
 
-    const selector = useAppSelector( ( state: getRegisterInfoSelector ) => state?.getRegisterInfo )
     const router = useRouter()
 
     useEffect( () => {
-        
-        /**
-         * because values passed into 
-         * signInWidthEmailAndPassword
-         * cant be null or undefined
-         */
-        if( !selector?.email || !selector?.password ) return
 
-        console.log( selector )
+        // console.log( selector )
 
         // signInWithEmailAndPassword( 
         //     auth, 
@@ -39,11 +33,7 @@ const LoginButton: FC<LoginButtonProps>
         //     }  ).catch( e => console.log( e ) )
     }, [ selector, router ] )
 
-    const Submit = () => dispatch( 
-        setUserData( {
-            email: emailLogin, 
-            password: passwordLogin
-    } ) )
+    const Submit = () => console.log( selector )
     
     return(
         <div 

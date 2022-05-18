@@ -1,9 +1,18 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import getRegisterInfo from "./getRegisterInfo";
+
+import getPassword from "./getPassword";
+import getEmail from "./getEmail";
+import getUsername from "./getUsername";
 
 export const store = configureStore( {
     reducer: {
-        getRegisterInfo: getRegisterInfo
+        getRegisterInfo: getRegisterInfo,
+        formReducer: combineReducers( { 
+            getEmail, 
+            getPassword, 
+            getUsername 
+        } )
     }
 } )
 

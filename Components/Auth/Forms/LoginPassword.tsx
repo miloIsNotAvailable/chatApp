@@ -1,19 +1,33 @@
-import { FC } from "react";
-import { LoginFormType } from "../../interfaces/formInterfaces";
+import { FC, useRef } from "react";
+import { setUserPassword } from "../../store/getPassword";
+import { useAppDispatch } from "../../store/hooks";
 import LoginForm from "./loginForm";
 
-const LoginPassword: FC<LoginFormType> 
-= ( {
-    handleChange, 
-    loginFormRef
-} ) => {
+/**
+ * @function LoginPassword
+ * updates password on change 
+ * using combined redcuer  
+ */
+
+
+const LoginPassword: FC = ( ) => {
+
+    const ref = useRef<HTMLInputElement | null>( null )
+
+    const dispatch = useAppDispatch()
+
+    const handleChange = () => {
+        dispatch( setUserPassword( {
+            password: ref.current?.value
+        } ) )
+    }
 
     return(
         <div>
             <LoginForm 
             title={ 'password' } 
             handleChange={ handleChange }
-            loginFormRef={ loginFormRef }/>
+            loginFormRef={ ref }/>
         </div>
     )
 }
