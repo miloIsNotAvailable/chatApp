@@ -1,7 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { prisma } from '../../lib/prisma'
-import jwt from "jsonwebtoken"
-import { User } from '@prisma/client'
 import { serialize } from 'cookie'
 
 export default async function handler(
@@ -9,7 +6,16 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-    // set a session cookie and store jwt data there
+    /**
+     * @param req.body is basically the encoded jwt
+     * token
+     * 
+     * --------------------------------------------
+     * fetch data ( current encoded jwt token  ) then 
+     * update the cookie to have expiration date of 0, 
+     * clearing it and thus logging out
+     */
+    
     res.setHeader( "Set-Cookie",
         serialize( "sessionToken", req.body, {
             path: "/",

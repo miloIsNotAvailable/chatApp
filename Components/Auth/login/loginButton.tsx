@@ -21,23 +21,11 @@ const LoginButton: FC = () => {
      )
 
     const router = useRouter()
-
-    useEffect( () => {
-
-        // console.log( selector )
-
-        // signInWithEmailAndPassword( 
-        //     auth, 
-        //     selector.email, 
-        //     selector?.password ).then( () => {
-        //         router.push( "/home" )
-        //     }  ).catch( e => console.log( e ) )
-    }, [ selector, router ] )
-
+    
     const Submit = () => fetch( "/api/post", {
             method: "POST", 
             body: JSON.stringify( selector )
-        } ).then( e => e.json() ).then( v => console.log( v ) )
+        } ).then( () => router.push( "/home" ) )
     
     return(
         <div 

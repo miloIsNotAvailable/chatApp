@@ -22,9 +22,21 @@ GetServerSideProps = async( { req, res } ) => {
     }
 }
 
+type iat = { iat: number }
+
+type user = {
+    id: string,
+    email: string, 
+    createdAt: string, 
+    updatesAt: string
+}
+
 interface MainChatProps {
-    jwtDecoded: any
-    sessionLogout: any
+    jwtDecoded: {
+        user: user,
+        iat: iat
+    } | null
+    sessionLogout: string | null
 }
 
 const MainChat: FC<MainChatProps> = ( { jwtDecoded, sessionLogout } ) => {
@@ -32,10 +44,24 @@ const MainChat: FC<MainChatProps> = ( { jwtDecoded, sessionLogout } ) => {
     const router = useRouter()
     // console.log( sessionLogout )
 
-    !jwtDecoded && router.push( "/" )
+    /**
+     * basically what @function handleLogOut does 
+     * is fetch the encoded jwt to /api/logout where
+     * later the cookie containing the jwt session token 
+     * is updated to have expiry date set to 0 
+     * thus deleting it and logging the user out 
+     * and moving him back to login screen
+     */
+
+    const handleLogOut = () => {
+        fetch( "/api/logout", {
+            method: "POST", 
+            body: JSON.stringify( sessionLogout )
+        } ).then( () => router.push( "/" ) )
+    }
 
     return (
-        <div onClick={ () => {} }>
+        <div onClick={ handleLogOut }>
             { JSON.stringify( jwtDecoded ) }
         </div>
     )
