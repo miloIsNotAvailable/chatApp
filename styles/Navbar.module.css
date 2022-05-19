@@ -1,0 +1,73 @@
+.navbar_display {
+    display: grid;
+    grid-template-columns: var( --main-chat-proportion );
+    height: 10%;
+}
+
+.search_display {
+    display: grid;
+    grid-template-columns: 2.5vw auto;
+    place-items: center;
+    width: calc( 100% - 1rem );
+    height: 100%;
+    justify-self: center;
+}
+
+.search {
+    display: grid;
+    place-items: center;
+    width: calc( 100% - 2rem );
+    height: 2.5vw;
+    background-color: var(--grey);
+    border: 0;
+    border-radius: 2vw;
+    font-family: 'Outfit';
+    font-size: 1.5vw;
+    color: var( --font-color );
+    padding: 0 1rem;
+}
+
+.search::placeholder {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    font-family: 'Outfit';
+    font-size: 1.5vw;
+    font-weight: 500;
+    color: var( --font-color );
+}
+
+.search_icon {
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+    transition: all 300ms ease;
+}
+
+.call_icon {
+    width: 100%;
+    height: 100%; 
+}
+
+.search_display:focus-within .search_icon, 
+.search_display:active .search_icon {    
+    transform: rotate(-80deg);
+}
+
+.display_user {
+    display: grid;
+    width: 18%;
+    grid-template-columns: 2.5vw auto;
+    place-items: center;
+    font-family: 'Outfit';
+    font-size: 1.5vw;
+    font-weight: 500;
+    color: var( --font-color );
+}
+
+.user_profile {
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 50%;
+    background-color: var(--blue);
+}

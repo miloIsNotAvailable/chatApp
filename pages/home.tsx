@@ -3,6 +3,9 @@ import { FC } from "react";
 import { GetServerSideProps } from "next";
 import jwt from "jsonwebtoken"
 import { User } from "@prisma/client";
+import MainChat from "../Components/MainChat";
+import { SessionContext } from "../Components/contexts/context";
+import { SessionProps } from "../Components/interfaces/mainchatInterfaces";
 
 /**
  * decide whether user exists 
@@ -42,14 +45,11 @@ GetServerSideProps = async( { req, res } ) => {
 }
 
 interface MainChatProps {
-    jwtDecoded: {
-        user: User,
-        iat: number
-    } | null
+    jwtDecoded: SessionProps
     sessionLogout: string | null
 }
 
-const MainChat: FC<MainChatProps> 
+const Chat: FC<MainChatProps> 
 = ( { 
     jwtDecoded, 
     sessionLogout 
@@ -73,11 +73,20 @@ const MainChat: FC<MainChatProps>
         } ).then( () => router.push( "/" ) )
     }
 
+    /**
+     * wrap the mainchat function 
+     * in SessionContext.Provider
+     * so we can get the session token 
+     * in every child of MainChat
+     */
+
     return (
-        <div onClick={ handleLogOut }>
-            { JSON.stringify( jwtDecoded ) }
+        <div onClick={  () => {} }>
+            <SessionContext.Provider value={  jwtDecoded }>
+                <MainChat/>
+            </SessionContext.Provider>
         </div>
     )
 }
 
-export default MainChat
+export default Chat

@@ -22,9 +22,12 @@ a {
   --dark: #414556;
   --grey: #545A71;
   --green: #82CE97;
+  --blue: #525D87;
   --light-green: #C7F6DA;
   --pink: #F09EDE;
   --input-width: 50%;
+  --font-color: white;
+  --main-chat-proportion: 21% auto;
 }
 
 input:focus, textarea:focus {
