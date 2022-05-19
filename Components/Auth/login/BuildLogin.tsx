@@ -15,15 +15,15 @@ import Bg from './svgBg'
 import RotateSvg from "./rotateSvg";
 import LoginButton from "./loginButton";
 import { useAppSelector } from "../../store/hooks";
-import { isFetchingState } from "../../store/interfaces";
 import { fetchingType } from "../../interfaces/formInterfaces";
 
-const BuildLogin: FC = () => {
+const BuildLogin: FC = ( ) => {
 
     /*
      * load the DOM before 
      * the rest with useEffect
      */
+
     useEffect( () => RotateSvg(), [] )
 
     const selector = useAppSelector( 

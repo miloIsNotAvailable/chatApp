@@ -1,9 +1,8 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
 import { FC, useEffect } from "react";
-import { auth } from "../../constants/firebaseConfig";
 import { SelectorType } from "../../interfaces/formInterfaces";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { isFetching } from "../../store/isFetching";
 import { styles } from "./registerStyles";
 
 const Proceed: FC = () => {
@@ -18,44 +17,29 @@ const Proceed: FC = () => {
     const selector = useAppSelector( 
         ( { formReducer }: SelectorType ) => formReducer 
      )
+    const dispatch = useAppDispatch()
 
     const router = useRouter()
 
-    useEffect( () => {
-        
-        // if( !selector?.email || !selector?.password ) return
+    const Submit = () => {
 
-        // console.log( selector )
+        dispatch( isFetching( { isFetching: true } ) )
 
-        // createUserWithEmailAndPassword( 
-        //     auth, 
-        //     selector.email, 
-        //     selector?.password ).then( () => {
-        //         router.push( "/home" )
-        //     }  ).then( () => {
-                
-        //         // so that  uid doesnt return undefined
-        //         if( !auth.currentUser?.uid ) return 
-                
-        //         // this gets all the inputs and fetches them 
-        //         // to api/post where a user is created
-        //         createUser( { 
-        //             ...selector, 
-        //             id: auth.currentUser?.uid 
-        //         } )  
-        //     } )
-        //     .catch( e => console.log( e ) )
-
-        // createUser( { ...selector, id: "1234" } )
-
-    }, [ selector, router ] )
-
-    const handleClick = () => console.log( selector )
+        fetch( "/api/signin", {
+            method: "POST", 
+            body: JSON.stringify( selector )
+        } ).then( v => v.json() )
+        .then( v => {
+            if( v.error ) return 
+            router.push( "/home" )
+        } )
+        .then( () => dispatch( isFetching( { isFetching: false } ) ) )
+    } 
 
     return ( 
         <div>
             <div className={ styles.proceed_button }
-            onClick={ handleClick }>
+            onClick={ Submit }>
                 ready?
             </div>
         </div>

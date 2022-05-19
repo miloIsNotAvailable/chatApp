@@ -1,21 +1,36 @@
-import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
-import styles from '../styles/Home.module.css'
-import { prisma } from '../lib/prisma'
-
+import type { GetServerSideProps, NextPage } from 'next'
 import Login from '../Components/Auth/login'
-import { AnimatePresence } from 'framer-motion'
 
-// export const getStaticProps: GetStaticProps = async() => {
-//   const posts = await prisma.user.create({
-//     data: {
-//       id: '321', 
-//       name: 'hello', 
-//       email: 'mail11@gmail.com', 
-//     }
-//   })
-//   console.log(posts)
-//   return { props: { e: 'hello' } }
-// }
+/**
+ * load the cookies before html 
+ * to determine whether the user 
+ * is logged in and based on that 
+ * determine whether they should be 
+ * redirected to /home or login screen.   
+ * We're loading everything before 
+ * html so that the website 
+ * doesn't go funky mode
+ */
+
+export const getServerSideProps: 
+GetServerSideProps = async( { req } ) => {
+
+    const session = req.cookies.sessionToken
+
+    // redirect to home 
+    // if user's logged in
+    if( session ) return {
+        redirect: {
+          destination: "/home", 
+          // go knows what this does
+          permanent: false
+        }
+    }
+
+    return {
+      props: {}
+    }
+}
 
 const Home: NextPage = () => {
 

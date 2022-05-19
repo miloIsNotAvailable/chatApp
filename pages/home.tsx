@@ -2,6 +2,15 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 import { GetServerSideProps } from "next";
 import jwt from "jsonwebtoken"
+import { User } from "@prisma/client";
+
+/**
+ * decide whether user exists 
+ * before the html is loaded, 
+ * so that the website doesn't go 
+ * funky mode and switch between login screen 
+ * and main chat  
+ */
 
 export const getServerSideProps: 
 GetServerSideProps = async( { req, res } ) => {
@@ -32,24 +41,19 @@ GetServerSideProps = async( { req, res } ) => {
     }
 }
 
-type iat = { iat: number }
-
-type user = {
-    id: string,
-    email: string, 
-    createdAt: string, 
-    updatesAt: string
-}
-
 interface MainChatProps {
     jwtDecoded: {
-        user: user,
-        iat: iat
+        user: User,
+        iat: number
     } | null
     sessionLogout: string | null
 }
 
-const MainChat: FC<MainChatProps> = ( { jwtDecoded, sessionLogout } ) => {
+const MainChat: FC<MainChatProps> 
+= ( { 
+    jwtDecoded, 
+    sessionLogout 
+} ) => {
 
     const router = useRouter()
 

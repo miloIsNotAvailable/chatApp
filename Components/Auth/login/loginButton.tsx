@@ -29,7 +29,10 @@ const LoginButton: FC = () => {
             method: "POST", 
             body: JSON.stringify( selector )
         } ).then( v => v.json() )
-        .then( v => router.push( "/home" ) )
+        .then( v => {
+            if( v.error ) return 
+            router.push( "/home" )
+        } )
         .then( () => dispatch( isFetching( { isFetching: false } ) ) )
     } 
     
