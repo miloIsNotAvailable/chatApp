@@ -1,14 +1,14 @@
 .navbar_display {
     display: grid;
     grid-template-columns: var( --main-chat-proportion );
-    height: 10%;
+    height: calc(10%-2rem);
 }
 
 .search_display {
     display: grid;
     grid-template-columns: 2.5vw auto;
     place-items: center;
-    width: calc( 100% - 1rem );
+    width: calc( 100% - 3rem );
     height: 100%;
     justify-self: center;
 }
@@ -34,7 +34,7 @@
     font-family: 'Outfit';
     font-size: 1.5vw;
     font-weight: 500;
-    color: var( --font-color );
+    color: var( --dark );
 }
 
 .search_icon {
@@ -44,9 +44,11 @@
     transition: all 300ms ease;
 }
 
-.call_icon {
-    width: 100%;
-    height: 100%; 
+.call_icon, .menu_icon {
+    width: 2.5vw;
+    height: 2.5vw;
+    align-self: center;
+    justify-self: center; 
 }
 
 .search_display:focus-within .search_icon, 
@@ -70,4 +72,18 @@
     height: 2.5vw;
     border-radius: 50%;
     background-color: var(--blue);
+}
+
+.call_and_menu {
+    display: grid;
+    align-self: center;
+    justify-items: end;
+    grid-template-columns: 50% 50%;
+    width: calc( 20% - 2rem );
+}
+
+.display_right {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 3rem);
 }

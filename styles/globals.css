@@ -43,3 +43,11 @@ input:focus, textarea:focus {
   transform-origin: 20% 20%;
   transform: rotate( calc(var(--rotate) * -1) );
 }
+
+#Ellipse3 {
+  transition: all 100ms ease;
+}
+
+#more:hover #Ellipse3 {
+  transform: translate(0, -20%);
+}

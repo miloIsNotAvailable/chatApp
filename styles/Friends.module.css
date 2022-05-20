@@ -1,0 +1,58 @@
+.display_friend {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 3vw auto;
+    height: calc(3vw + 2rem);
+    min-height: calc(3vw + 2rem);
+    padding: 0 1rem;
+    color: var(--font-color);
+    font-size: 1.5vw;
+    font-family: "Outfit";
+    font-weight: 600;
+    /* border-radius: .5rem .5rem 0 0; */
+    transition: all 100ms ease;
+}
+
+/* for some bizzarre reason variables don't work here */
+.display_friend:hover {
+    background-color: #545A71;
+}
+
+.friend_icon {
+    width: 3vw;
+    height: 3vw;
+    background-color: var(--blue);
+    border-radius: 50%;
+}
+
+.friend_name {
+    margin: 0 1rem;
+    align-self: center;
+}
+
+.display_friend_list {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 3rem);
+    height: 100%;
+    justify-self: center;
+    overflow: auto;
+}
+
+.display_friend_list::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: var(--dark)
+}
+
+.display_friend_list::-webkit-scrollbar-thumb {
+    background-color: var(--grey);
+}
+
+.display_friend_list > li:first-child {
+    border-radius: .5rem .5rem 0 0;
+}
+
+.display_friend_list > li:last-child {
+    border-radius: 0 0 .5rem .5rem;
+}

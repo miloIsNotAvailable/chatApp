@@ -1,5 +1,6 @@
 import { FC, useContext } from "react";
 import { SessionContext } from "../../contexts/context";
+import FriendList from "../FriendsList/FriendList";
 import Navbar from "../Navbar";
 import { styles } from "./MainChatStyles";
 
@@ -15,8 +16,10 @@ const BuildMainChat: FC = () => {
 
     return (
         <div className={ styles.mainchat_display }>
-            {/* { JSON.stringify( sessionContext ) } */}
             <Navbar/>
+            <div className={ styles.mainchat_body }>
+                <FriendList/>
+            </div>
         </div>
     )
 }
