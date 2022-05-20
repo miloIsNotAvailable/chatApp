@@ -1,16 +1,22 @@
 .mainchat_display {
     position: absolute;
     display: grid;
-    grid-template-rows: 10% auto 10%;
+    grid-template-rows: 10% auto;
     width: 100%;
     height: 100%;
     word-break: break-all;
-    background-color: var(--dark);
+    background-color: var(--bg);
 }
 
 .mainchat_body {
     display: grid;
     grid-template-columns: var(--main-chat-proportion);
-    height: calc(100% - 2.5vw);
+    height: calc(100% - 1rem);
     overflow: auto;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }

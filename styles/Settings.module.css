@@ -1,0 +1,15 @@
+.wrap_settings {
+    display: flex;
+    align-self: center;
+    flex-direction: row;
+    justify-content: space-around;
+    width: calc(100% - 2rem);
+    height: calc(3vw + 1rem);
+    align-items: center;
+    background-color: var(--dark);
+    border-radius: .5rem 1.5rem .5rem 1.5rem;
+}
+
+.settings_icon {
+    cursor: pointer;
+}

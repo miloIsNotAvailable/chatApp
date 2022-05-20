@@ -1,0 +1,62 @@
+.chat_wrap {
+    display: flex;
+    width: calc(100% - 3rem);
+    height: 100%;
+    background-color: var(--dark);
+    border-radius: .5rem 2rem 2rem .5rem;
+}
+
+.chat_input_wrap {
+    display: grid;
+    grid-template-columns: var(--chat-input-height) auto var(--chat-input-height);
+    width: 100%;
+    height: var(--chat-input-height);
+    margin: .5rem;
+    align-self: flex-end;
+    justify-self: center;
+    background-color: var(--grey);
+    border-radius: 3rem;
+}
+
+.chat_input {
+    width: 100%;
+    height: var(--chat-input-height);
+    border-radius: 3rem;
+    background-color:var(--grey);
+    border: 0;
+    padding: 0 1rem;
+    font-family: 'Outfit';
+    color: var(--font-color);
+    font-size: 1vw;
+}
+
+.chat_input::placeholder {
+    font-family: 'Outfit';
+    color: var(--dark);
+    font-size: 1vw;
+    font-weight: 600;
+}
+
+.upload_image {
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    width: var(--chat-input-height);
+    height: var(--chat-input-height);
+    font-family: 'Outfit';
+    font-size: 2vw;
+    font-weight: 500;
+    color: white;
+    background-color: var(--blue);
+}
+
+.send_icon {
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    width: var(--chat-input-height);
+    height: var(--chat-input-height);
+    background-color: var(--blue);
+    border-radius: 50%;
+}

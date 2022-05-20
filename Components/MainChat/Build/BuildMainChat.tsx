@@ -1,7 +1,9 @@
 import { FC, useContext } from "react";
 import { SessionContext } from "../../contexts/context";
+import Chat from "../Chat/Chat";
 import FriendList from "../FriendsList/FriendList";
 import Navbar from "../Navbar";
+import Settings from "../Settings/Settings";
 import { styles } from "./MainChatStyles";
 
 const BuildMainChat: FC = () => {
@@ -18,7 +20,11 @@ const BuildMainChat: FC = () => {
         <div className={ styles.mainchat_display }>
             <Navbar/>
             <div className={ styles.mainchat_body }>
-                <FriendList/>
+                <div className={ styles.sidebar }>
+                    <FriendList/>
+                    <Settings/>
+                </div>
+                <Chat/>
             </div>
         </div>
     )

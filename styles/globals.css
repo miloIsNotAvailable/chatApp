@@ -28,6 +28,7 @@ a {
   --input-width: 50%;
   --font-color: white;
   --main-chat-proportion: 21% auto;
+  --chat-input-height: 3vw;
 }
 
 input:focus, textarea:focus {

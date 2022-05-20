@@ -1,6 +1,7 @@
 import { FC, useState, CSSProperties } from "react";
 import { styles } from "./FriendListStyles";
 import { motion } from 'framer-motion'
+import Link from "next/link";
 
 interface DisplayFriendProps {
     name: string
@@ -24,7 +25,13 @@ const DisplayFriend: FC<DisplayFriendProps>
             onTap={ () => handleClick( name ) }>
             <div className={ styles.friend_icon }/>
             <div className={ styles.friend_name }>
-                { name }
+                <Link
+                href={ {
+                    pathname: '/home/[id]',
+                    query: { id: name }
+                } } >
+                    { name }
+                </Link>
             </div>
         </motion.li>
     )

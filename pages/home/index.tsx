@@ -3,9 +3,9 @@ import { FC } from "react";
 import { GetServerSideProps } from "next";
 import jwt from "jsonwebtoken"
 import { User } from "@prisma/client";
-import MainChat from "../Components/MainChat";
-import { SessionContext } from "../Components/contexts/context";
-import { SessionProps } from "../Components/interfaces/mainchatInterfaces";
+import MainChat from "../../Components/MainChat";
+import { SessionContext } from "../../Components/contexts/context";
+import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
 
 /**
  * decide whether user exists 

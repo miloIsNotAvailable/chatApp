@@ -16,9 +16,11 @@ const FriendList: FC = () => {
                         key={ v } 
                         cssStyles={ 
                             selected === v &&
-                            { backgroundColor: "var(--grey)" }
+                            { 
+                                backgroundColor: "var(--dark)"
+                            }
                          }
-                         handleClick={ setSelected }/>
+                        handleClick={ setSelected }/>
                 ) )
             }
         </div>
