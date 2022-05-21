@@ -8,11 +8,14 @@ export default async function handler(
 
     const { name } = JSON.parse( req.body )
 
-    const user = await prisma.user.findUnique( {
+    const user = await prisma.user.findMany( {
         where: {
-          name: name
+          name: {
+            contains: name
+          }
         }
     } )
 
-  res.json( user )
+  if( name.length > 0 ) res.json( user )
+  if( name.length == 0 ) res.json( null )
 }

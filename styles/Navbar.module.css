@@ -11,15 +11,19 @@
     justify-content: center;
 }
 
-.show_user {
+.show_user_wrap {
     position: absolute;
+    width: calc( 20% - 1rem );
+    top: 10%;
+    background-color: var(--grey);
+    border-radius: 1rem;
+}
+
+.show_user {
     display: grid;
     grid-template-columns: calc( 2.5vw + 1rem ) auto;
     align-items: center;
-    background-color: var(--grey);
-    width: calc( 20% - 1rem );
-    height: 5vw;
-    top: 10%;
+    height: fit-content;
     padding: 0 1rem;
     border-radius: 1rem;
     color: var(--font-color);

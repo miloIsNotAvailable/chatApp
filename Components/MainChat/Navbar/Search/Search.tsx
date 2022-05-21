@@ -8,7 +8,9 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const Search: FC = () => {
 
-    const [ foundUser, setFoundUser ] = useState<User | null>( null )
+    const [ foundUser, setFoundUser ] = useState<User | any | null>( null )
+
+    useEffect( () => console.log( foundUser ), [ foundUser ] )
 
     const handleChange = ( 
         e: ChangeEvent<HTMLInputElement> 
@@ -33,19 +35,25 @@ const Search: FC = () => {
                     placeholder={ 'search' } 
                     onChange={ ( d: any ) =>  e( d ) }/>
             </div>
-            <AnimatePresence>
-                {
-                    foundUser && 
-                    <motion.div 
-                    className={ styles.show_user }
-                    initial={ { height: 0 } }
-                    animate={ { height: '5vw' } }
-                    exit={ { height: 0, opacity: 0 } }>
-                        <div className={ styles.user_profile }/>
-                        { foundUser?.name }
-                    </motion.div>
-                }
-            </AnimatePresence>
+            <div className={ styles.show_user_wrap }>
+                <AnimatePresence>
+                    {
+                        foundUser &&
+                        foundUser.map( ( { name, id }: any ) => (
+                            <motion.div
+                            key={ name } 
+                            className={ styles.show_user }
+                            initial={ { height: 0 } }
+                            animate={ { height: '5vw' } }
+                            exit={ { height: 0, opacity: 0 } }>
+                                <div className={ styles.user_profile }/>
+                                { name }
+                            </motion.div>
+                            
+                        ) ) 
+                    }
+                </AnimatePresence>
+            </div>
         </div>
     )
 }
