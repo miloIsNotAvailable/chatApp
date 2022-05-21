@@ -6,11 +6,14 @@
 
 .search_display {
     display: grid;
-    grid-template-columns: 2.5vw auto;
+    align-self: center;
+    grid-template-columns: calc(2.5vw + 1rem) auto;
     place-items: center;
-    width: calc( 100% - 3rem );
-    height: 100%;
+    width: calc( 100% - 2rem );
+    height: calc(100% - 2rem);
     justify-self: center;
+    background-color: var(--grey);
+    border-radius: 3rem;
 }
 
 .search {
@@ -24,7 +27,7 @@
     font-family: 'Outfit';
     font-size: 1.5vw;
     color: var( --font-color );
-    padding: 0 1rem;
+    /* padding: 0 .5rem; */
 }
 
 .search::placeholder {
