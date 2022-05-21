@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next'
+import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
 import Login from '../Components/Auth/login'
 
 /**
@@ -21,18 +21,18 @@ GetServerSideProps = async( { req } ) => {
     // if user's logged in
     if( session ) return {
         redirect: {
-          destination: "/home", 
+          destination: "/home/[id]", 
           // go knows what this does
           permanent: false
         }
     }
 
     return {
-      props: {}
+      props: {  }
     }
 }
 
-const Home: NextPage = () => {
+const Home: NextPage = ( ) => {
 
   return (
     <div>

@@ -1,5 +1,16 @@
+import { User } from "@prisma/client";
 import { createContext } from "react";
-import { SessionProps } from "../interfaces/mainchatInterfaces";
+import { SessionProps, SessionData } from "../interfaces/mainchatInterfaces";
 
 export const SessionContext 
 = createContext<SessionProps>( null )
+
+type SessionReroute = { 
+    id: any
+    user?: User | undefined 
+    iat?: number | undefined 
+}
+type v = SessionReroute | null
+
+export const SessionRerouteContext = 
+createContext<SessionReroute | null>( null )
