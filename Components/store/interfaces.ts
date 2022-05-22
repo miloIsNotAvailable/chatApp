@@ -8,3 +8,8 @@ export interface getRegisterInfoState {
 export interface isFetchingState {
     isFetching: boolean
 }
+
+export type U = {
+    name: null
+    id: null
+}

@@ -27,3 +27,17 @@ model Session {
   email   String  @unique
   session String  @unique
 }
+
+model Message {
+  channelID String     @id @default( uuid() )
+  content   String
+  from      String
+  sentAt    DateTime   @default( now() )
+  channel  Channel @relation( references: [id], fields: [ channelID ] )
+}
+
+model Channel {
+  id       String    @id @default( uuid() )
+  users    String[]
+  message  Message[]
+} 

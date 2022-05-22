@@ -1,16 +1,24 @@
-import { ChangeEvent, ChangeEventHandler, FC, useCallback, useEffect, useMemo, useState } from "react";
+import { 
+    ChangeEvent, 
+    FC, 
+    useCallback, 
+    useContext, 
+    useState 
+} from "react";
+
 import { styles } from "../Build/NavbarStyles";
 import SearchIcon from '../../../../graphics/search.svg'
 import Image from "next/image";
+
 import { debounce } from "./debounce";
 import { User } from "@prisma/client";
 import { AnimatePresence, motion } from "framer-motion";
+import DisplayFoundUser from "./displayFoundUsers";
+import { SessionRerouteContext } from "../../../contexts/context";
 
 const Search: FC = () => {
 
-    const [ foundUser, setFoundUser ] = useState<User | any | null>( null )
-
-    useEffect( () => console.log( foundUser ), [ foundUser ] )
+    const [ foundUser, setFoundUser ] = useState<User[] | null>( null )
 
     const handleChange = ( 
         e: ChangeEvent<HTMLInputElement> 
@@ -20,9 +28,21 @@ const Search: FC = () => {
             body: JSON.stringify( {"name": e.target.value} )
         } ).then( v => v.json() ).then( v => setFoundUser( v ) )
     }
-    
+
     // @ts-nocheck
     const e = useCallback( debounce( handleChange, 200 ), [] )
+
+    const sessionContext = useContext( SessionRerouteContext )
+
+    const createChannel = ( { name, id }: { name: string[] | any, id: string } ) => {
+        fetch( '/api/create_channel', {
+            method: "POST",
+            body: JSON.stringify( { name, id } )
+        } )
+        .then( v => v.json() )
+        .then( v => console.log( v ) )
+    }
+
 
     return (
         <div className={ styles.search_wrap }>
@@ -39,17 +59,15 @@ const Search: FC = () => {
                 <AnimatePresence>
                     {
                         foundUser &&
-                        foundUser.map( ( { name, id }: any ) => (
-                            <motion.div
-                            key={ name } 
-                            className={ styles.show_user }
-                            initial={ { height: 0 } }
-                            animate={ { height: '5vw' } }
-                            exit={ { height: 0, opacity: 0 } }>
-                                <div className={ styles.user_profile }/>
-                                { name }
-                            </motion.div>
-                            
+                        foundUser.map( ( 
+                            { name, id }: User, ind: number
+                            ) => (
+                            <DisplayFoundUser 
+                                ind={ ind }
+                                key={ name } 
+                                name={ name } 
+                                handleClick={ () => createChannel( { name: [name, sessionContext?.user?.name], id } ) }
+                            />
                         ) ) 
                     }
                 </AnimatePresence>

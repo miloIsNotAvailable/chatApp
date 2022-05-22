@@ -6,7 +6,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-    const { name } = JSON.parse( req.body )
+    console.log( req.body )
+    const result = await JSON.parse( req.body )
+    const { name } = result
 
     const user = await prisma.user.findMany( {
         where: {
@@ -17,5 +19,5 @@ export default async function handler(
     } )
 
   if( name.length > 0 ) res.json( user )
-  if( name.length == 0 ) res.json( null )
+  res.json( null )
 }

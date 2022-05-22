@@ -19,16 +19,32 @@
     border-radius: 1rem;
 }
 
+.show_user_wrap > div:first-child {
+    border-radius: 1rem 1rem 0 0;
+}
+
+.show_user_wrap > div:last-child {
+    border-radius:  0 0 1rem 1rem;
+}
+
+.show_user_wrap > div:only-child {
+    border-radius: 1rem;
+}
+
 .show_user {
     display: grid;
     grid-template-columns: calc( 2.5vw + 1rem ) auto;
     align-items: center;
     height: fit-content;
     padding: 0 1rem;
-    border-radius: 1rem;
     color: var(--font-color);
     font-size: 1.5vw;
     font-weight: 500;
+    transition: all 100ms ease;
+}
+
+.show_user:hover {
+    background-color: #414556;
 }
 
 .search_display {
