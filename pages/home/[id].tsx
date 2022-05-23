@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { FC } from "react";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import jwt from "jsonwebtoken"
 import { User } from "@prisma/client";
 import MainChat from "../../Components/MainChat";
@@ -16,7 +16,7 @@ import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
  */
 export const getServerSideProps: 
 GetServerSideProps = async( { req, res } ) => {
-
+    
     /**
      * get current jwt token saved in cookies 
      * as sessionToken, and return null 
@@ -35,10 +35,17 @@ GetServerSideProps = async( { req, res } ) => {
     // encoded jwt token
     const sessionLogout = session || 'hey'
 
+    const d = await fetch( 'http://localhost:3000/api/get_channels', {
+        method: 'POST', 
+        body: JSON.stringify( jwtDecoded )
+    } )
+    const data = await d.json()
+
     return {
         props: { 
             jwtDecoded: jwtDecoded,
             sessionLogout: sessionLogout,
+            data
          }
     }
 }
@@ -48,10 +55,11 @@ interface MainChatProps {
     sessionLogout: string | null, 
 }
 
-const Chat: FC<MainChatProps> 
+const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>> 
 = ( { 
     jwtDecoded, 
     sessionLogout,
+    data
 } ) => {
 
     const router = useRouter()
@@ -65,6 +73,8 @@ const Chat: FC<MainChatProps>
      * thus deleting it and logging the user out 
      * and moving them back to login screen
      */
+
+    console.log( data )
 
     const handleLogOut = () => {
         fetch( "/api/logout", {
@@ -82,7 +92,7 @@ const Chat: FC<MainChatProps>
 
     return (
         <div onClick={  () => {} }>
-            <SessionRerouteContext.Provider value={  { ...jwtDecoded, id } }>
+            <SessionRerouteContext.Provider value={  { ...jwtDecoded, id, channels: data } }>
                 <MainChat/>
             </SessionRerouteContext.Provider>
         </div>

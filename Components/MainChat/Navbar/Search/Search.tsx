@@ -74,7 +74,8 @@ const Search: FC = () => {
                                 ind={ ind }
                                 key={ name } 
                                 name={ name } 
-                                handleClick={ () => CreateChannel( { 
+                                handleClick={ () => 
+                                    CreateChannel( { 
                                     name: [name, sessionContext?.user?.name], 
                                     id: [ id, sessionContext?.user?.id ], 
                                     Dispatch: dispatch } 

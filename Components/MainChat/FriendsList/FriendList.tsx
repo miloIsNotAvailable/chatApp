@@ -1,21 +1,42 @@
-import { FC, useEffect, useState } from "react";
+import { Channel } from "@prisma/client";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { SessionRerouteContext } from "../../contexts/context";
 import DisplayFriend from "./DisplayFriend";
 import { styles } from "./FriendListStyles";
 
 const FriendList: FC = () => {
 
-    const arr = [ "hello", "hey", "hi", "hallo" ]
-    const[ selected, setSelected ] = useState( arr[0] )
+    const sessionContext = useContext( SessionRerouteContext )
+
+    const arr: Channel[] | null = sessionContext?.channels || null
+    const[ selected, setSelected ] = useState<any | null>( null )
+    
+    // // query data client-side
+    // const queryData = () => {
+    //     fetch( '/api/get_channels', {
+    //         method: "POST",
+    //         body: JSON.stringify( sessionContext )
+    //     } )
+    //     .then( v => v.json() )
+    //     .then( v => console.log( v ) )
+    // }
+
+    // console.log( sessionContext?.channels )
+
+    // // memoize queried data
+    // const e = useCallback( queryData, [] )
+    // useEffect( () => e )
 
     return (
         <div className={ styles.display_friend_list }>
             {
-                arr.map( ( v: any ) => (
+                arr && arr.map( ( { users, id }: Channel ) => (
                     <DisplayFriend 
-                        name={ v }
-                        key={ v } 
+                        name={ users[0] }
+                        key={ id } 
                         cssStyles={ 
-                            selected === v &&
+                            selected === users[0] &&
                             { 
                                 backgroundColor: "var(--dark)"
                             }

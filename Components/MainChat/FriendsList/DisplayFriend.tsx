@@ -6,7 +6,7 @@ import Link from "next/link";
 interface DisplayFriendProps {
     name: string
     cssStyles: any
-    handleClick: ( name: string ) => any
+    handleClick: ( name: any ) => any
 }
 
 const DisplayFriend: FC<DisplayFriendProps> 
