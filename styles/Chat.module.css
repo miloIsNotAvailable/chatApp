@@ -1,5 +1,6 @@
 .chat_wrap {
     display: flex;
+    flex-direction: column;
     width: calc(100% - 3rem);
     height: 100%;
     background-color: var(--dark);
@@ -12,14 +13,15 @@
     width: 100%;
     height: var(--chat-input-height);
     margin: .5rem;
-    align-self: flex-end;
-    justify-self: center;
+    align-self: center;
+    justify-self: flex-end;
     background-color: var(--grey);
     border-radius: 3rem;
 }
 
 .chat_input {
     width: 100%;
+    align-self: flex-end;
     height: var(--chat-input-height);
     border-radius: 3rem;
     background-color:var(--grey);
@@ -59,4 +61,12 @@
     height: var(--chat-input-height);
     background-color: var(--blue);
     border-radius: 50%;
+}
+
+.chat_message_display {
+    height: calc(100% - var(--chat-input-height));
+    width: 100%;
+    padding: 1rem;
+    color: var(--font-color);
+    font-family: 'Outfit';
 }

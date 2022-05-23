@@ -6,6 +6,7 @@ import getEmail from "./getEmail";
 import getUsername from "./getUsername";
 import checkForFetching from "./isFetching";
 import createChannel from './createChannel'
+import createNewMessage from './createMessage'
 
 export const store = configureStore( {
     reducer: {
@@ -16,7 +17,8 @@ export const store = configureStore( {
             getUsername 
         } ),
         fetching: checkForFetching,
-        newChannel: createChannel
+        newChannel: createChannel,
+        createMessage: createNewMessage
     }
 } )
 

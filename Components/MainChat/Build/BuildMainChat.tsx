@@ -1,4 +1,3 @@
-import { gql, useMutation, useSubscription } from "@apollo/client";
 import { FC, useContext } from "react";
 import { SessionContext } from "../../contexts/context";
 import Chat from "../Chat/Chat";
@@ -6,28 +5,12 @@ import FriendList from "../FriendsList/FriendList";
 import Navbar from "../Navbar";
 import Settings from "../Settings/Settings";
 import { styles } from "./MainChatStyles";
+import { MessageType } from "../../store/interfaces";
 
-const SUB = gql`
-    subscription Subscription {
-  updateMessages {
-    id
-    content
-    from
-    channel
-  }
+type newMessageState = {
+    newMessage: MessageType
 }
-`
 
-const MUT = gql`
-    mutation Mutation($messageId: String, $content: String, $from: String, $channel: String) {
-  message(id: $messageId, content: $content, from: $from, channel: $channel) {
-    id
-    content
-    from
-    channel
-  }
-}
-`
 
 const BuildMainChat: FC = () => {
     
