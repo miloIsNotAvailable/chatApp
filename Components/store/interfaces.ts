@@ -10,6 +10,11 @@ export interface isFetchingState {
 }
 
 export type U = {
-    name: null
-    id: null
+    users: (string | null)[] | null
+    id: string | null
+}
+
+export type ObservableType = {
+    users: (string | null)[] | null
+    id: string | null
 }

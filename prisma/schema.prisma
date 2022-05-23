@@ -8,12 +8,12 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  email     String   @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
+  id        String     @id @default(cuid())
+  name      String     @unique
+  email     String     @unique
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  channels  Channel[]  
   @@map("users")
 }
 
@@ -33,11 +33,12 @@ model Message {
   content   String
   from      String
   sentAt    DateTime   @default( now() )
-  channel  Channel @relation( references: [id], fields: [ channelID ] )
+  channel   Channel    @relation( references: [id], fields: [ channelID ] )
 }
 
 model Channel {
   id       String    @id @default( uuid() )
   users    String[]
   message  Message[]
+  user     User[]
 } 

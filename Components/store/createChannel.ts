@@ -1,10 +1,15 @@
 import { User } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { U } from "./interfaces";
+import { Observable, of } from "rxjs";
+import { ObservableType, U } from "./interfaces";
 
-const initialState: User | U = {
-    name: null,
-    id: null
+type StateObservable = {
+    observer: Observable<ObservableType>
+}
+
+const initialState: ObservableType = {
+    users: null, 
+    id: null 
 }
 
 const createChannelSlice = createSlice( {
@@ -12,11 +17,11 @@ const createChannelSlice = createSlice( {
     initialState,
     reducers: {
         createChannelFromData: ( 
-            state: U, 
-            action: PayloadAction<U> 
+            state: ObservableType, 
+            action: PayloadAction<ObservableType> 
             ) => {
-                state.name = action.payload.name
                 state.id = action.payload.id
+                state.users = action.payload.users
             }
         }   
     } 
