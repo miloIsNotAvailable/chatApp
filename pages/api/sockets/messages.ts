@@ -1,5 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { fromEvent, Observable, of } from 'rxjs'
 import { Server } from 'socket.io'
+import { DefaultEventsMap } from 'socket.io/dist/typed-events'
+
+type IOObservable = Observable<Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>> 
 
 const ioHandler = (req: any, res: any) => {
   if (!res.socket.server.io) {
@@ -9,8 +13,10 @@ const ioHandler = (req: any, res: any) => {
 
     io.on('connection', socket => {
       socket.broadcast.emit('a user connected')
-      socket.on('message', msg => {
-        console.log( msg )
+
+      socket.on('message', (msg) => {
+          io.emit( 'msg', { message: msg } )
+          console.log( msg )
       })
     })
 

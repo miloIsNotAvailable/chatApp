@@ -22,15 +22,11 @@ const ChatInput: FC = () => {
         if( !inputRef.current?.value?.trim() ) return
         e.preventDefault()
         
-        dispatch( newMessage( { message: inputRef.current?.value?.trim() } ) )
-        // setObs( of( inputRef.current?.value?.trim() ) )
         socket.emit( 'message', inputRef.current?.value?.trim() )
+
+        dispatch( newMessage( { message: inputRef.current?.value?.trim() } ) )
         if( inputRef.current ) inputRef.current.value = ''
     }
-
-    // useEffect( () => {
-    //     obs?.subscribe( v => console.log( v ) )
-    // } )
 
     return (
         <form  onSubmit={ handleSubmit } className={ styles.chat_input_wrap }>
