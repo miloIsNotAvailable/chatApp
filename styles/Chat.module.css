@@ -10,7 +10,7 @@
 .chat_input_wrap {
     display: grid;
     grid-template-columns: var(--chat-input-height) auto var(--chat-input-height);
-    width: 100%;
+    width: calc(100% - 1rem);
     height: var(--chat-input-height);
     margin: .5rem;
     align-self: center;

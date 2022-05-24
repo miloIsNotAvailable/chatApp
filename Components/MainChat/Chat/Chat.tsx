@@ -5,7 +5,10 @@ import io from 'socket.io-client'
 import { MessageType } from "../../store/interfaces";
 import { initializeSocket } from "./initializeSocket";
 import { useAppSelector } from "../../store/hooks";
-import { Observable, of } from "rxjs";
+import { map, mergeMap, Observable } from "rxjs";
+import { fromEvent } from 'rxjs'
+import { _io } from "../../constants/WebSocketsConstants";
+import { IOObservable, SocketType } from "../../interfaces/WebSocketsTypes";
 
 type newMessageState = {
     createMessage: MessageType
@@ -18,8 +21,22 @@ const Chat: FC = () => {
     const [ msg, setMsg ] = useState<MessageType[] | []>( [] )
     const socket = io()
 
+    const getVal = ( v: any ) => console.log( v )
+    const e = useCallback( getVal, [] )
+
     useEffect( () => {
-        socket.on( "msg", v => console.log( v ) )
+        // socket.on( "msg", e )
+        const m: Observable<IOObservable<SocketType>> = _io.pipe( 
+            mergeMap( ( client ) => 
+              fromEvent( client, 'msg' ).pipe(
+                map(
+                  ( data ) => data
+                )
+              )
+             ) 
+          )
+      
+        m.subscribe( console.log )
     } )
 
     useEffect(  () => {initializeSocket()}, []  )
