@@ -6,6 +6,7 @@ import Link from "next/link";
 interface DisplayFriendProps {
     name: string
     cssStyles: any
+    redirectTo: string | null
     handleClick: ( name: any ) => any
 }
 
@@ -13,9 +14,9 @@ const DisplayFriend: FC<DisplayFriendProps>
 = ( { 
     name, 
     cssStyles,
+    redirectTo,
     handleClick 
 } ) => {
-
 
     return (
         <motion.li 
@@ -28,7 +29,7 @@ const DisplayFriend: FC<DisplayFriendProps>
                 <Link
                 href={ {
                     pathname: '/home/[id]',
-                    query: { id: name }
+                    query: { id: redirectTo ? redirectTo : '/' }
                 } } >
                     { name }
                 </Link>

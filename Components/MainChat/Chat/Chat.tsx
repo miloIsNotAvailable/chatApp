@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import ChatInput from "./ChatInput";
 import { styles } from "./ChatStyles";
 import io from 'socket.io-client'
@@ -18,19 +18,12 @@ const Chat: FC = () => {
     const [ msg, setMsg ] = useState<MessageType[] | []>( [] )
     const socket = io()
 
-    socket.on( "msg", v => console.log( v ) )
+    useEffect( () => {
+        socket.on( "msg", v => console.log( v ) )
+    } )
 
     useEffect(  () => {initializeSocket()}, []  )
     
-
-    // useEffect(  () => {
-    //     setMessage( of( selector ) )
-    // }, [ selector ]  )
-
-    // useEffect( () => {
-    //     message?.subscribe( v => setMsg( ( prev: any ) => [ ...prev, v ] ) )
-    // }, [ message ] )
-
     return (
         <div className={ styles.chat_wrap }>
             <div className={ styles.chat_message_display }>

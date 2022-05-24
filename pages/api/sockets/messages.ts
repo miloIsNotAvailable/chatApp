@@ -1,9 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { fromEvent, Observable, of } from 'rxjs'
-import { Server } from 'socket.io'
+import { fromEvent, map, mergeMap, Observable, of, switchMap } from 'rxjs'
+import { Server, Socket } from 'socket.io'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 
 type IOObservable = Observable<Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>> 
+type ConnectObs = Observable<{
+  io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
+  // :3
+  client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> | any
+}>
 
 const ioHandler = (req: any, res: any) => {
   if (!res.socket.server.io) {
@@ -11,14 +16,42 @@ const ioHandler = (req: any, res: any) => {
 
     const io = new Server(res.socket.server)
 
-    io.on('connection', socket => {
-      socket.broadcast.emit('a user connected')
+    // connect websockets
+    const _io: IOObservable = of( io ) 
+    const connect: ConnectObs = _io.pipe( 
+      switchMap( ( io ) =>
+        fromEvent( io, 'connection' ).pipe( 
+          map( 
+            ( client ) => ( { io, client } ) 
+          )
+        ) 
+      )
+    )
+    
+    // listen to sent messages
+    const msg = connect.pipe( 
+      mergeMap( ( { client } ) =>
+        fromEvent( client, 'message' ).pipe(
+          map(
+            ( data ) => data
+          )
+        )
+       ) 
+    )
 
-      socket.on('message', (msg) => {
-          io.emit( 'msg', { message: msg } )
-          console.log( msg )
-      })
-    })
+    // send bakc a message
+    msg.subscribe( v => {
+      console.log( v )
+      io.emit( 'msg', { message: v } )
+    } )
+
+    // io.on('connection', socket => {
+    //   socket.broadcast.emit('a user connected')
+
+    //   socket.on('message', (msg) => {
+    //       io.emit( 'msg', { message: msg } )
+    //   })
+    // })
 
     res.socket.server.io = io
   } else {

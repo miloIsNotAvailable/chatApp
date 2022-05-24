@@ -10,7 +10,7 @@ const FriendList: FC = () => {
     const sessionContext = useContext( SessionRerouteContext )
 
     const arr: Channel[] | null = sessionContext?.channels || null
-    const[ selected, setSelected ] = useState<any | null>( null )
+    const[ selected, setSelected ] = useState<any | null>( arr ? arr[0]?.users[0] : null )
     
     // // query data client-side
     // const queryData = () => {
@@ -28,11 +28,14 @@ const FriendList: FC = () => {
     // const e = useCallback( queryData, [] )
     // useEffect( () => e )
 
+    console.log( arr )
+
     return (
         <div className={ styles.display_friend_list }>
             {
                 arr && arr.map( ( { users, id }: Channel ) => (
                     <DisplayFriend 
+                        redirectTo={ selected }
                         name={ users[0] }
                         key={ id } 
                         cssStyles={ 

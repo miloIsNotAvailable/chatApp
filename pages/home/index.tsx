@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { FC } from "react";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import jwt from "jsonwebtoken"
 import { User } from "@prisma/client";
 import MainChat from "../../Components/MainChat";
-import { SessionContext } from "../../Components/contexts/context";
+import { SessionContext, SessionRerouteContext } from "../../Components/contexts/context";
 import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
 
 /**
@@ -14,10 +14,9 @@ import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
  * funky mode and switch between login screen 
  * and main chat  
  */
-
 export const getServerSideProps: 
 GetServerSideProps = async( { req, res } ) => {
-
+    
     /**
      * get current jwt token saved in cookies 
      * as sessionToken, and return null 
@@ -36,26 +35,35 @@ GetServerSideProps = async( { req, res } ) => {
     // encoded jwt token
     const sessionLogout = session || 'hey'
 
+    const d = await fetch( 'http://localhost:3000/api/get_channels', {
+        method: 'POST', 
+        body: JSON.stringify( jwtDecoded )
+    } )
+    const data = await d.json()
+
     return {
         props: { 
             jwtDecoded: jwtDecoded,
-            sessionLogout: sessionLogout 
+            sessionLogout: sessionLogout,
+            data
          }
     }
 }
 
 interface MainChatProps {
     jwtDecoded: SessionProps
-    sessionLogout: string | null
+    sessionLogout: string | null, 
 }
 
-const Chat: FC<MainChatProps> 
+const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>> 
 = ( { 
     jwtDecoded, 
-    sessionLogout 
+    sessionLogout,
+    data
 } ) => {
 
     const router = useRouter()
+    const { id } = router.query
 
     /**
      * basically what @function handleLogOut does 
@@ -65,6 +73,8 @@ const Chat: FC<MainChatProps>
      * thus deleting it and logging the user out 
      * and moving them back to login screen
      */
+
+    console.log( data )
 
     const handleLogOut = () => {
         fetch( "/api/logout", {
@@ -82,9 +92,9 @@ const Chat: FC<MainChatProps>
 
     return (
         <div onClick={  () => {} }>
-            <SessionContext.Provider value={  jwtDecoded }>
+            <SessionRerouteContext.Provider value={  { ...jwtDecoded, id, channels: data } }>
                 <MainChat/>
-            </SessionContext.Provider>
+            </SessionRerouteContext.Provider>
         </div>
     )
 }
