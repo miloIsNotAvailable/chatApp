@@ -11,6 +11,9 @@ type ConnectObs = Observable<{
 }>
 
 const ioHandler = (req: any, res: any) => {
+
+  const id = req.body
+
   if (!res.socket.server.io) {
     console.log('*First use, starting socket.io')
 
@@ -29,6 +32,35 @@ const ioHandler = (req: any, res: any) => {
     )
     
     // listen to sent messages
+    const channel = connect.pipe( 
+      mergeMap( ( { client } ) =>
+        fromEvent( client, 'join-room' ).pipe(
+          map(
+            ( data ) => ({ data, client })
+          )
+        )
+       ) 
+    )
+
+    channel.subscribe( ( { client, data }: any ) => {
+      // console.log( data )
+      // client.leave()
+      client.join( data )
+      io.to( data ).emit( 'hey', { room: data, payload: 'it works' } )
+    } )
+
+    // listen to sent messages
+    const pm = connect.pipe( 
+      mergeMap( ( { client } ) =>
+        fromEvent( client, 'pm' ).pipe(
+          map(
+            ( data ) => data
+          )
+        )
+       ) 
+    ).subscribe( v => io.emit( 'new-pm', v ) )
+  
+    // listen to sent messages
     const msg = connect.pipe( 
       mergeMap( ( { client } ) =>
         fromEvent( client, 'message' ).pipe(
@@ -39,7 +71,7 @@ const ioHandler = (req: any, res: any) => {
        ) 
     )
 
-    // send bakc a message
+    // send back a message
     msg.subscribe( v => {
       console.log( v )
       io.emit( 'msg', { message: v } )

@@ -20,5 +20,6 @@ export type ObservableType = {
 }
 
 export type MessageType = {
-    message: string | null
+    room: string
+    msg: string
 }

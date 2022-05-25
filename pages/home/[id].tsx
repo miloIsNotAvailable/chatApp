@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
-import { FC } from "react";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { FC, useEffect } from "react";
+import { GetServerSideProps, InferGetServerSidePropsType, GetStaticProps } from "next";
 import jwt from "jsonwebtoken"
 import { User } from "@prisma/client";
 import MainChat from "../../Components/MainChat";
 import { SessionContext, SessionRerouteContext } from "../../Components/contexts/context";
 import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
+import { _io } from "../../Components/constants/WebSocketsConstants";
+import { map, mergeMap, of } from "rxjs";
 
 /**
  * decide whether user exists 
@@ -50,11 +52,6 @@ GetServerSideProps = async( { req, res } ) => {
     }
 }
 
-interface MainChatProps {
-    jwtDecoded: SessionProps
-    sessionLogout: string | null, 
-}
-
 const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>> 
 = ( { 
     jwtDecoded, 
@@ -64,6 +61,10 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
 
     const router = useRouter()
     const { id } = router.query
+
+    useEffect( () => {
+        router.prefetch( `/${ id }` )
+    } )
 
     /**
      * basically what @function handleLogOut does 
@@ -92,7 +93,12 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
 
     return (
         <div onClick={  () => {} }>
-            <SessionRerouteContext.Provider value={  { ...jwtDecoded, id, channels: data } }>
+            <SessionRerouteContext.Provider 
+            value={  { 
+                ...jwtDecoded, 
+                id, 
+                channels: data
+                } }>
                 <MainChat/>
             </SessionRerouteContext.Provider>
         </div>

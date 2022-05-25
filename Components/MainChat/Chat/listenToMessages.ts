@@ -7,7 +7,7 @@ export const listenToMessages:
 = ( handle ): void => {
     const m: Observable<IOObservable<SocketType>> = _io.pipe( 
         mergeMap( ( client ) => 
-          fromEvent( client, 'msg' ).pipe(
+          fromEvent( client, 'new-pm' ).pipe(
             map(
               ( data ) => data
             )
