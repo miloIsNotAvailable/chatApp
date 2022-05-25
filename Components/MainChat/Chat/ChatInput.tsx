@@ -7,17 +7,15 @@ import io from 'socket.io-client'
 import { map, mergeMap, Observable, of } from "rxjs";
 import { useAppDispatch } from "../../store/hooks";
 import { newMessage } from "../../store/createMessage";
-import { SessionRerouteContext } from "../../contexts/context";
+import { SessionReroute, SessionRerouteContext } from "../../contexts/context";
 import { _io } from "../../constants/WebSocketsConstants";
 
 const ChatInput: FC = () => {
 
     const sessionContext = useContext( SessionRerouteContext )
-    const f = of( sessionContext?.id )
+    const IdObservable: Observable<SessionReroute | null> = of( sessionContext?.id )
 
     const inputRef = useRef<HTMLInputElement | null>( null )
-    const socket = io()
-    const[ obs, setObs ] = useState<Observable<string> | null>( null )
 
     const dispatch = useAppDispatch()
 
@@ -29,7 +27,7 @@ const ChatInput: FC = () => {
         
         const m = _io.pipe( 
             mergeMap( 
-                socket => f.pipe(
+                socket => IdObservable.pipe(
                     map( data => ( { socket, data } ) )
                 ) 
             )
@@ -43,7 +41,7 @@ const ChatInput: FC = () => {
             } )
         } )
 
-        socket.emit( 'message', inputRef.current?.value?.trim() )
+        // socket.emit( 'message', inputRef.current?.value?.trim() )
 
         dispatch( newMessage( { msg: inputRef.current?.value?.trim(), room: '' } ) )
         if( inputRef.current ) inputRef.current.value = ''

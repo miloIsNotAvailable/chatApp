@@ -7,6 +7,7 @@ import getUsername from "./getUsername";
 import checkForFetching from "./isFetching";
 import createChannel from './createChannel'
 import createNewMessage from './createMessage'
+import channelUsername from './showChannelUsername'
 
 export const store = configureStore( {
     reducer: {
@@ -18,7 +19,8 @@ export const store = configureStore( {
         } ),
         fetching: checkForFetching,
         newChannel: createChannel,
-        createMessage: createNewMessage
+        createMessage: createNewMessage,
+        channelUsername: channelUsername 
     }
 } )
 

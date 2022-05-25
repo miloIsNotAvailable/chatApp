@@ -1,48 +1,26 @@
 import { Channel } from "@prisma/client";
-import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { fromEvent, map, mapTo, mergeMap, of } from "rxjs";
-import { io } from "socket.io-client";
+import { FC, useContext, useEffect, useState } from "react";
+import { of } from "rxjs";
 import { _io } from "../../constants/WebSocketsConstants";
 import { SessionRerouteContext } from "../../contexts/context";
 import DisplayFriend from "./DisplayFriend";
+import { displayFriendName } from "./displayFriendName";
 import { styles } from "./FriendListStyles";
+import { joinRoomOnClick } from "./joinRoomOnClick";
 
 const FriendList: FC = () => {
 
     const sessionContext = useContext( SessionRerouteContext )
 
     const arr: Channel[] | null = sessionContext?.channels || null
-    const[ selected, setSelected ] = useState<any | null>( arr ? arr[0]?.users[0] : null )
+    const[ selected, setSelected ] = useState<string | null>( arr ? arr[0]?.id : null )
 
     const e = of( selected )
-    const socket = io()
 
+    // join the room on click
     useEffect( () => {
 
-        const m = _io.pipe( 
-            mergeMap( 
-                socket => e. pipe(
-                    map( data => ( { socket, data } ) )
-                ) 
-            )
-        )
-
-        m.subscribe( ( { data, socket } ) => {
-            console.log( data )
-            socket.emit( 'join-room', data )
-        } )
-        
-        const v = _io.pipe( 
-            mergeMap( 
-                client => fromEvent( client, 'hey' )
-                .pipe( 
-                    map( data => data )
-                 )
-            )
-         )
-        
-        v.subscribe( ( { room, payload }: any ) => room === selected && console.log( payload ) )
-
+        joinRoomOnClick( e )
     }, [ e, selected ] )
 
     // // query data client-side
@@ -60,17 +38,18 @@ const FriendList: FC = () => {
     // // memoize queried data
     // const e = useCallback( queryData, [] )
     // useEffect( () => e )
+    const currentUsername = sessionContext?.user?.name
 
     return (
         <div className={ styles.display_friend_list }>
             {
                 arr && arr.map( ( { users, id }: Channel ) => (
                     <DisplayFriend 
-                        redirectTo={ selected }
-                        name={ users[0] }
+                        redirectTo={ id }
+                        name={ displayFriendName( users, currentUsername ) }
                         key={ id } 
                         cssStyles={ 
-                            selected === users[0] &&
+                            selected === id &&
                             { 
                                 backgroundColor: "var(--dark)"
                             }

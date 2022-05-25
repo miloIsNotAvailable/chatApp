@@ -5,7 +5,7 @@ import { SessionProps, SessionData } from "../interfaces/mainchatInterfaces";
 export const SessionContext 
 = createContext<SessionProps>( null )
 
-type SessionReroute = { 
+export type SessionReroute = { 
     id: any
     user?: User | undefined 
     iat?: number | undefined

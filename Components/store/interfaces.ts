@@ -23,3 +23,7 @@ export type MessageType = {
     room: string
     msg: string
 }
+
+export type ChannelUsername = {
+    name: string | null
+}
