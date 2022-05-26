@@ -27,7 +27,12 @@ const Chat: FC = () => {
                 {
                     msg.map( ( { msg, room }: MessageType ) => (
                         id === room && 
-                        <div key={ msg }> { msg } </div>
+                        <div 
+                            className={ styles.chat_user_message_wrap } 
+                            key={ msg }> 
+                            <div className={ styles.chat_user_icon }/>
+                            <div className={ styles.chat_user_msg }> { msg } </div>
+                        </div>
                     ) )
                 }
             </div>

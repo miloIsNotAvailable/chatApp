@@ -1,16 +1,17 @@
 import { Channel } from "@prisma/client";
-import { FC, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { map, of, switchMap } from "rxjs";
-import { fromFetch } from 'rxjs/fetch'
+import { FC, useContext, useEffect, useState } from "react";
+import { of } from "rxjs";
 import { _io } from "../../constants/WebSocketsConstants";
 import { SessionRerouteContext } from "../../contexts/context";
 import { useAppDispatch } from "../../store/hooks";
 import { getChannelUsername } from "../../store/showChannelUsername";
 import DisplayFriend from "./DisplayFriend";
 import { displayFriendName } from "./displayFriendName";
-import { getChannelQuery } from "./FetchChannels";
+import { useFetch } from "./FetchChannels";
 import { styles } from "./FriendListStyles";
 import { joinRoomOnClick } from "./joinRoomOnClick";
+import LoadingAnimation from '../../../graphics/Loading.svg'
+import Image from "next/image";
 
 const FriendList: FC = () => {
 
@@ -18,7 +19,7 @@ const FriendList: FC = () => {
 
     const arr: Channel[] | null = sessionContext?.channels || null
     const[ selected, setSelected ] = useState<string | null>( arr ? arr[0]?.id : null )
-    const [ channels, setChannels ] = useState<Channel[] | null>( null )
+    const { channels } = useFetch<{channels: Channel[] | null}>( '/api/get_channels', sessionContext )
 
     const roomObservable = of( selected )
 
@@ -38,25 +39,23 @@ const FriendList: FC = () => {
      * in the navbar 
      */
 
-     const f = getChannelQuery( "/api/get_channels", sessionContext )
-     const handle = () => {
-         f.subscribe( async( { data, loading } ) => {
-             if( loading ) return 
-             const res = await data
-             return setChannels( res )
-         } )
-     }
- 
-     const v = useMemo( handle, [  ] )
- 
-     useEffect( () => { v; console.log( channels ) } )
-
     useEffect( () => {
         if( !channels ) return
         setSelected( channels[0]?.id )
         const name = displayFriendName( channels[0].users, currentUsername ) 
         dispatch( getChannelUsername( { name } ) )  
     }, [ channels, dispatch, currentUsername ])
+
+    if( !channels ) return (
+        <div className={ styles.display_friend_list }>
+            <div className={ styles.loading_animation_wrap }>
+                <Image 
+                className={ styles.loading_animation }
+                src={ LoadingAnimation }
+                alt="" />
+            </div>
+        </div>
+    )
 
     return (
         <div className={ styles.display_friend_list }>

@@ -4,6 +4,7 @@ import {
     useCallback, 
     useContext, 
     useEffect, 
+    useRef, 
     useState 
 } from "react";
 
@@ -20,6 +21,7 @@ import { CreateChannel } from "./CreateChannel";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { Observable } from "rxjs";
 import { ObservableType, U } from "../../../store/interfaces";
+import { getChannelQuery, useFetch } from "../../FriendsList/FetchChannels";
 
 type StateObservable = {
     observer: ObservableType
@@ -30,6 +32,7 @@ type State = { newChannel: ObservableType }
 const Search: FC = () => {
 
     const [ foundUser, setFoundUser ] = useState<User[] | null>( null )
+    const inputRef = useRef<HTMLInputElement | null>( null )
 
     const handleChange = ( 
         e: ChangeEvent<HTMLInputElement> 
@@ -46,7 +49,7 @@ const Search: FC = () => {
         console.log( selector )
     }, [ selector ] )
 
-    // @ts-nocheck
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const e = useCallback( debounce( handleChange, 200 ), [] )
 
     const sessionContext = useContext( SessionRerouteContext )
@@ -60,7 +63,8 @@ const Search: FC = () => {
                 alt=""/>
                 <input 
                     className={ styles.search }
-                    placeholder={ 'search' } 
+                    placeholder={ 'search' }
+                    ref={ inputRef }
                     onChange={ ( d: any ) =>  e( d ) }/>
             </div>
             <div className={ styles.show_user_wrap }>

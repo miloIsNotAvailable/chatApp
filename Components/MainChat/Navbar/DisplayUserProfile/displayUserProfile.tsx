@@ -22,7 +22,9 @@ const DisplayUser: FC = () => {
             <div className={ styles.user_profile }>
                 
             </div>
-            { selector }
+            <div className={ styles.align_username }>
+                { selector }
+            </div>
         </div>
     )
 }

@@ -52,7 +52,7 @@
     grid-template-columns: calc(2.5vw + 1rem) auto;
     place-items: center;
     width: calc( 100% - 2rem );
-    height: calc(100% - 2rem);
+    height: 2.5vw;
     background-color: var(--grey);
     border-radius: 3rem;
 }
@@ -130,4 +130,9 @@
     display: flex;
     justify-content: space-between;
     width: calc(100% - 3rem);
+}
+
+.align_username {
+    justify-self: flex-start;
+    margin: 0 1rem;
 }

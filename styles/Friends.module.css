@@ -57,3 +57,43 @@
 .display_friend_list > li:last-child {
     border-radius: 0 0 .5rem .5rem;
 }
+
+
+.loading_animation {
+    width: 5vw;
+    height: auto;
+    justify-self: center;
+    align-self: center;
+}
+
+.loading_animation_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+@keyframes loading {
+    0% {
+        content: "workin' on it bossman hold on";
+    } 25% {
+        content: "workin' on it bossman hold on.";
+    } 50% {
+        content: "workin' on it bossman hold on..";
+    } 100% {
+        content: "workin' on it bossman hold on...";
+    }
+}
+
+.loading_animation_wrap::after {
+    display: flex;
+    content: "workin' on it bossman hold on...";
+    font-family: 'Outfit';
+    color: var(--grey);
+    font-weight: 600;
+    font-size: 1.3vw;
+    text-align: center;
+    word-break: keep-all;
+    animation: loading 1s ease infinite;
+}

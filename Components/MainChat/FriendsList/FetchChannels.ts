@@ -1,5 +1,8 @@
+import { Channel } from "@prisma/client";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { map, of, switchMap, Observable } from "rxjs"
 import { fromFetch } from "rxjs/fetch"
+import { SessionRerouteContext } from "../../contexts/context";
 
 type obsType = {
     loading: boolean;
@@ -35,4 +38,27 @@ export const getChannelQuery:
             )
         )
     )
+}
+
+type useFetchType = <T=any>(link: string, variables: any) => T | any
+
+export const useFetch: useFetchType
+= <T=any>( link: string, variables: any ) => {
+
+    const [ channels, setChannels ] = useState<T | null>( null )
+
+    const f = getChannelQuery( link, variables )
+    const handle = () => {
+        f.subscribe( async( { data, loading } ) => {
+            if( loading ) return 
+            const res = await data
+            return setChannels( res )
+        } )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const v = useMemo( handle, [] )
+ 
+    useEffect( () => { v; console.log( channels ) } )
+
+    return { channels }
 }

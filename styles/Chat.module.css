@@ -70,3 +70,25 @@
     color: var(--font-color);
     font-family: 'Outfit';
 }
+
+.chat_user_message_wrap {
+    display: grid;
+    grid-template-columns: calc(2.5vw + 1rem) auto;
+    flex-direction: row;
+    margin: 1rem 0;
+}
+
+.chat_user_msg {
+    display: flex;
+    align-self: center;
+    width: clamp( 45ch, 50%, 75ch );
+    word-break: keep-all;
+}
+
+.chat_user_icon {
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 50%;
+    background-color: var(--blue);
+    /* margin: 0 1rem; */
+}
