@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import { FC, useEffect } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType, GetStaticProps } from "next";
 import jwt from "jsonwebtoken"
-import { User } from "@prisma/client";
+import { Channel, User } from "@prisma/client";
 import MainChat from "../../Components/MainChat";
 import { SessionContext, SessionRerouteContext } from "../../Components/contexts/context";
 import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
@@ -37,11 +37,11 @@ GetServerSideProps = async( { req, res } ) => {
     // encoded jwt token
     const sessionLogout = session || 'hey'
 
-    const d = await fetch( 'http://localhost:3000/api/get_channels', {
-        method: 'POST', 
-        body: JSON.stringify( jwtDecoded )
-    } )
-    const data = await d.json()
+    // const d = await fetch( 'http://localhost:3000/api/get_channels', {
+    //     method: 'POST', 
+    //     body: JSON.stringify( jwtDecoded )
+    // } )
+    const data: any = []
 
     return {
         props: { 
@@ -62,10 +62,6 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
     const router = useRouter()
     const { id } = router.query
 
-    useEffect( () => {
-        router.prefetch( `/${ id }` )
-    } )
-
     /**
      * basically what @function handleLogOut does 
      * is fetch the encoded jwt to /api/logout where
@@ -74,8 +70,6 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      * thus deleting it and logging the user out 
      * and moving them back to login screen
      */
-
-    console.log( data )
 
     const handleLogOut = () => {
         fetch( "/api/logout", {
@@ -90,6 +84,21 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      * so we can get the session token 
      * in every child of MainChat
      */
+     const [ channels, setChannels ] = useState<Channel[] | null>( null )
+
+    // query data client-side
+    const queryData = () => {
+        fetch( '/api/get_channels', {
+            method: "POST",
+            body: JSON.stringify( { ...jwtDecoded, id } )
+        } )
+        .then( v => v.json() )
+        .then( setChannels )
+    }
+
+    // memoize queried data
+    const e = useCallback( queryData, [] )
+    useEffect( () => e, [] )
 
     return (
         <div onClick={  () => {} }>
@@ -97,7 +106,7 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
             value={  { 
                 ...jwtDecoded, 
                 id, 
-                channels: data
+                channels
                 } }>
                 <MainChat/>
             </SessionRerouteContext.Provider>
