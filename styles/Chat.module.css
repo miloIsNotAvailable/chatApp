@@ -26,7 +26,6 @@
     display: grid;
     place-items: center;
     width: 100%;
-    align-self: flex-end;
     /* border-radius: 3rem; */
     background-color:var(--grey);
     border: 0;
@@ -100,7 +99,7 @@
     display: flex;
     align-self: center;
     width: clamp( 45ch, 50%, 75ch );
-    word-break: keep-all;
+    max-width: 50%;
 }
 
 .chat_user_icon {
