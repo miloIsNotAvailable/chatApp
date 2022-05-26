@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { fromEvent, map, mergeMap, Observable, of, switchMap } from 'rxjs'
 import { Server, Socket } from 'socket.io'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
+import { v4 } from 'uuid'
 
 type IOObservable = Observable<Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>> 
 type ConnectObs = Observable<{
@@ -58,7 +59,7 @@ const ioHandler = (req: any, res: any) => {
           )
         )
        ) 
-    ).subscribe( v => io.emit( 'new-pm', v ) )
+    ).subscribe( v => io.emit( 'new-pm', { data: v, id: v4() } ) )
   
     // listen to sent messages
     const msg = connect.pipe( 

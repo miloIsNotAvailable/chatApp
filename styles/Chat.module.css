@@ -3,6 +3,8 @@
     flex-direction: column;
     width: calc(100% - 3rem);
     height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
     background-color: var(--dark);
     border-radius: .5rem 2rem 2rem .5rem;
 }
@@ -65,10 +67,21 @@
 
 .chat_message_display {
     height: calc(100% - var(--chat-input-height));
+    max-height: calc(100% - var(--chat-input-height));
     width: 100%;
     padding: 1rem;
     color: var(--font-color);
     font-family: 'Outfit';
+    overflow-y: scroll
+}
+
+.chat_message_display::-webkit-scrollbar-thumb {
+    background: var(--grey);
+}
+
+.chat_message_display::-webkit-scrollbar {
+    background-color: var(--dark);
+    width: 5px;
 }
 
 .chat_user_message_wrap {
