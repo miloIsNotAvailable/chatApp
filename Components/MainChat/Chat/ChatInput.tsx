@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FC, FormEvent, MouseEvent, useContext, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, KeyboardEvent, MouseEvent, useContext, useEffect, useRef, useState } from "react";
 import { styles } from "./ChatStyles";
 import UploadImage from "./uploadImage";
 import SendIcon from '../../../graphics/send.svg'
@@ -9,20 +9,39 @@ import { useAppDispatch } from "../../store/hooks";
 import { newMessage } from "../../store/createMessage";
 import { SessionReroute, SessionRerouteContext } from "../../contexts/context";
 import { _io } from "../../constants/WebSocketsConstants";
+import { motion } from 'framer-motion'
+
+type evType = KeyboardEvent<HTMLTextAreaElement> | MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+const evIsMouse = ( e: evType ): 
+e is MouseEvent<HTMLDivElement> => {
+    let c = e as MouseEvent<HTMLDivElement>
+    return typeof c.pageX === 'number'
+}
+
+const evIsKey = ( e: evType ): 
+e is KeyboardEvent<HTMLTextAreaElement> => {
+    const c = e as KeyboardEvent<HTMLTextAreaElement>
+    return typeof c.key === 'string'
+}
 
 const ChatInput: FC = () => {
 
     const sessionContext = useContext( SessionRerouteContext )
     const IdObservable: Observable<SessionReroute | null> = of( sessionContext?.id )
 
-    const inputRef = useRef<HTMLInputElement | null>( null )
+    const inputRef = useRef<HTMLTextAreaElement | null>( null )
 
     const dispatch = useAppDispatch()
 
     const handleSubmit = ( 
-        e: FormEvent<HTMLFormElement> | MouseEvent
+        e: evType
         ) => {
-        if( !inputRef.current?.value?.trim() ) return
+        if( 
+            !inputRef.current?.value?.trim() || 
+            (evIsKey( e ) && e.key !== 'Enter') ||
+            (evIsKey( e ) && e.key === 'Enter' && e.shiftKey)
+        ) return
+        
         e.preventDefault()
         
         const m = _io.pipe( 
@@ -46,24 +65,24 @@ const ChatInput: FC = () => {
         dispatch( newMessage( { msg: inputRef.current?.value?.trim(), room: '' } ) )
         if( inputRef.current ) inputRef.current.value = ''
     }
-
     // const handleSubmit = ( 
     //     e: FormEvent<HTMLFormElement> | MouseEvent<any>
     //     ) => Submit( e, inputRef, dispatch, socket, newMessage )
 
     return (
-        <form  onSubmit={ handleSubmit } className={ styles.chat_input_wrap }>
+        <div className={ styles.chat_input_wrap }>
             <UploadImage/>
-            <input 
+            <textarea
             ref={ inputRef }
             className={ styles.chat_input }
-            placeholder={ "send a message" }/>
-            <div  onClick={ handleSubmit } className={ styles.send_icon }>
+            placeholder={ "send a message" } 
+            onKeyDown={ handleSubmit }/>
+            <div onClick={ e => evIsMouse( e ) && handleSubmit( e ) } className={ styles.send_icon }>
                 <Image
                 src={ SendIcon }
                 alt=""/>
             </div>
-        </form>
+        </div>
     )
 }
 

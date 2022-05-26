@@ -36,14 +36,19 @@ const Settings: FC = () => {
                     <Link 
                         href={ { pathname: `/home/${ link }` } }
                         key={ link }>
-                            <Image 
+                            <Image
+                            key={ link } 
                             className={ styles.settings_icon } 
                             src={ Icon } 
                             alt=""
                             layout="intrinsic"/>
                     </Link>:
-                    <div>
-                        <Image className={ styles.settings_icon } src={ Icon } alt=""/>
+                    <div key={ "micr" }>
+                        <Image 
+                        key={ "mic" } 
+                        className={ styles.settings_icon } 
+                        src={ Icon } 
+                        alt=""/>
                     </div>
                 ) )
             }

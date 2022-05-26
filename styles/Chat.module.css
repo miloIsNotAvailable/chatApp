@@ -13,28 +13,33 @@
     display: grid;
     grid-template-columns: var(--chat-input-height) auto var(--chat-input-height);
     width: calc(100% - 1rem);
-    height: var(--chat-input-height);
+    height: var(--change-height);
     margin: .5rem;
     align-self: center;
+    place-items: center;
     justify-self: flex-end;
     background-color: var(--grey);
     border-radius: 3rem;
 }
 
 .chat_input {
+    display: grid;
+    place-items: center;
     width: 100%;
     align-self: flex-end;
-    height: var(--chat-input-height);
-    border-radius: 3rem;
+    /* border-radius: 3rem; */
     background-color:var(--grey);
     border: 0;
     padding: 0 1rem;
     font-family: 'Outfit';
     color: var(--font-color);
     font-size: 1vw;
+    overflow: auto;
+    transition: all 100ms ease
 }
 
 .chat_input::placeholder {
+
     font-family: 'Outfit';
     color: var(--dark);
     font-size: 1vw;
