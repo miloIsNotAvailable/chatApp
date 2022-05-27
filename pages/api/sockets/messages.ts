@@ -78,6 +78,23 @@ const ioHandler = (req: any, res: any) => {
       io.emit( 'msg', { message: v } )
     } )
 
+    // listen to sent messages
+    const isTyping = connect.pipe( 
+      mergeMap( ( { client } ) =>
+        fromEvent( client, 'is-typing' ).pipe(
+          map(
+            ( data ) => data
+          )
+        )
+       ) 
+    )
+
+    // send back a message
+    isTyping.subscribe( v => {
+      // console.log( v )
+      io.emit( 'user-is-typing', { data: true } )
+    } )
+
     // io.on('connection', socket => {
     //   socket.broadcast.emit('a user connected')
 

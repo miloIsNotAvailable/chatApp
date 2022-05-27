@@ -1,12 +1,9 @@
 import { FC, useContext } from "react";
 import { SessionRerouteContext } from "../../../contexts/context";
+import { getChannelUsernameState } from "../../../interfaces/mainchatInterfaces";
 import { useAppSelector } from "../../../store/hooks";
 import { ChannelUsername } from "../../../store/interfaces";
 import { styles } from "../Build/NavbarStyles";
-
-type getChannelUsernameState = {
-    channelUsername: ChannelUsername
-}
 
 const DisplayUser: FC = () => {
 

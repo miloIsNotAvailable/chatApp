@@ -1,96 +1,67 @@
 import Image from "next/image";
-import { FC, FormEvent, KeyboardEvent, MouseEvent, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { FC, MutableRefObject, useMemo, useRef } from "react";
 import { styles } from "./ChatStyles";
 import UploadImage from "./uploadImage";
 import SendIcon from '../../../graphics/send.svg'
-import io from 'socket.io-client'
-import { map, mergeMap, Observable, of } from "rxjs";
-import { useAppDispatch } from "../../store/hooks";
-import { newMessage } from "../../store/createMessage";
-import { SessionReroute, SessionRerouteContext } from "../../contexts/context";
 import { _io } from "../../constants/WebSocketsConstants";
-import { motion } from 'framer-motion'
-
-type evType = KeyboardEvent<HTMLTextAreaElement> | MouseEvent<HTMLDivElement, globalThis.MouseEvent>
-const evIsMouse = ( e: evType ): 
-e is MouseEvent<HTMLDivElement> => {
-    let c = e as MouseEvent<HTMLDivElement>
-    return typeof c.pageX === 'number'
-}
-
-const evIsKey = ( e: evType ): 
-e is KeyboardEvent<HTMLTextAreaElement> => {
-    const c = e as KeyboardEvent<HTMLTextAreaElement>
-    return typeof c.key === 'string'
-}
+import { useSubmit } from "./handleSubmit";
+import { useAppSelector } from "../../store/hooks";
+import { getChannelUsernameState } from "../../interfaces/mainchatInterfaces";
+import { debounce, fromEvent, interval, map, mergeMap, of } from "rxjs";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useUserIsTyping } from "./userIsTyping";
 
 const ChatInput: FC = () => {
 
-    const sessionContext = useContext( SessionRerouteContext )
-    const IdObservable: Observable<SessionReroute | null> = of( sessionContext?.id )
-
     const inputRef = useRef<HTMLTextAreaElement | null>( null )
+    const submit = useSubmit<MutableRefObject<HTMLTextAreaElement | null>>( inputRef )
 
-    const dispatch = useAppDispatch()
+    const typing = useUserIsTyping()
+    useEffect( () => console.log( typing ), [ typing ] )
 
-    const handleSubmit = ( 
-        e: evType
-        ) => {
-        if( 
-            !inputRef.current?.value?.trim() || 
-            (evIsKey( e ) && e.key !== 'Enter') ||
-            (evIsKey( e ) && e.key === 'Enter' && e.shiftKey)
-        ) return
-        
-        e.preventDefault()
-        
-        const m = _io.pipe( 
-            mergeMap( 
-                socket => IdObservable.pipe(
-                    map( data => ( { socket, data } ) )
-                ) 
-            )
-        )
-
-        m.subscribe( ( { data, socket } ) => {
-            console.log( data )
-            socket.emit( 'pm', { 
-                room: data, 
-                msg: inputRef.current?.value?.trim() 
-            } )
-        } )
-
-        // socket.emit( 'message', inputRef.current?.value?.trim() )
-
-        dispatch( newMessage( { msg: inputRef.current?.value?.trim(), room: '' } ) )
-        if( inputRef.current ) inputRef.current.value = ''
-        inputRef.current.style.height = 'auto'
-    }
-    // const handleSubmit = ( 
-    //     e: FormEvent<HTMLFormElement> | MouseEvent<any>
-    //     ) => Submit( e, inputRef, dispatch, socket, newMessage )
+    const userIsTyping = of( 'is-typing' )
 
     const changeHeight = () => {
         if( !inputRef.current ) return
-        
-        let off = inputRef.current?.scrollHeight
-        console.log( off, inputRef.current?.scrollHeight )
 
-        inputRef.current.style.height = off + 'px'
+        const m = _io.pipe(
+            mergeMap( 
+                ( socket ) => userIsTyping
+                .pipe(
+                    map( data => ( { data, socket } ) )
+                )
+             )
+        )
+
+        m.subscribe( ( { data, socket } ) => {
+            socket.emit( data, true )
+        } )
+
+        const off = inputRef.current.scrollHeight + 'px'
+        inputRef.current.style.height = off
         if( inputRef.current.value.length === 0 ) inputRef.current.style.height = 'auto'
     }
+
+    const selector = useAppSelector( 
+        ( 
+            { channelUsername }: getChannelUsernameState 
+        ) => channelUsername?.name 
+    )
 
     return (
         <div className={ styles.chat_input_wrap }>
             <UploadImage/>
             <textarea
+            id="inp"
             rows={ 1 }
             ref={ inputRef }
             className={ styles.chat_input }
-            placeholder={ "send a message" } 
-            onKeyDown={ handleSubmit }
-            onChange={ changeHeight }/>
-            <div onClick={ e => evIsMouse( e ) && handleSubmit( e ) } className={ styles.send_icon }>
+            placeholder={ `send a message to @${ selector }` } 
+            onKeyDown={ submit }
+            onChange={ changeHeight }
+            />
+            <div onClick={ submit } className={ styles.send_icon }>
                 <Image
                 src={ SendIcon }
                 alt=""/>
