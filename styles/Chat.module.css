@@ -70,6 +70,7 @@
 }
 
 .chat_message_display {
+    position: relative;
     height: calc(100% - var(--chat-input-height));
     max-height: calc(100% - var(--chat-input-height));
     width: 100%;
@@ -108,4 +109,40 @@
     border-radius: 50%;
     background-color: var(--blue);
     /* margin: 0 1rem; */
+}
+
+.user_is_typing {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    bottom: 0;
+    color: white
+}
+
+@keyframes reappear {
+    0%{
+        opacity: 1
+    } 50% {
+        opacity: .5;
+    } 100% {
+        opacity: 1
+    }
+}
+
+.user_is_typing_ellipse {
+    background-color: white;
+    border-radius: 50%;
+    width: .5vw;
+    margin: 0 .1rem;
+    height: auto;
+    aspect-ratio: 1;
+    animation: reappear 1s ease infinite;
+}
+
+@keyframes fadeIn {
+    0% {
+        transform: translate(0, -10%);
+    } 100% {
+        transform: translate(0, 0);
+    }
 }

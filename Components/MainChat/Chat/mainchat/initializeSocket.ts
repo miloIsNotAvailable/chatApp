@@ -1,4 +1,4 @@
-import { connect } from "../../constants/WebSocketsConstants"
+import { connect } from "../../../constants/WebSocketsConstants"
 
 export const initializeSocket = async(): Promise<void> => {
 

@@ -1,6 +1,6 @@
 import { fromEvent, map, mergeMap, Observable } from "rxjs"
-import { _io } from "../../constants/WebSocketsConstants"
-import { IOObservable, SocketType } from "../../interfaces/WebSocketsTypes"
+import { _io } from "../../../constants/WebSocketsConstants"
+import { IOObservable, SocketType } from "../../../interfaces/WebSocketsTypes"
 
 export const listenToMessages: 
 ( handle: (v: IOObservable<SocketType>) => void ) => void

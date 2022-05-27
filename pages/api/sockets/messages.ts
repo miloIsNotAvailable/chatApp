@@ -90,9 +90,9 @@ const ioHandler = (req: any, res: any) => {
     )
 
     // send back a message
-    isTyping.subscribe( v => {
+    isTyping.subscribe( (data: any) => {
       // console.log( v )
-      io.emit( 'user-is-typing', { data: true } )
+      io.to( data?.channelID ).emit( 'user-is-typing', data )
     } )
 
     // io.on('connection', socket => {

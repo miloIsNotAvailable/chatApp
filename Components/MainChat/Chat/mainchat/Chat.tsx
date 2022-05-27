@@ -1,12 +1,13 @@
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import ChatInput from "./ChatInput";
-import { styles } from "./ChatStyles";
-import { MessageType } from "../../store/interfaces";
+import ChatInput from "../chatInput";
+import { styles } from "../ChatStyles";
+import { MessageType } from "../../../store/interfaces";
 import { initializeSocket } from "./initializeSocket";
-import { _io } from "../../constants/WebSocketsConstants";
-import { IOObservable, SocketType } from "../../interfaces/WebSocketsTypes";
+import { _io } from "../../../constants/WebSocketsConstants";
+import { IOObservable, SocketType } from "../../../interfaces/WebSocketsTypes";
 import { listenToMessages } from "./listenToMessages";
-import { SessionRerouteContext } from "../../contexts/context";
+import { SessionRerouteContext } from "../../../contexts/context";
+import UserIsTyping from "../userIsTyping";
 
 type Msg = {
     data: MessageType, 
@@ -29,6 +30,7 @@ const Chat: FC = () => {
     return (
         <div className={ styles.chat_wrap }>
             <div className={ styles.chat_message_display }>
+            <UserIsTyping/>
                 {
                     msg.map( ( { data: { room, msg }, id }: Msg ) => (
                         context.id === room && 

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { styles } from "./ChatStyles";
+import { styles } from "../ChatStyles";
 
 const UploadImage: FC = () => {
 

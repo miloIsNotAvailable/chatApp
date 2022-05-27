@@ -1,9 +1,9 @@
 import { KeyboardEvent, MouseEvent, MutableRefObject, useContext } from "react"
 import { map, mergeMap, Observable, of } from "rxjs"
-import { _io } from "../../constants/WebSocketsConstants"
-import { SessionReroute, SessionRerouteContext } from "../../contexts/context"
-import { newMessage } from "../../store/createMessage"
-import { useAppDispatch } from "../../store/hooks"
+import { _io } from "../../../constants/WebSocketsConstants"
+import { SessionReroute, SessionRerouteContext } from "../../../contexts/context"
+import { newMessage } from "../../../store/createMessage"
+import { useAppDispatch } from "../../../store/hooks"
 
 type evType = KeyboardEvent<HTMLTextAreaElement> | MouseEvent<HTMLDivElement, globalThis.MouseEvent>
 
