@@ -12,6 +12,7 @@ import { styles } from "./FriendListStyles";
 import { joinRoomOnClick } from "./joinRoomOnClick";
 import LoadingAnimation from '../../../graphics/Loading.svg'
 import Image from "next/image";
+import { useUserInfo } from "../../constants/userConstants";
 
 const FriendList: FC = () => {
 
@@ -19,7 +20,8 @@ const FriendList: FC = () => {
 
     const arr: Channel[] | null = sessionContext?.channels || null
     const[ selected, setSelected ] = useState<string | null>( arr ? arr[0]?.id : null )
-    const { channels } = useFetch<{channels: Channel[] | null}>( '/api/get_channels', sessionContext )
+    const { channels } = useFetch<Channel[]>( '/api/get_channels', sessionContext ) || { channels: null }
+    
 
     const roomObservable = of( selected )
 
@@ -40,13 +42,15 @@ const FriendList: FC = () => {
      */
 
     useEffect( () => {
-        if( !channels ) return
+        if( !channels || channels.length === 0 ) return
+        
         setSelected( channels[0]?.id )
         const name = displayFriendName( channels[0].users, currentUsername ) 
-        dispatch( getChannelUsername( { name } ) )  
+        dispatch( getChannelUsername( { name } ) )
+
     }, [ channels, dispatch, currentUsername ])
 
-    if( !channels ) return (
+    if( !channels || channels.length === 0 ) return (
         <div className={ styles.display_friend_list }>
             <div className={ styles.loading_animation_wrap }>
                 <Image 

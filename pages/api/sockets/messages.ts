@@ -13,9 +13,9 @@ type ConnectObs = Observable<{
 }>
 
 type MsgType = {
-  room: string,
+  channelID: string,
   from: string,
-  msg: string,
+  content: string,
 }
 
 const ioHandler = (req: any, res: any) => {
@@ -70,20 +70,24 @@ const ioHandler = (req: any, res: any) => {
       
       (async() => {
         
-        const id = v4()
+        const postID = v4()
 
-        io.emit( 'new-pm', { data, id } )
+        io.emit( 'new-pm', { data, postID } )
         
-        return { data, id }
-      })().then( async( { data, id } ) => {
+        return { data, postID }
+      })().then( async( { data, postID } ) => {
+
+        console.log( data.channelID )
+
         await prisma.message.create( {
           data: {
-            content: data.msg,
+            content: data.content,
             from: data.from,
+            messageID: postID,
             channel: { 
               connect: {
-                id: data.room
-              } 
+                id: data.channelID
+              }
             }
           }
         } )

@@ -29,11 +29,12 @@ model Session {
 }
 
 model Message {
-  channelID      String     @id @default( uuid() )
+  messageID      String     @id @default( uuid() )
   content        String
   from           String
   sentAt         DateTime   @default( now() )
-  channel        Channel    @relation( references: [id], fields: [ channelID ] )
+  channel        Channel?   @relation( fields: [ channelID ], references: [id], onDelete: Cascade )
+  channelID      String?        
 }
 
 model Channel {

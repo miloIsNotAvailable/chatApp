@@ -10,6 +10,9 @@ import { SessionRerouteContext } from "../../../contexts/context";
 import UserIsTyping from "../userIsTyping";
 import { AnimatePresence, motion } from 'framer-motion'
 import { useUserInfo } from "../../../constants/userConstants";
+import { Channel } from "@prisma/client";
+import { v4 } from "uuid";
+import { useFetch } from "../../FriendsList/FetchChannels";
 
 type Msg = {
     data: MessageType, 
@@ -22,6 +25,21 @@ const Chat: FC = () => {
     const context = useContext( SessionRerouteContext ) || { id: '' }
 
     const { channelID } = useUserInfo()
+    const { channels } = useFetch<Channel[]>( '/api/get_channels', context )
+
+    useEffect( () => { 
+        
+        if( !channels ) return 
+
+        const e = channels.filter( ( { id }: any ) => id === channelID )[0]
+        const v: MessageType = e?.message[0]
+        if( v ) {
+            
+            const savedMsgs = [ { data: v, id: v4() } ]
+            setMsg( savedMsgs )
+        }
+
+     }, [ channelID, channels ] )
 
     const handle = ( v: IOObservable<SocketType> ) => 
     setMsg( ( prev: any[] ): Msg[] => [ ...prev, v ] )
@@ -37,8 +55,8 @@ const Chat: FC = () => {
             <UserIsTyping/>
             <AnimatePresence exitBeforeEnter>
                 {
-                    msg.map( ( { data: { room, msg }, id }: Msg, ind: number ) => (
-                        context.id === room && 
+                    msg.map( ( { data: { channelID, content }, id }: Msg, ind: number ) => (
+                        context.id === channelID && 
                         <motion.div 
                             key={ channelID }
                             transition={  { delay: ind * .01 } }
@@ -51,7 +69,7 @@ const Chat: FC = () => {
                             key={ id }> 
                                 <div className={ styles.chat_user_icon }/>
                                 <div className={ styles.chat_user_msg }> 
-                                    { msg } 
+                                    { content } 
                                 </div>
                             </div>
                         </motion.div>

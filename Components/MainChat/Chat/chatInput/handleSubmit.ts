@@ -105,15 +105,15 @@ export function useSubmit
         m.subscribe( ( { data, socket } ) => {
             console.log( data )
             socket.emit( 'pm', { 
-                room: data, 
-                msg: inputRef.current?.value?.trim(),
+                channelID: data, 
+                content: inputRef.current?.value?.trim(),
                 from: name
             } )
         } )
     
         // socket.emit( 'message', inputRef.current?.value?.trim() )
     
-        dispatch( newMessage( { msg: inputRef.current?.value?.trim(), room: '' } ) )
+        dispatch( newMessage( { content: inputRef.current?.value?.trim(), channelID: '' } ) )
         
         if( inputRef.current ) inputRef.current.value = ''
         inputRef.current.style.height = 'auto'

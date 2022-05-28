@@ -40,10 +40,10 @@ export const getChannelQuery:
     )
 }
 
-type useFetchType = <T=any>(link: string, variables: any) => T | any
+type useFetchType = <T=any>(link: string, variables: any) => {channels: T | any}
 
 export const useFetch: useFetchType
-= <T=any>( link: string, variables: any ) => {
+= <T=any>( link: string, variables: any ): { channels: T | null } => {
 
     const [ channels, setChannels ] = useState<T | null>( null )
 
