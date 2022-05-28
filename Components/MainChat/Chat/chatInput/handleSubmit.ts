@@ -117,6 +117,11 @@ export function useSubmit
         
         if( inputRef.current ) inputRef.current.value = ''
         inputRef.current.style.height = 'auto'
+        
+        setTimeout( () => {
+            const mainchat = document.getElementById( 'mainchat' )
+            mainchat?.scrollTo( 0, mainchat?.scrollHeight )
+        }, 300 )
     }
 
 }

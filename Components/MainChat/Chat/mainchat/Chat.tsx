@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useRef, useState } from "react";
 import ChatInput from "../chatInput";
 import { styles } from "../ChatStyles";
 import { MessageType } from "../../../store/interfaces";
@@ -24,12 +24,20 @@ const Chat: FC = () => {
 
     const { channelID } = useUserInfo()
     const { channels } = useFetch<Channel[]>( '/api/get_channels', context )
+    
+    const mainchatRef = useRef<HTMLDivElement>( null )
+
     useEffect( () => { 
         
         if( !channels ) return 
 
         const e = channels.filter( ( { id }: any ) => id === channelID )[0]
         setInitialMsg( e?.message )
+
+        const mainchat = document.getElementById( 'mainchat' )
+        setTimeout( () => {
+            mainchat?.scrollTo( 0, mainchat?.scrollHeight )
+        }, 1000 )
      }, [ channelID, channels ] )
 
     const handle = ( v: IOObservable<SocketType> ) => 
@@ -42,7 +50,11 @@ const Chat: FC = () => {
     
     return (
         <div className={ styles.chat_wrap }>
-            <div className={ styles.chat_message_display }>
+            <div 
+                id={ 'mainchat' } 
+                ref={ mainchatRef } 
+                className={ styles.chat_message_display }
+            >
             <UserIsTyping/>
             <AnimatePresence exitBeforeEnter>
                 {

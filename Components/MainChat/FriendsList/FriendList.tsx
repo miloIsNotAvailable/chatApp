@@ -41,6 +41,7 @@ const FriendList: FC = () => {
      * in the navbar 
      */
 
+    
     useEffect( () => {
         if( !channels || channels.length === 0 ) return
         
