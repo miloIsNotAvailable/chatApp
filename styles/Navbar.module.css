@@ -1,7 +1,40 @@
 .navbar_display {
+    position: relative;
     display: grid;
     grid-template-columns: var( --main-chat-proportion );
-    height: calc(10%-2rem);
+    height: calc(100%);
+    align-self: center;
+}
+
+@keyframes reappear {
+    0% {
+        width: 100%;
+        background-position: 0% 0%;  
+    }
+    90% {
+        /* width: 0%; */
+        background-position: 100% 0;
+    } 100%{
+        width: 0%
+    }
+}
+
+.navbar_display::after, .navbar_display::before {
+    display: block;
+    content: '';
+    top: 0;
+    position: absolute;
+    width: calc(100% - 3rem);
+    height: 100%;
+    background: linear-gradient( to right, 
+    var(--bg) 30%, 
+    var(--blue) 30%, 
+    var(--blue) 60%, 
+    var(--pink) 10% 
+    );    
+    background-size: 300% 100%;
+    z-index: 2;
+    animation: reappear 1s ease forwards;
 }
 
 .search_wrap {
@@ -14,7 +47,7 @@
 .show_user_wrap {
     position: absolute;
     width: calc( 20% - 1rem );
-    top: 10%;
+    top: 100%;
     background-color: var(--grey);
     border-radius: 1rem;
 }

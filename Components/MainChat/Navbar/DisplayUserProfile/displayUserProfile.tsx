@@ -1,13 +1,11 @@
 import { FC, useContext } from "react";
-import { SessionRerouteContext } from "../../../contexts/context";
 import { getChannelUsernameState } from "../../../interfaces/mainchatInterfaces";
 import { useAppSelector } from "../../../store/hooks";
-import { ChannelUsername } from "../../../store/interfaces";
 import { styles } from "../Build/NavbarStyles";
+import { motion } from "framer-motion";
 
 const DisplayUser: FC = () => {
 
-    const getRerouteData = useContext( SessionRerouteContext ) 
     const selector = useAppSelector( 
         ( 
             { channelUsername }: getChannelUsernameState 

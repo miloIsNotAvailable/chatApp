@@ -1,13 +1,12 @@
 import { useRouter } from "next/router";
-import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType, GetStaticProps } from "next";
 import jwt from "jsonwebtoken"
-import { Channel, User } from "@prisma/client";
+import { Channel } from "@prisma/client";
 import MainChat from "../../Components/MainChat";
-import { SessionContext, SessionRerouteContext } from "../../Components/contexts/context";
-import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
+import { SessionRerouteContext } from "../../Components/contexts/context";
 import { _io } from "../../Components/constants/WebSocketsConstants";
-import { map, mergeMap, of } from "rxjs";
+import { AnimatePresence, motion } from 'framer-motion'
 
 /**
  * decide whether user exists 
@@ -86,22 +85,16 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      */
      const [ channels, setChannels ] = useState<Channel[] | null>( null )
 
-    // query data client-side
-    const queryData = () => {
-        fetch( '/api/get_channels', {
-            method: "POST",
-            body: JSON.stringify( { ...jwtDecoded, id } )
-        } )
-        .then( v => v.json() )
-        .then( setChannels )
-    }
-
-    // memoize queried data
-    const e = useCallback( queryData, [] )
-    useEffect( () => e, [] )
+    console.log( router.asPath )
 
     return (
-        <div onClick={  () => {} }>
+        // <AnimatePresence exitBeforeEnter>
+        <div 
+        onClick={  () => {} }
+        // initial={ { opacity: 0 } }
+        // animate={ { opacity: 1 } }
+        // exit={ { opacity: 0 } }
+        >
             <SessionRerouteContext.Provider 
             value={  { 
                 ...jwtDecoded, 
@@ -111,6 +104,7 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
                 <MainChat/>
             </SessionRerouteContext.Provider>
         </div>
+        // </AnimatePresence>
     )
 }
 

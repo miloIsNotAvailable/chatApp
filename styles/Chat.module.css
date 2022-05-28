@@ -77,7 +77,8 @@
     padding: 1rem;
     color: var(--font-color);
     font-family: 'Outfit';
-    overflow-y: scroll
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .chat_message_display::-webkit-scrollbar-thumb {
