@@ -1,5 +1,6 @@
 import { KeyboardEvent, MouseEvent, MutableRefObject, useContext } from "react"
 import { map, mergeMap, Observable, of } from "rxjs"
+import { useUserInfo } from "../../../constants/userConstants"
 import { _io } from "../../../constants/WebSocketsConstants"
 import { SessionReroute, SessionRerouteContext } from "../../../contexts/context"
 import { newMessage } from "../../../store/createMessage"
@@ -82,6 +83,7 @@ export function useSubmit
 ( inputRef: T ): ( e: evType ) => void {
     
     const sessionContext = useContext( SessionRerouteContext )
+    const { name } = useUserInfo()
 
     const dispatch = useAppDispatch()
     const IdObservable: Observable<SessionReroute | null> 
@@ -104,7 +106,8 @@ export function useSubmit
             console.log( data )
             socket.emit( 'pm', { 
                 room: data, 
-                msg: inputRef.current?.value?.trim() 
+                msg: inputRef.current?.value?.trim(),
+                from: name
             } )
         } )
     

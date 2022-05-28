@@ -3,6 +3,7 @@ import { fromEvent, map, mergeMap, Observable, of, switchMap } from 'rxjs'
 import { Server, Socket } from 'socket.io'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 import { v4 } from 'uuid'
+import { prisma } from '../../../lib/prisma'
 
 type IOObservable = Observable<Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>> 
 type ConnectObs = Observable<{
@@ -10,6 +11,12 @@ type ConnectObs = Observable<{
   // :3
   client: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> | any
 }>
+
+type MsgType = {
+  room: string,
+  from: string,
+  msg: string,
+}
 
 const ioHandler = (req: any, res: any) => {
 
@@ -55,11 +62,35 @@ const ioHandler = (req: any, res: any) => {
       mergeMap( ( { client } ) =>
         fromEvent( client, 'pm' ).pipe(
           map(
-            ( data ) => data
+            ( data: any ) => data
           )
         )
        ) 
-    ).subscribe( v => io.emit( 'new-pm', { data: v, id: v4() } ) )
+    ).subscribe( ( data: MsgType ) => {
+      
+      (async() => {
+        
+        const id = v4()
+
+        io.emit( 'new-pm', { data, id } )
+        
+        return { data, id }
+      })().then( async( { data, id } ) => {
+        await prisma.message.create( {
+          data: {
+            content: data.msg,
+            from: data.from,
+            channel: { 
+              connect: {
+                id: data.room
+              } 
+            }
+          }
+        } )
+        console.log( data )
+      } )
+
+    } )
   
     // listen to sent messages
     const msg = connect.pipe( 

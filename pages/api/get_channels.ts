@@ -14,7 +14,8 @@ export default async function handler(
             user: {
                 some: { id: user.id }
             }
-        }
+        },
+        include: { message: true }
     } )
 
     data ? res.json( data ) :
