@@ -66,14 +66,15 @@ const ioHandler = (req: any, res: any) => {
           )
         )
        ) 
-    ).subscribe( ( data: MsgType ) => {
+    ).subscribe( ( { channelID, content, from }: MsgType ) => {
       
       (async() => {
         
         const postID = v4()
 
-        io.emit( 'new-pm', { data, postID } )
-        
+        io.emit( 'new-pm', { channelID, content, from, postID } )
+        const data = { channelID, content, from }
+
         return { data, postID }
       })().then( async( { data, postID } ) => {
 

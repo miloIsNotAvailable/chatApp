@@ -14,31 +14,22 @@ import { Channel } from "@prisma/client";
 import { v4 } from "uuid";
 import { useFetch } from "../../FriendsList/FetchChannels";
 
-type Msg = {
-    data: MessageType, 
-    id: string
-}
+type Msg = MessageType & { id: string }
 
 const Chat: FC = () => {
 
+    const [ initialMsg, setInitialMsg ] = useState( [] )
     const [ msg, setMsg ] = useState<Msg[] | []>( [] )
     const context = useContext( SessionRerouteContext ) || { id: '' }
 
     const { channelID } = useUserInfo()
     const { channels } = useFetch<Channel[]>( '/api/get_channels', context )
-
     useEffect( () => { 
         
         if( !channels ) return 
 
         const e = channels.filter( ( { id }: any ) => id === channelID )[0]
-        const v: MessageType = e?.message[0]
-        if( v ) {
-            
-            const savedMsgs = [ { data: v, id: v4() } ]
-            setMsg( savedMsgs )
-        }
-
+        setInitialMsg( e?.message )
      }, [ channelID, channels ] )
 
     const handle = ( v: IOObservable<SocketType> ) => 
@@ -55,7 +46,7 @@ const Chat: FC = () => {
             <UserIsTyping/>
             <AnimatePresence exitBeforeEnter>
                 {
-                    msg.map( ( { data: { channelID, content }, id }: Msg, ind: number ) => (
+                    [...initialMsg, ...msg].map( ( { channelID, content, id }: Msg, ind: number ) => (
                         context.id === channelID && 
                         <motion.div 
                             key={ channelID }

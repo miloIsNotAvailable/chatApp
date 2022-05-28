@@ -91,9 +91,6 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
         // <AnimatePresence exitBeforeEnter>
         <div 
         // onClick={  () => { handleLogOut() } }
-        // initial={ { opacity: 0 } }
-        // animate={ { opacity: 1 } }
-        // exit={ { opacity: 0 } }
         >
             <SessionRerouteContext.Provider 
             value={  { 

@@ -15,7 +15,11 @@ export default async function handler(
                 some: { id: user.id }
             }
         },
-        include: { message: true }
+        include: { message: {
+            orderBy: {
+                sentAt: 'asc'
+            }
+        } }
     } )
 
     data ? res.json( data ) :
