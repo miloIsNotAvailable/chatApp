@@ -33,5 +33,5 @@ export default async function handler(
       }
     } ) 
 
-    res.json( { id, users: name } )
+    res.json( { id: newChannel?.id, users: name } )
 }

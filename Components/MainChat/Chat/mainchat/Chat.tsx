@@ -32,7 +32,7 @@ const Chat: FC = () => {
         if( !channels ) return 
 
         const e = channels.filter( ( { id }: any ) => id === channelID )[0]
-        setInitialMsg( e?.message )
+        setInitialMsg( e?.message || [] )
 
         const mainchat = document.getElementById( 'mainchat' )
         setTimeout( () => {
@@ -40,8 +40,14 @@ const Chat: FC = () => {
         }, 1000 )
      }, [ channelID, channels ] )
 
-    const handle = ( v: IOObservable<SocketType> ) => 
-    setMsg( ( prev: any[] ): Msg[] => [ ...prev, v ] )
+    const handle = ( v: IOObservable<SocketType> ) => {
+        setMsg( ( prev: any[] ): Msg[] => [ ...prev, v ] )
+
+        setTimeout( () => {
+            const mainchat = document.getElementById( 'mainchat' )
+            mainchat?.scrollTo( 0, mainchat?.scrollHeight )
+        }, 300 )
+    }
 
     const memoizeReceived = useCallback( () => listenToMessages( handle ), [] )
 

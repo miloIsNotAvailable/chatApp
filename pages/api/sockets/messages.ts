@@ -39,6 +39,16 @@ const ioHandler = (req: any, res: any) => {
       )
     )
     
+    connect.pipe( 
+      mergeMap( 
+        ( { client } )  => fromEvent( client, 'new-channel' )
+        .pipe( map( data => ( { client, data } ) ) ) 
+      )
+     )
+     .subscribe( ( { client, data }: any ) => {
+        io.to( data?.id ).emit( 'created-channel', data )
+     } )
+
     // listen to sent messages
     const channel = connect.pipe( 
       mergeMap( ( { client } ) =>

@@ -4,6 +4,9 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { SelectorType } from "../../interfaces/formInterfaces";
 import { useRouter } from "next/router";
 import { isFetching } from "../../store/isFetching";
+import { map, of, switchMap } from "rxjs";
+import { fromFetch } from "rxjs/fetch";
+import { subscribe } from "graphql";
 
 const LoginButton: FC = () => {
 
@@ -21,19 +24,29 @@ const LoginButton: FC = () => {
 
     const router = useRouter()
 
+    const loginFetch = of( { fetching: false } )
+
     const Submit = () => {
 
         dispatch( isFetching( { isFetching: true } ) )
 
-        fetch( "/api/post", {
-            method: "POST", 
-            body: JSON.stringify( selector )
-        } ).then( v => v.json() )
-        .then( v => {
-            if( v.error ) return 
-            router.push( "/home" )
+        loginFetch.pipe(
+            switchMap(
+                ({ fetching } ) => fromFetch( 
+                    '/api/post', {
+                    method: 'POST',
+                    body: JSON.stringify( selector )        
+                } )
+                .pipe(
+                    map( ( res ) => res) 
+                )
+            )
+        ).subscribe( ( res ) => {
+            if( !res.ok ) return
+            console.log( 'done' )
+            router.push( '/home' )
+            dispatch( isFetching( { isFetching: false } ) )
         } )
-        .then( () => dispatch( isFetching( { isFetching: false } ) ) )
     } 
     
     return(

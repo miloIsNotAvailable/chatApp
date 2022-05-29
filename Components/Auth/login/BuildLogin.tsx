@@ -39,7 +39,11 @@ const BuildLogin: FC = ( ) => {
                 <LoginPassword />
                 <LoginButton />
                 <RedirectToRegister/>
-                { selector && <div>loading data...</div> }
+                { selector && 
+                    <div className={ styles.login_loading }>
+                            loading data...
+                    </div> 
+                }
             </div>
             <Bg/>            
         </div>

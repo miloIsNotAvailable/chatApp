@@ -3,7 +3,7 @@ import { FC } from "react";
 const Bg: FC = () => {
 
     return (
-        <svg width="100%`" height="100%" viewBox="0 0 487 472" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="100%" viewBox="0 0 487 472" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="LoginScreen">
         <g id="BgImg">
         <rect id="Rectangle 115" y="238.632" width="169.422" height="169.383" rx="21" fill="#F09EDE"/>
