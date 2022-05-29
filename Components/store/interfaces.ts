@@ -15,7 +15,7 @@ export type U = {
 }
 
 export type ObservableType = {
-    users: (string | null)[] | null
+    users: string[] | null
     id: string | null
 }
 

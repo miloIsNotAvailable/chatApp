@@ -5,7 +5,7 @@ import { _io } from "../../constants/WebSocketsConstants";
 import { SessionRerouteContext } from "../../contexts/context";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getChannelUsername } from "../../store/showChannelUsername";
-import DisplayFriend from "./DisplayFriend";
+import DisplayFriend from "./DisplayChannels/DisplayFriend";
 import { displayFriendName } from "./displayFriendName";
 import { useFetch } from "./FetchChannels";
 import { styles } from "./FriendListStyles";
@@ -15,6 +15,11 @@ import NotFound from '../../../graphics/NotFound.svg'
 import Image from "next/image";
 import { useUserInfo } from "../../constants/userConstants";
 import { ObservableType } from "../../store/interfaces";
+import DisplayExistingChannels from "./ChannelDisplayCases/DisplayExistingChannels";
+import { useFriendListContext } from "../../contexts/friendListContext";
+import DisplayNewChannels from "./ChannelDisplayCases/DisplayNewlyAddedChannels";
+import ChannelsNotFound from "./ChannelDisplayCases/ChannelsNotFound";
+import ChannelsLoading from "./ChannelDisplayCases/LoadingChannels";
 
 type State = { newChannel: ObservableType }
 
@@ -39,6 +44,7 @@ const FriendList: FC = () => {
 
     const currentUsername = sessionContext?.user?.name
     const dispatch = useAppDispatch()
+    const { FriendListContext } = useFriendListContext()
 
     /**
      * whenever the array of users loads in
@@ -56,70 +62,23 @@ const FriendList: FC = () => {
 
     }, [ channels, dispatch, currentUsername ])
 
-    if( !channels ) return (
-        <div className={ styles.display_friend_list }>
-            <div className={ styles.loading_animation_wrap }>
-                <Image 
-                className={ styles.loading_animation }
-                src={ LoadingAnimation }
-                alt="" />
-            </div>
-        </div>
-    )
+    if( !channels ) return <ChannelsLoading/>
 
-    if( channels.length === 0 ) return (
-        <div className={ styles.display_friend_list }>
-                <Image 
-                className={ styles.not_found_wrap }
-                src={ NotFound }
-                alt="" />
-                <div className={ styles.not_found }>
-                    {`sorry I didn't find any 
-                    active channels you're in. 
-                    You can find your friends 
-                    in the search bar above ⬆⬆⬆`}
-                </div>
-        </div>
-    )
+    if( channels.length === 0 ) return <ChannelsNotFound/>
 
     if( selector?.users ) return (
-        <div className={ styles.display_friend_list }>
-            {
-                (selector && channels) && [...channels, selector].map( ( { users, id }: Channel ) => (
-                    <DisplayFriend 
-                        redirectTo={ id }
-                        name={ displayFriendName( users, currentUsername ) }
-                        key={ id } 
-                        cssStyles={ 
-                            selected === id &&
-                            { 
-                                backgroundColor: "var(--dark)"
-                            }
-                         }
-                        handleClick={ setSelected }/>
-                ) )
-            }
-        </div>
+        <FriendListContext value={ { selected, setSelected } }>
+            <DisplayNewChannels
+                channels={ channels }
+            />
+        </FriendListContext>
     ) 
 
     return (
-        <div className={ styles.display_friend_list }>
-            {
-                channels && channels.map( ( { users, id }: Channel ) => (
-                    <DisplayFriend 
-                        redirectTo={ id }
-                        name={ displayFriendName( users, currentUsername ) }
-                        key={ id } 
-                        cssStyles={ 
-                            selected === id &&
-                            { 
-                                backgroundColor: "var(--dark)"
-                            }
-                         }
-                        handleClick={ setSelected }/>
-                ) )
-            }
-        </div>
+        <FriendListContext value={ { selected, setSelected } }>
+            <DisplayExistingChannels 
+                channels={ channels }/>
+        </FriendListContext>
     )
 }
 
