@@ -58,7 +58,7 @@ export const useFetch: useFetchType
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const v = useMemo( handle, [] )
  
-    useEffect( () => { v; console.log( channels ) } )
+    useEffect( () => { v; console.log( channels ) }, [ channels ] )
 
     return { channels }
 }

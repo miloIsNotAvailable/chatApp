@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-    const { user } = JSON.parse( req.body )
+    const { user, channelLength } = JSON.parse( req.body )
 
     const data = await prisma.channel.findMany( {
         where: {
@@ -17,8 +17,9 @@ export default async function handler(
         },
         include: { message: {
             orderBy: {
-                sentAt: 'asc'
-            }
+                sentAt: 'desc'
+            }, 
+            take: 10
         } }
     } )
 

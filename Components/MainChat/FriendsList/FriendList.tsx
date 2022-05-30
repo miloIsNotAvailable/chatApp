@@ -5,21 +5,16 @@ import { _io } from "../../constants/WebSocketsConstants";
 import { SessionRerouteContext } from "../../contexts/context";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getChannelUsername } from "../../store/showChannelUsername";
-import DisplayFriend from "./DisplayChannels/DisplayFriend";
 import { displayFriendName } from "./displayFriendName";
 import { useFetch } from "./FetchChannels";
-import { styles } from "./FriendListStyles";
 import { joinRoomOnClick } from "./joinRoomOnClick";
-import LoadingAnimation from '../../../graphics/Loading.svg'
-import NotFound from '../../../graphics/NotFound.svg'
-import Image from "next/image";
-import { useUserInfo } from "../../constants/userConstants";
 import { ObservableType } from "../../store/interfaces";
 import DisplayExistingChannels from "./ChannelDisplayCases/DisplayExistingChannels";
 import { useFriendListContext } from "../../contexts/friendListContext";
 import DisplayNewChannels from "./ChannelDisplayCases/DisplayNewlyAddedChannels";
 import ChannelsNotFound from "./ChannelDisplayCases/ChannelsNotFound";
 import ChannelsLoading from "./ChannelDisplayCases/LoadingChannels";
+import { useUserInfo } from "../../constants/userConstants";
 
 type State = { newChannel: ObservableType }
 
@@ -29,8 +24,9 @@ const FriendList: FC = () => {
 
     const arr: Channel[] | null = sessionContext?.channels || null
     const[ selected, setSelected ] = useState<string | null>( arr ? arr[0]?.id : null )
-    const { channels } = useFetch<Channel[]>( '/api/get_channels', sessionContext ) || { channels: null }
-    
+    // const { channels } = useFetch<Channel[]>( '/api/get_channels', sessionContext ) || { channels: null }
+    const { channels } = useUserInfo()
+
     const selector = useAppSelector( ( state: State ) => state?.newChannel || [] )
     useEffect( () => console.log( selector ), [ selector ] )
 
@@ -47,7 +43,8 @@ const FriendList: FC = () => {
     const { FriendListContext } = useFriendListContext()
 
     /**
-     * whenever the array of users loads in
+     * whenever the array of users loads and user 
+     * is in any channels then
      * set the selected channel to the first user
      * and update the name of selected user 
      * in the navbar 

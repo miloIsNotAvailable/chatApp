@@ -7,6 +7,7 @@ export const useUserInfo = () => {
     const sessionContext = useContext( SessionRerouteContext )
     const sessionContextUser = sessionContext?.user
     const channelID = sessionContext?.id
+    const channels: any = sessionContext?.channels
 
-    return { ...sessionContextUser, channelID }
+    return { ...sessionContextUser, channelID, channels }
 }

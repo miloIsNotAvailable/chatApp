@@ -13,8 +13,9 @@ import { useUserInfo } from "../../../constants/userConstants";
 import { Channel } from "@prisma/client";
 import { v4 } from "uuid";
 import { useFetch } from "../../FriendsList/FetchChannels";
+import ReactMarkdown from "react-markdown";
 
-type Msg = MessageType & { id: string }
+type Msg = MessageType & { messageID: string }
 
 const Chat: FC = () => {
 
@@ -22,7 +23,7 @@ const Chat: FC = () => {
     const [ msg, setMsg ] = useState<Msg[] | []>( [] )
     const context = useContext( SessionRerouteContext ) || { id: '' }
 
-    const { channelID } = useUserInfo()
+    const { channelID  } = useUserInfo()
     const { channels } = useFetch<Channel[]>( '/api/get_channels', context )
     
     const mainchatRef = useRef<HTMLDivElement>( null )
@@ -62,23 +63,25 @@ const Chat: FC = () => {
                 className={ styles.chat_message_display }
             >
             <UserIsTyping/>
-            <AnimatePresence exitBeforeEnter>
+            <AnimatePresence>
                 {
-                    [...initialMsg, ...msg].map( ( { channelID, content, id }: Msg, ind: number ) => (
+                    [...initialMsg, ...msg].map( ( { channelID, content, messageID }: Msg, ind: number ) => (
                         context.id === channelID && 
                         <motion.div 
-                            key={ channelID }
-                            transition={  { delay: ind * .01 } }
-                            style={ { overflowX: 'hidden' } } 
-                            initial={ { opacity: 0, transform: 'translate(10%, 0)', height: 'auto' } }
-                            animate={ { opacity: 1, transform: 'translate(0%, 0)', width: 'auto' } }
-                            exit={ { opacity: 0, transform: 'translate(-10%, 0)', height: 'auto' } }>
+                        key={ messageID }
+                        transition={  { delay: ind * .01 } }
+                        style={ { height: '1rem' } } 
+                        initial={ { opacity: 0, transform: 'translate(10%, 0)', height: 'auto' } }
+                        animate={ { opacity: 1, transform: 'translate(0%, 0)', width: 'auto' } }
+                        exit={ { opacity: 0, transform: 'translate(-10%, 0)', height: 'auto' } }>
                             <div
                             className={ styles.chat_user_message_wrap } 
-                            key={ id }> 
+                            > 
                                 <div className={ styles.chat_user_icon }/>
                                 <div className={ styles.chat_user_msg }> 
+                                <ReactMarkdown>
                                     { content } 
+                                </ReactMarkdown>
                                 </div>
                             </div>
                         </motion.div>

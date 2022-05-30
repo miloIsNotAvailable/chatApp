@@ -72,6 +72,8 @@
 
 .chat_message_display {
     /* position: relative; */
+    display: flex;
+    flex-direction: column-reverse;
     height: calc(100% - var(--chat-input-height));
     max-height: calc(100% - var(--chat-input-height));
     width: 100%;
@@ -94,6 +96,7 @@
 
 .chat_user_message_wrap {
     display: grid;
+    align-items: center;
     grid-template-columns: calc(2.5vw + 1rem) auto;
     flex-direction: row;
     margin: 1rem 0;

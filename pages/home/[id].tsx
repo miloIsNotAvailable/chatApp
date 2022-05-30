@@ -7,6 +7,7 @@ import MainChat from "../../Components/MainChat";
 import { SessionRerouteContext } from "../../Components/contexts/context";
 import { _io } from "../../Components/constants/WebSocketsConstants";
 import { AnimatePresence, motion } from 'framer-motion'
+import { useFetch } from "../../Components/MainChat/FriendsList/FetchChannels";
 
 /**
  * decide whether user exists 
@@ -83,9 +84,8 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      * so we can get the session token 
      * in every child of MainChat
      */
-     const [ channels, setChannels ] = useState<Channel[] | null>( null )
-
-    console.log( router.asPath )
+    //  const [ channels, setChannels ] = useState<Channel[] | null>( null )
+     const { channels } = useFetch<Channel[]>( '/api/get_channels', { ...jwtDecoded, id, channels: [] } )
 
     return (
         // <AnimatePresence exitBeforeEnter>
