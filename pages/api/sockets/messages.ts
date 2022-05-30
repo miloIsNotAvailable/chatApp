@@ -82,7 +82,7 @@ const ioHandler = (req: any, res: any) => {
         
         const postID = v4()
 
-        io.emit( 'new-pm', { channelID, content, from, postID } )
+        io.emit( 'new-pm', { channelID, content, from, messageID: postID } )
         const data = { channelID, content, from }
 
         return { data, postID }

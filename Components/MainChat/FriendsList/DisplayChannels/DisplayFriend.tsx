@@ -23,14 +23,13 @@ const DisplayFriend: FC<DisplayFriendProps>
     const { selected, setSelected } = useFriendListContext()
 
     return (
-        <motion.li 
+        <li 
             className={ styles.display_friend }
             style={ selected === redirectTo ?
-                { backgroundColor: "var(--dark)" } 
-                : 
-                { backgroundColor: 'var(--bg)' } }
+                { backgroundColor: "var(--dark)" } : {} 
+            } 
             key={ name }
-            onTap={ () => { 
+            onClick={ () => { 
                 setSelected( redirectTo ) 
                 dispatch( getChannelUsername( { name } ) )
             } }>
@@ -44,7 +43,7 @@ const DisplayFriend: FC<DisplayFriendProps>
                     { name }
                 </Link>
             </div>
-        </motion.li>
+        </li>
     )
 }
 

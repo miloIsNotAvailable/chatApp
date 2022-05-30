@@ -73,6 +73,7 @@
 .chat_message_display {
     /* position: relative; */
     display: flex;
+    /*that's just a smartass solution :)*/
     flex-direction: column-reverse;
     height: calc(100% - var(--chat-input-height));
     max-height: calc(100% - var(--chat-input-height));
