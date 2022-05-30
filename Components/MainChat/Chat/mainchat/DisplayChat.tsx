@@ -24,7 +24,7 @@ const DisplayChat: FC = () => {
     const { msgs, setMsg } = useChatContext()
     
     const [ fetchMore, setFetchMore ] = useState( false )
-    const [ paginated, setPaginated ] = useState( [] )
+    const [ paginated, setPaginated ] = useState<Msg[] | []>( [] )
 
     const mainchatRef = useRef<HTMLDivElement>( null )
 
@@ -65,16 +65,19 @@ const DisplayChat: FC = () => {
 
         if( !fetchMore ) return
 
-        fetchMoreMsgs( { msgsLength: msgs.length, channel: channelID } )
+        fetchMoreMsgs( { msgsLength: [...msgs, ...paginated].length, channel: channelID } )
         .subscribe( async res => {
             if( !res.ok ) return 
             const data = await res.json()
 
-            setPaginated( data )
+            setPaginated( ( prev: any ) => [ ...prev, ...data ] )
+            const obs = new IntersectionObserver( () => paginated.pop(), { root: document.getElementById( 'mainchat' ) } )
+            const e: any = document.getElementById( 'message' );
+            obs.observe( e )
 
             console.log( paginated )
         } )
-    }, [ fetchMore, msgs.length ] )
+    }, [ fetchMore ] )
 
     return (
         <div className={ styles.chat_wrap }>
@@ -94,6 +97,7 @@ const DisplayChat: FC = () => {
                             channelID === v?.channelID && 
                             <motion.div 
                                 key={ v.messageID }
+                                id="message"
                                 transition={  { delay: ind * .01 } }
                                 style={ { height: '1rem' } } 
                                 initial={ { opacity: 0, transform: 'translate(10%, 0)', height: 'auto' } }
