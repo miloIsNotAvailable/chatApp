@@ -4,7 +4,7 @@ import { MessageType } from "../../../store/interfaces";
 import { initializeSocket } from "./initializeSocket";
 import { _io } from "../../../constants/WebSocketsConstants";
 import DisplayChat from './DisplayChat'
-import { useChatContext } from "../../../contexts/CHatContext";
+import { useChatContext } from "../../../contexts/ChatContext";
 
 type Msg = MessageType & { messageID: string }
 

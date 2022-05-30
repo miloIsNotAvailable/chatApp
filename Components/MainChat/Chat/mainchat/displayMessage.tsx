@@ -2,7 +2,6 @@ import { FC } from "react";
 import { motion } from 'framer-motion'
 import ReactMarkdown from "react-markdown";
 import { styles } from "../ChatStyles";
-import { useUserInfo } from "../../../constants/userConstants";
 
 interface DisplayMessageProps {
     messageID: string
@@ -12,8 +11,6 @@ interface DisplayMessageProps {
 
 const DisplayMessage: FC<DisplayMessageProps> 
 = ( { content, ind, messageID } ) => {
-
-    const { channelID  } = useUserInfo()
 
     return(
             <div

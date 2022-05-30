@@ -1,6 +1,8 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
+import { Dispatch, Provider, SetStateAction, useCallback, useContext, useEffect, useState } from "react"
 import { createContext } from "react"
 import { useUserInfo } from "../constants/userConstants"
+import { IOObservable, SocketType } from "../interfaces/WebSocketsTypes"
+import { listenToMessages } from "../MainChat/Chat/mainchat/listenToMessages"
 import { MessageType } from "../store/interfaces"
 
 type Msg = MessageType & { messageID: string }
@@ -12,12 +14,18 @@ type ChatMsgContext = {
     setMsg: Dispatch<SetStateAction<msgType>>
 } 
 
+type ChatContextType =  {
+    msgs: Msg[];
+    setMsg: Dispatch<SetStateAction<msgType>>;
+    ChatContextProvider: Provider<ChatMsgContext>;
+}
+
 const ChatContext = createContext<ChatMsgContext>( {
     msg: [],
     setMsg: () => {}
 } )
 
-export const useChatContext = () => {
+export const useChatContext = (): ChatContextType => {
 
     const [ initialMsg, setInitialMsg ] = useState( [] )
     const { channelID, channels  } = useUserInfo()
