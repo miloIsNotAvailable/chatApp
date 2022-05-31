@@ -3,6 +3,7 @@ import { fromEvent, map, mergeMap, Observable, of, switchMap } from 'rxjs'
 import { Server, Socket } from 'socket.io'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 import { v4 } from 'uuid'
+import { callUserTypes } from '../../../Components/interfaces/webRTCInterfaces'
 import { prisma } from '../../../lib/prisma'
 
 type IOObservable = Observable<Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>> 
@@ -140,6 +141,18 @@ const ioHandler = (req: any, res: any) => {
       // console.log( v )
       io.to( data?.channelID ).emit( 'user-is-typing', data )
     } )
+
+    connect.pipe(
+      mergeMap( 
+          ( { client } ) => fromEvent( client, 'call-started' )
+          .pipe( 
+              data=> data
+          )
+      )
+    ).subscribe( ( data: any ) => {
+      console.log( data )
+        io.to( data.channelID ).emit( 'call-from-user', data )
+      } )
 
     // io.on('connection', socket => {
     //   socket.broadcast.emit('a user connected')

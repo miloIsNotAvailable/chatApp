@@ -15,6 +15,7 @@ import { useChatContext } from "../../../contexts/ChatContext";
 import { map, mergeMap, of } from "rxjs";
 import { fromFetch } from "rxjs/fetch";
 import { fetchMoreMsgs } from "./fetchMoreMessages";
+import ReceivedCall from "./receivedCall";
 
 type Msg = MessageType & { messageID: string }
 
@@ -27,6 +28,7 @@ const DisplayChat: FC = () => {
     const [ paginated, setPaginated ] = useState<Msg[] | []>( [] )
 
     const mainchatRef = useRef<HTMLDivElement>( null )
+    const msgRef = useRef<HTMLDivElement | any>( null )
 
     const handle = ( v: IOObservable<SocketType> ) => {
         setMsg( ( prev: any[] ): Msg[] => [ v, ...prev ] )
@@ -71,13 +73,8 @@ const DisplayChat: FC = () => {
             const data = await res.json()
 
             setPaginated( ( prev: any ) => [ ...prev, ...data ] )
-            const obs = new IntersectionObserver( () => paginated.pop(), { root: document.getElementById( 'mainchat' ) } )
-            const e: any = document.getElementById( 'message' );
-            obs.observe( e )
-
-            console.log( paginated )
         } )
-    }, [ fetchMore ] )
+    }, [ fetchMore, paginated, msgs, channelID ] )
 
     return (
         <div className={ styles.chat_wrap }>
@@ -87,7 +84,10 @@ const DisplayChat: FC = () => {
                 className={ styles.chat_message_display }
                 onScroll={ handleScroll }
             >
+            <video className={ styles.webcam } id="webcam" playsInline autoPlay/>
+            <video className={ styles.remote } id="remote" playsInline autoPlay/>
             <UserIsTyping/>
+            <ReceivedCall/>
                 <AnimatePresence exitBeforeEnter>
                     {
                         // everything is reversed 
@@ -97,7 +97,7 @@ const DisplayChat: FC = () => {
                             channelID === v?.channelID && 
                             <motion.div 
                                 key={ v.messageID }
-                                id="message"
+                                ref={ msgRef }
                                 transition={  { delay: ind * .01 } }
                                 style={ { height: '1rem' } } 
                                 initial={ { opacity: 0, transform: 'translate(10%, 0)', height: 'auto' } }

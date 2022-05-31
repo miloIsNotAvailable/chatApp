@@ -29,6 +29,7 @@ a {
   --font-color: white;
   --main-chat-proportion: 21% auto;
   --chat-input-height: 3vw;
+  --icon-size: 2.5vw
 }
 
 input:focus, textarea:focus {
@@ -57,3 +58,9 @@ textarea {
   resize: none;
   overflow-y: auto;
 }
+
+/* @media ( max-width: 1200px ) {
+  :root {
+    --icon-size: 2vw
+  }
+} */

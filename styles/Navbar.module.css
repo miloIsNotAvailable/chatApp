@@ -67,7 +67,7 @@
 
 .show_user {
     display: grid;
-    grid-template-columns: calc( 2.5vw + 1rem ) auto;
+    grid-template-columns: calc( var(--icon-size) + 1rem ) auto;
     align-items: center;
     height: fit-content;
     padding: 0 1rem;
@@ -83,10 +83,10 @@
 
 .search_display {
     display: grid;
-    grid-template-columns: calc(2.5vw + 1rem) auto;
+    grid-template-columns: calc(var(--icon-size) + 1rem) auto;
     place-items: center;
     width: calc( 100% - 2rem );
-    height: 2.5vw;
+    height: var(--icon-size);
     background-color: var(--grey);
     border-radius: 3rem;
 }
@@ -95,7 +95,7 @@
     display: grid;
     place-items: center;
     width: calc( 100% - 2rem );
-    height: 2.5vw;
+    height: var(--icon-size);
     background-color: var(--grey);
     border: 0;
     border-radius: 2vw;
@@ -123,8 +123,8 @@
 }
 
 .call_icon, .menu_icon {
-    width: 2.5vw;
-    height: 2.5vw;
+    width: var(--icon-size);
+    height: var(--icon-size);
     align-self: center;
     justify-self: center; 
 }
@@ -137,7 +137,7 @@
 .display_user {
     display: grid;
     width: 18%;
-    grid-template-columns: 2.5vw auto;
+    grid-template-columns: var(--icon-size) auto;
     place-items: center;
     font-family: 'Outfit';
     font-size: 1.5vw;
@@ -146,8 +146,8 @@
 }
 
 .user_profile {
-    width: 2.5vw;
-    height: 2.5vw;
+    width: var(--icon-size);
+    height: var(--icon-size);
     border-radius: 50%;
     background-color: var(--blue);
 }
@@ -169,4 +169,49 @@
 .align_username {
     justify-self: flex-start;
     margin: 0 1rem;
+}
+
+.call_options {
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 1rem;
+    background-color: var(--blue);
+    width: 0;
+    max-width: calc( var(--icon-size) * 2 + 1rem );;
+    overflow: hidden;
+    /* width: 0; */
+    height: 2vw;
+    border-radius: 3px;
+    transition: all 100ms ease;
+}
+
+.wrap_call > * {
+    transition: all 100ms ease;
+}
+
+.wrap_call:hover .call_options, 
+.wrap_call:active .call_options,
+.wrap_call:focus .call_options {
+    width: calc( var(--icon-size) * 2 + 1rem );
+}
+
+.wrap_call {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+}
+
+.wrap_call > span {
+    align-self: center;
+}
+
+.voice_call_icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    align-self: center;
+    justify-self: center; 
+    /* margin: 0 1rem; */
 }
