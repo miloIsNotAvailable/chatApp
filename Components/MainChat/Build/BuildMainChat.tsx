@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../contexts/context";
 import Chat from "../Chat/mainchat/Chat";
 import FriendList from "../FriendsList/FriendList";
@@ -6,6 +6,8 @@ import Navbar from "../Navbar";
 import Settings from "../Settings/Settings";
 import { styles } from "./MainChatStyles";
 import { MessageType } from "../../store/interfaces";
+import { RTCConnectionContext } from "../../contexts/WebRTContext";
+import { servers } from "../../constants/webRTCConstants";
 
 type newMessageState = {
     newMessage: MessageType
@@ -21,18 +23,26 @@ const BuildMainChat: FC = () => {
      */
 
     const sessionContext = useContext( SessionContext )
+    const [ webRTC, setwebRTC ] = useState<RTCPeerConnection | null>( null )
+
+    useEffect( () => {
+        const pc: RTCPeerConnection = new RTCPeerConnection( servers )
+        setwebRTC( pc )
+    }, [] )
 
     return (
-        <div className={ styles.mainchat_display }>
-            <Navbar/>
-            <div className={ styles.mainchat_body }>
-                <div className={ styles.sidebar }>
-                    <FriendList/>
-                    <Settings/>
+        <RTCConnectionContext value={ webRTC }>
+            <div className={ styles.mainchat_display }>
+                <Navbar/>
+                <div className={ styles.mainchat_body }>
+                    <div className={ styles.sidebar }>
+                        <FriendList/>
+                        <Settings/>
+                    </div>
+                    <Chat/>
                 </div>
-                <Chat/>
             </div>
-        </div>
+        </RTCConnectionContext>
     )
 }
 

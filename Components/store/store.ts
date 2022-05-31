@@ -8,6 +8,7 @@ import checkForFetching from "./isFetching";
 import createChannel from './createChannel'
 import createNewMessage from './createMessage'
 import channelUsername from './showChannelUsername'
+import newRTCPeerConnection from './createRTCPeer'
 
 export const store = configureStore( {
     reducer: {
@@ -20,7 +21,8 @@ export const store = configureStore( {
         fetching: checkForFetching,
         newChannel: createChannel,
         createMessage: createNewMessage,
-        channelUsername: channelUsername 
+        channelUsername: channelUsername,
+        RTCPeerConnection: newRTCPeerConnection
     }
 } )
 

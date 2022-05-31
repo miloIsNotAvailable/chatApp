@@ -174,9 +174,11 @@
     transform: translate(-50%, -50%);
     width: calc( var(--icon-size) * 5 + 2rem );
     height: calc( var(--icon-size) * 7 + 2rem );
+    max-height: calc( var(--icon-size) * 7 + 2rem );
     background-color: var(--bg);
     z-index: 2;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .wrap_call_icon {
@@ -189,6 +191,8 @@
     height: calc(var(--icon-size) + 1rem);
     border-radius: 50%;
     transition: all 100ms ease;
+    grid-row: span 3;
+
 }
 
 .wrap_call_icon:hover {
@@ -200,5 +204,9 @@
     margin: 1rem 0;
     font-family: 'Outfit';
     font-size: 1.5vw;
+    padding: 0 2rem;
+    word-break: keep-all;
+    text-align: center;
     max-width: clamp( 45ch, 050%, 75ch );
+    grid-row: span 1/3;
 }

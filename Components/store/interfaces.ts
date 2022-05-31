@@ -27,3 +27,11 @@ export type MessageType = {
 export type ChannelUsername = {
     name: string | null
 }
+
+export type RTCPeerType = {
+    peer: string | null
+}
+
+export type RTCPeerState = {
+    RTCPeerConnection: RTCPeerType
+}
