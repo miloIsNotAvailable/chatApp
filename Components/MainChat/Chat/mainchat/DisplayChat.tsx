@@ -16,6 +16,7 @@ import { map, mergeMap, of } from "rxjs";
 import { fromFetch } from "rxjs/fetch";
 import { fetchMoreMsgs } from "./fetchMoreMessages";
 import ReceivedCall from "./receivedCall";
+import DisplayCall from "./DisplayCall";
 
 type Msg = MessageType & { messageID: string }
 
@@ -78,14 +79,13 @@ const DisplayChat: FC = () => {
 
     return (
         <div className={ styles.chat_wrap }>
+            <DisplayCall/>
             <div 
                 id={ 'mainchat' } 
                 ref={ mainchatRef } 
                 className={ styles.chat_message_display }
                 onScroll={ handleScroll }
             >
-            <video className={ styles.webcam } id="webcam" playsInline autoPlay/>
-            <video className={ styles.remote } id="remote" playsInline autoPlay/>
             <UserIsTyping/>
             <ReceivedCall/>
                 <AnimatePresence exitBeforeEnter>

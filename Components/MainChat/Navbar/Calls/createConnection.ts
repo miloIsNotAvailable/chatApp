@@ -24,7 +24,7 @@ let localVideo: HTMLElement | null , remoteVideo: HTMLElement | null;
  * remote description. 
  */
 
-export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerConnection | null, answerCandidates: RTCIceCandidate | null ) => {
+export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerConnection | null ) => {
 
     if( !pc ) return
 

@@ -108,7 +108,7 @@ const VoiceCall: FC = () => {
             className={ styles.voice_call_icon } 
             src={ MicIcon }
             alt=""
-            onClick={ () => callUser( { name, channelID }, pc, answerCandidates ) }/>
+            onClick={ () => callUser( { name, channelID }, pc ) }/>
         </div>
     )
 }

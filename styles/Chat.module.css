@@ -35,6 +35,8 @@
     color: var(--font-color);
     font-size: 1vw;
     overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--grey) var(--dark);
     transition: all 100ms ease
 }
 
@@ -84,6 +86,8 @@
     overflow-y: scroll;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--grey) var(--dark);
 }
 
 .chat_message_display::-webkit-scrollbar-thumb {
@@ -161,8 +165,39 @@
 }
 
 .remote, .webcam {
-    width: 0;
-    height: 0;
+    width: calc( 100% - 1rem );
+    height: calc( 100% - 1rem );
+    background-color: var(--grey);
+    align-self: center;
+    justify-self: center;
+    border-radius: .4rem;
+    /* margin: 1rem 0; */
+}
+
+.end_call_button {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(var(--icon-size) + 2rem);
+    height: calc(var(--icon-size) + 2rem);
+    background-color: var(--dark);
+    border-radius: 50%;
+}
+
+.display_call_wrap {
+    position: relative;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 50% 50%;
+    width: 100%;
+    height: 70%;
+    max-height: 100%;
+    overflow: hidden;
+    background-color: var(--bg);
 }
 
 .received_call_wrap {
@@ -176,7 +211,7 @@
     height: calc( var(--icon-size) * 7 + 2rem );
     max-height: calc( var(--icon-size) * 7 + 2rem );
     background-color: var(--bg);
-    z-index: 2;
+    z-index: 1;
     border-radius: 5px;
     overflow: hidden;
 }

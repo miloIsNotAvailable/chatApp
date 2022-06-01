@@ -33,6 +33,17 @@ const ReceivedCall: FC = () => {
 
     useEffect( () => { m() } )
 
+    const v = () => _io.pipe(
+        mergeMap( 
+            client => fromEvent( client, 'user-call-answered' )
+            .pipe(
+                map( data => data )
+            )
+        )
+    ).subscribe( setCall )
+
+    useEffect( () => { v() } )
+
      const n = () => _io.pipe(
         mergeMap( 
             client => fromEvent( client, 'get-offer-candidates' )
