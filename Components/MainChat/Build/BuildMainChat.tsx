@@ -28,6 +28,7 @@ const BuildMainChat: FC = () => {
     useEffect( () => {
         const pc: RTCPeerConnection = new RTCPeerConnection( servers )
         setwebRTC( pc )
+    
     }, [] )
 
     return (

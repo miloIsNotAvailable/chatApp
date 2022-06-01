@@ -28,7 +28,9 @@ const FriendList: FC = () => {
     const { channels } = useUserInfo()
 
     const selector = useAppSelector( ( state: State ) => state?.newChannel || [] )
-    useEffect( () => console.log( selector ), [ selector ] )
+    useEffect( () => {
+        selector?.users && console.log( selector )
+    }, [ selector ] )
 
     const roomObservable = of( selected )
 
@@ -36,7 +38,7 @@ const FriendList: FC = () => {
     useEffect( () => {
 
         joinRoomOnClick( roomObservable )
-    }, [ roomObservable, selected ] )
+    }, [ roomObservable ] )
 
     const currentUsername = sessionContext?.user?.name
     const dispatch = useAppDispatch()

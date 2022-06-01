@@ -46,7 +46,7 @@ const Search: FC = () => {
     const selector = useAppSelector( ( state: State ) => state?.newChannel )
 
     useEffect( () => {
-        console.log( selector )
+        selector?.users && console.log( selector )
     }, [ selector ] )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
