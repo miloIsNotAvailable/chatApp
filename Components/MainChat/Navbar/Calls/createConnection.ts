@@ -5,7 +5,7 @@ import { callUserTypes, setCallType } from "../../../interfaces/webRTCInterfaces
 let localStream: MediaStream, remoteStream: MediaStream;
 let localVideo: HTMLElement | null, remoteVideo: HTMLElement | null;
 
-export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerConnection | null ) => {
+export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerConnection | null, answerCandidates: RTCIceCandidate | null ) => {
 
     if( !pc ) return
 
@@ -52,7 +52,6 @@ export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerCo
         } )
     }
 
-
     offer && _io.pipe(
         mergeMap( 
             // and why spread syntax didn't 
@@ -67,6 +66,33 @@ export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerCo
         console.log( data )
         client.emit( 'call-started', data  )
     } )
+
+    _io.pipe(
+        mergeMap( 
+            client => fromEvent( client, 'user-call-answered' )
+            .pipe(
+                map( data => data )
+            )
+        )
+    ).subscribe( ( async data => {
+        await pc.setRemoteDescription( { sdp: data?.sdp, type: data?.type } )
+        .then( () => {
+            _io.pipe(
+                mergeMap( 
+                    client => fromEvent( client, 'get-answer-candidates' )
+                    .pipe(
+                        map( data => data )
+                    )
+                )
+            ).subscribe( ( data => {
+                const candidate = new RTCIceCandidate( data.candidate )
+                pc.addIceCandidate( candidate )
+                pc.onconnectionstatechange = () => console.log( 'connected' )
+            } ) )
+        } )
+    } ) )
+
+
 }
 
 export const answerCall = async( 
@@ -78,24 +104,30 @@ export const answerCall = async(
 
     if( !pc ) return
 
-    pc.onicecandidate = event => {
-        event.candidate && _io.pipe(
-            mergeMap( 
-                ( client ) => of( { candidate: event.candidate } )
-                .pipe( 
-                    map( data => ( { data, client } ) )
-                    )
-                )
-        ).subscribe( ( { data, client } ) => {
-            console.log( data )
-            client.emit( 'answer-candidate', data )
-        } )
-    }
+    offer && 
+    await pc.setRemoteDescription( 
+        new RTCSessionDescription( { sdp: offer?.sdp, type: offer?.type } ) 
+    )
 
-    offer && await pc.setRemoteDescription( new RTCSessionDescription( offer ) )
+    const answer = await pc.createAnswer( { offerToReceiveAudio: true, offerToReceiveVideo: true } )
+    await pc.setLocalDescription( answer ).then(
+        () => {
+            pc.onicecandidate = event => {
+                event.candidate && _io.pipe(
+                    mergeMap( 
+                        ( client ) => of( { candidate: event.candidate } )
+                        .pipe( 
+                            map( data => ( { data, client } ) )
+                            )
+                        )
+                ).subscribe( ( { data, client } ) => {
+                    console.log( data )
+                    client.emit( 'answer-candidate', { ...data, channelID, name } )
+                } )
+            }
+        }
+    )
 
-    const answer = await pc.createAnswer()
- 
     answer && _io.pipe(
         mergeMap( 
             // and why spread syntax didn't 
@@ -107,8 +139,7 @@ export const answerCall = async(
              )
          )
     ).subscribe( ( { data, client } ) => {
-        console.log( data )
-        client.emit( 'call-started', data  )
+        client.emit( 'call-answered', data  )
     } )
 
     offerCandidates && pc.addIceCandidate( new RTCIceCandidate( offerCandidates ) )

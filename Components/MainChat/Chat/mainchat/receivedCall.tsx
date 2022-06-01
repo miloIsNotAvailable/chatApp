@@ -50,6 +50,7 @@ const ReceivedCall: FC = () => {
         <>
         <AnimatePresence>
         { 
+            call.type === 'offer' &&
             call.name !== name && 
             call.channelID === channelID &&  
             <motion.div

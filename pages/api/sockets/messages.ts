@@ -150,8 +150,18 @@ const ioHandler = (req: any, res: any) => {
           )
       )
     ).subscribe( ( data: any ) => {
-      console.log( data )
         io.to( data.channelID ).emit( 'call-from-user', data )
+      } )
+
+    connect.pipe(
+      mergeMap( 
+          ( { client } ) => fromEvent( client, 'call-answered' )
+          .pipe( 
+              data=> data
+          )
+      )
+    ).subscribe( ( data: any ) => {
+        io.to( data.channelID ).emit( 'user-call-answered', data )
       } )
 
     connect.pipe(
@@ -162,7 +172,6 @@ const ioHandler = (req: any, res: any) => {
           )
       )
     ).subscribe( ( data: any ) => {
-        console.log( data )
         io.to( data.channelID ).emit( 'get-offer-candidates', data )
       } )
 

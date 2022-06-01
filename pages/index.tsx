@@ -21,7 +21,7 @@ GetServerSideProps = async( { req } ) => {
     // if user's logged in
     if( session ) return {
         redirect: {
-          destination: "/home/[id]", 
+          destination: "/home", 
           // go knows what this does
           permanent: false
         }
