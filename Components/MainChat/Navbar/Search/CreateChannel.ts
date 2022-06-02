@@ -21,31 +21,17 @@ export const CreateChannel = ( {
         createChannelFromData( { users: [ "loading", 'loading' ], id: 'loading' } ) 
     )
 
-    const newChannel = of( "" )
-    newChannel.pipe(
-        switchMap(
-            () => fromFetch( "/api/create_channel", {
-                method: "POST",
-                body: JSON.stringify( { name, id } )        
-            } ).pipe( 
-                map( data => data )
-             )
-        )
-    ).subscribe( async res => {
-        if( !res.ok ) return
+    _io.pipe( 
+        mergeMap( 
+            socket => of( { socket, data: { name, id } } )
+            .pipe( map( data => data )  ) 
+        ) 
+     ).subscribe( ( { socket, data } ) => {
 
-        const data = await res.json()
-        console.log( data )
-        
-        _io.pipe( 
-            mergeMap( 
-                socket => of( { socket: socket, data } )
-                .pipe( map( data => data )  ) 
-            ) 
-         ).subscribe( ( { socket, data } ) => socket.emit( 'new-channel', data ) )
-        
-         Dispatch( 
-            createChannelFromData( data ) 
-        )
+        const { name, id } = data
+        const _id = id.map( id => ({ id }) )
+        console.log( _id, id )
+
+        socket.emit( 'new-channel', { name, id: _id } )
     } )
 }

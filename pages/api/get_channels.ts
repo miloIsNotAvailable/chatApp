@@ -14,7 +14,7 @@ export default async function handler(
             user: {
                 some: { id: user.id }
             }
-        },
+        }, 
         include: { message: {
             orderBy: {
                 sentAt: 'desc'

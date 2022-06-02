@@ -47,7 +47,24 @@ const ioHandler = (req: any, res: any) => {
       )
      )
      .subscribe( ( { client, data }: any ) => {
-        io.to( data?.id ).emit( 'created-channel', data )
+       ( async() => {
+
+        console.log( data )
+
+         const new_channel = await prisma.channel.create( {
+           data: {
+             id: v4(),
+             users: data.name,
+             user: {
+               connect: data.id
+             }
+           }
+         } )
+         return new_channel
+       } )().then( new_channel => {
+
+         io.emit( 'created-channel', new_channel )
+       } )
      } )
 
     // listen to sent messages

@@ -29,21 +29,6 @@ const FriendList: FC = () => {
 
 
     const selector = useAppSelector( ( state: State ) => state?.newChannel || [] )
-    useEffect( () => {
-        // selector?.users && console.log( selector )
-
-        _io.pipe(
-            mergeMap(
-                client => fromEvent( client, 'created-channel' )
-                .pipe(
-                    map(
-                       data => data 
-                    )
-                )
-            )
-        ).subscribe( console.log )
-
-    } )
 
     const roomObservable = of( selected )
 
