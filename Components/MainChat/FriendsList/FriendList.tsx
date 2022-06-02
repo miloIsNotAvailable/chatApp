@@ -27,10 +27,23 @@ const FriendList: FC = () => {
     // const { channels } = useFetch<Channel[]>( '/api/get_channels', sessionContext ) || { channels: null }
     const { channels } = useUserInfo()
 
+
     const selector = useAppSelector( ( state: State ) => state?.newChannel || [] )
     useEffect( () => {
-        selector?.users && console.log( selector )
-    }, [ selector ] )
+        // selector?.users && console.log( selector )
+
+        _io.pipe(
+            mergeMap(
+                client => fromEvent( client, 'created-channel' )
+                .pipe(
+                    map(
+                       data => data 
+                    )
+                )
+            )
+        ).subscribe( console.log )
+
+    } )
 
     const roomObservable = of( selected )
 

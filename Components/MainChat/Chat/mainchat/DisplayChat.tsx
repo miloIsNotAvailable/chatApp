@@ -4,19 +4,19 @@ import DisplayMessage from "./displayMessage";
 import UserIsTyping from "../userIsTyping";
 import ChatInput from "../chatInput";
 import { styles } from "../ChatStyles";
-import { SessionRerouteContext } from "../../../contexts/context";
 import { MessageType } from "../../../store/interfaces";
 import { useUserInfo } from "../../../constants/userConstants";
-import { Channel } from "@prisma/client";
-import { useFetch } from "../../FriendsList/FetchChannels";
 import { IOObservable, SocketType } from "../../../interfaces/WebSocketsTypes";
 import { listenToMessages } from "./listenToMessages";
 import { useChatContext } from "../../../contexts/ChatContext";
-import { map, mergeMap, of } from "rxjs";
-import { fromFetch } from "rxjs/fetch";
 import { fetchMoreMsgs } from "./fetchMoreMessages";
 import ReceivedCall from "./receivedCall";
 import DisplayCall from "./DisplayCall";
+import sendMessage from '../../../../graphics/newMessage.svg'
+import Image from "next/image";
+import newMessage from "../../../../graphics/newMessage.svg";
+import { useAppSelector } from "../../../store/hooks";
+import { getChannelUsernameState } from "../../../interfaces/mainchatInterfaces";
 
 type Msg = MessageType & { messageID: string }
 
@@ -30,6 +30,13 @@ const DisplayChat: FC = () => {
 
     const mainchatRef = useRef<HTMLDivElement>( null )
     const msgRef = useRef<HTMLDivElement | any>( null )
+
+    const selector = useAppSelector( 
+        ( 
+            { channelUsername }: getChannelUsernameState 
+        ) => channelUsername?.name 
+    )
+
 
     const handle = ( v: IOObservable<SocketType> ) => {
         setMsg( ( prev: any[] ): Msg[] => [ v, ...prev ] )
@@ -76,6 +83,30 @@ const DisplayChat: FC = () => {
             setPaginated( ( prev: any ) => [ ...prev, ...data ] )
         } )
     }, [ fetchMore, paginated, msgs, channelID ] )
+
+    if( msgs.length === 0 ) return (
+        <div className={ styles.chat_wrap }>
+        <DisplayCall/>
+        <div 
+            id={ 'mainchat' } 
+            ref={ mainchatRef } 
+            className={ styles.chat_message_display }
+            onScroll={ handleScroll }>
+                <div className={ styles.chat_conversation_wrap }>
+                    <div className={ styles.chat_start_conversation }>
+                        <Image
+                            src={ newMessage }
+                            alt=""
+                        />
+                        <p>
+                            send a message to @{ selector }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <ChatInput/>
+    </div>
+    )
 
     return (
         <div className={ styles.chat_wrap }>

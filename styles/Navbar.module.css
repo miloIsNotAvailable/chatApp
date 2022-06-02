@@ -50,7 +50,7 @@
     top: 100%;
     background-color: var(--grey);
     border-radius: 1rem;
-    z-index: 2;
+    z-index: 5;
 }
 
 .show_user_wrap > div:first-child {
