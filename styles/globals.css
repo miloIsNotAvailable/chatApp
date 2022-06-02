@@ -59,6 +59,20 @@ textarea {
   overflow-y: auto;
 }
 
+#endCall {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+#Group44 > * {
+  
+  transition: all 100ms ease
+}
+
+#endCall:hover #Group44 > * {
+    fill: tomato
+}
+
 /* @media ( max-width: 1200px ) {
   :root {
     --icon-size: 2vw

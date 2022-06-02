@@ -187,6 +187,18 @@ const ioHandler = (req: any, res: any) => {
         io.to( data.channelID ).emit( 'get-answer-candidates', data )
       } )
 
+    connect.pipe(
+      mergeMap( 
+          ( { client } ) => fromEvent( client, 'call-ended' )
+          .pipe( 
+              data => data
+          )
+      )
+    ).subscribe( ( data: any ) => {
+        console.log( data )
+        io.to( data.channelID ).emit( 'get-call-ended', data )
+      } )
+
     // io.on('connection', socket => {
     //   socket.broadcast.emit('a user connected')
 

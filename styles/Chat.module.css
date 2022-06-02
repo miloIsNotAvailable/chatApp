@@ -245,3 +245,7 @@
     max-width: clamp( 45ch, 050%, 75ch );
     grid-row: span 1/3;
 }
+
+.end_call_icon svg {
+    background-color: tomato
+}
