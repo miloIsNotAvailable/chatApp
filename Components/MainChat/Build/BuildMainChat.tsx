@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../contexts/context";
-import Chat from "../Chat/mainchat/Chat";
+import Chat from "../Chat/mainchat/build/Chat";
 import FriendList from "../FriendsList/FriendList";
 import Navbar from "../Navbar";
 import Settings from "../Settings/Settings";

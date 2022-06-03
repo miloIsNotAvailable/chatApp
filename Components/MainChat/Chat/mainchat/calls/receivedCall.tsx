@@ -1,16 +1,16 @@
 import Image from "next/image";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { styles } from "../ChatStyles";
-import CallIcon from '../../../../graphics/call.svg'
-import { _io } from "../../../constants/WebSocketsConstants";
+import { styles } from "../../ChatStyles";
+import CallIcon from '../../../../../graphics/call.svg'
+import { _io } from "../../../../constants/WebSocketsConstants";
 import { fromEvent, map, mergeMap } from "rxjs";
-import { callUserTypes, setCallType } from "../../../interfaces/webRTCInterfaces";
-import { useUserInfo } from "../../../constants/userConstants";
+import { callUserTypes, setCallType } from "../../../../interfaces/webRTCInterfaces";
+import { useUserInfo } from "../../../../constants/userConstants";
 import { AnimatePresence, motion } from 'framer-motion'
-import { answerCall } from "../../Navbar/Calls/createConnection";
-import { useAppSelector } from "../../../store/hooks";
-import { RTCPeerState } from "../../../store/interfaces";
-import { RTCConnection } from "../../../contexts/WebRTContext";
+import { answerCall } from "../../../Navbar/Calls/createConnection";
+import { useAppSelector } from "../../../../store/hooks";
+import { RTCPeerState } from "../../../../store/interfaces";
+import { RTCConnection } from "../../../../contexts/WebRTContext";
 
 const ReceivedCall: FC = () => {
 

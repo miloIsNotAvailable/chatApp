@@ -1,14 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useContext, useEffect, useState } from "react";
 import { fromEvent, map, mergeMap, of } from "rxjs";
-import { useUserInfo } from "../../../constants/userConstants";
-import { _io } from "../../../constants/WebSocketsConstants";
-import { setCallType } from "../../../interfaces/webRTCInterfaces";
-import { styles } from "../ChatStyles";
+import { useUserInfo } from "../../../../constants/userConstants";
+import { _io } from "../../../../constants/WebSocketsConstants";
+import { setCallType } from "../../../../interfaces/webRTCInterfaces";
+import { styles } from "../../ChatStyles";
 // import EndCallIcon from '../../../../graphics/endCall.svg'
-import { EndCallICon } from '../../../../graphics/endCall'
+import { EndCallICon } from '../../../../../graphics/endCall'
 import Image from "next/image";
-import { RTCConnection } from "../../../contexts/WebRTContext";
+import { RTCConnection } from "../../../../contexts/WebRTContext";
 
 const DisplayCall: FC = () => {
 

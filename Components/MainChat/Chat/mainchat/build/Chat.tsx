@@ -1,11 +1,11 @@
 import { FC, useCallback, useContext, useEffect, useRef, useState } from "react";
-import ChatInput from "../chatInput";
-import { MessageType } from "../../../store/interfaces";
-import { initializeSocket } from "./initializeSocket";
-import { _io } from "../../../constants/WebSocketsConstants";
+import ChatInput from "../../chatInput";
+import { MessageType } from "../../../../store/interfaces";
+import { initializeSocket } from "../initializeSocket";
+import { _io } from "../../../../constants/WebSocketsConstants";
 import DisplayChat from './DisplayChat'
-import { useChatContext } from "../../../contexts/ChatContext";
-import { styles } from "../ChatStyles";
+import { useChatContext } from "../../../../contexts/ChatContext";
+import { styles } from "../../ChatStyles";
 
 type Msg = MessageType & { messageID: string }
 
