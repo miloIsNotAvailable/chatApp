@@ -1,7 +1,6 @@
 import { Channel } from "@prisma/client";
 import { FC } from "react";
 import { useUserInfo } from "../../../constants/userConstants";
-import { useFriendListContext } from "../../../contexts/friendListContext";
 import DisplayChannels from "../DisplayChannels";
 import { styles } from "../FriendListStyles";
 

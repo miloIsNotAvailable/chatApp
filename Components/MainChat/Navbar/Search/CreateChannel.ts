@@ -17,10 +17,6 @@ export const CreateChannel = ( {
         Dispatch
     }: CreateChannelProps ) => {
 
-    Dispatch( 
-        createChannelFromData( { users: [ "loading", 'loading' ], id: 'loading' } ) 
-    )
-
     _io.pipe( 
         mergeMap( 
             socket => of( { socket, data: { name, id } } )
@@ -31,6 +27,10 @@ export const CreateChannel = ( {
         const { name, id } = data
         const _id = id.map( id => ({ id }) )
         console.log( _id, id )
+
+        Dispatch( 
+            createChannelFromData( { users: [ "loading", 'loading' ], id: 'loading' } ) 
+        )    
 
         socket.emit( 'new-channel', { name, id: _id } )
     } )

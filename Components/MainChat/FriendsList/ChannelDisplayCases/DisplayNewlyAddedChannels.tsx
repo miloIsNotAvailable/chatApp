@@ -12,8 +12,13 @@ interface DisplayNewChannelsProps {
     channels: Channel[]
 }
 
+type State = { newChannel: ObservableType }
+
 const DisplayNewChannels: FC<DisplayNewChannelsProps> 
 = ( { channels } ) => {
+
+    const selector = useAppSelector( ( state: State ) => state?.newChannel || [] )
+    useEffect( () => console.log( selector ), [ selector ] )
 
     const { name } = useUserInfo()
     const [ newChannel, setNewChannel ] = useState<Channel | null>( null )
@@ -40,6 +45,22 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
         <div className={ styles.display_friend_list }>
         {
            channels.map( ( { users, id } ) => (
+                users && 
+                <DisplayChannels
+                    id={ id }
+                    users={ users }
+                    key={ id }
+                />
+            ) )
+        }
+    </div>
+    )
+
+    if( !newChannel && selector?.id ) return (
+        <div className={ styles.display_friend_list }>
+        {
+           [...channels, selector]
+           .map( ( { users, id } ) => (
                 users && 
                 <DisplayChannels
                     id={ id }

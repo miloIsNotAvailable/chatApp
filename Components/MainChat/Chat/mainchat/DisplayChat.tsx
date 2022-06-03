@@ -6,27 +6,24 @@ import ChatInput from "../chatInput";
 import { styles } from "../ChatStyles";
 import { MessageType } from "../../../store/interfaces";
 import { useUserInfo } from "../../../constants/userConstants";
-import { IOObservable, SocketType } from "../../../interfaces/WebSocketsTypes";
-import { listenToMessages } from "./listenToMessages";
-import { useChatContext } from "../../../contexts/ChatContext";
-import { fetchMoreMsgs } from "./fetchMoreMessages";
 import ReceivedCall from "./receivedCall";
 import DisplayCall from "./DisplayCall";
-import sendMessage from '../../../../graphics/newMessage.svg'
 import Image from "next/image";
 import newMessage from "../../../../graphics/newMessage.svg";
 import { useAppSelector } from "../../../store/hooks";
 import { getChannelUsernameState } from "../../../interfaces/mainchatInterfaces";
+import { useMessages } from "./useMessages";
+import { usePagination } from "./pagination/usePagination";
+import { _io } from "../../../constants/WebSocketsConstants";
 
 type Msg = MessageType & { messageID: string }
 
 const DisplayChat: FC = () => {
  
-    const { channelID, channels  } = useUserInfo()    
-    const { msgs, setMsg } = useChatContext()
-    
-    const [ fetchMore, setFetchMore ] = useState( false )
-    const [ paginated, setPaginated ] = useState<Msg[] | []>( [] )
+    const { channelID, channels  } = useUserInfo()        
+    const [ msgs ] = useMessages()
+
+    const { more, setPaginate } = usePagination( msgs )
 
     const mainchatRef = useRef<HTMLDivElement>( null )
     const msgRef = useRef<HTMLDivElement | any>( null )
@@ -37,21 +34,6 @@ const DisplayChat: FC = () => {
         ) => channelUsername?.name 
     )
 
-
-    const handle = ( v: IOObservable<SocketType> ) => {
-        setMsg( ( prev: any[] ): Msg[] => [ v, ...prev ] )
-
-        setTimeout( () => {
-            const mainchat = document.getElementById( 'mainchat' )
-            mainchat?.scrollTo( 0, mainchat?.scrollHeight )
-        }, 300 )
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const memoizeReceived = useCallback( () => listenToMessages( handle ), [] )
-
-    useEffect( () => memoizeReceived, [ memoizeReceived ] )
-
     useEffect( () => { 
         const mainchat = document.getElementById( 'mainchat' )
         setTimeout( () => {
@@ -59,30 +41,19 @@ const DisplayChat: FC = () => {
         }, 1000 )
      }, [ channelID, channels ] )
 
-     const handleScroll = () => {
+    useEffect( () => {
         if( !mainchatRef.current ) return
         
-        const { scrollTop, offsetHeight, scrollHeight } = mainchatRef.current
-        if( !(scrollHeight + scrollTop === offsetHeight) ) return
+        mainchatRef.current.onscroll = () => {
+            if( !mainchatRef.current ) return
+            
+            const { scrollTop, offsetHeight, scrollHeight } = mainchatRef.current
 
-        setFetchMore( true )
-        setTimeout( () => {
-            setFetchMore( false )
-        }, 1000 ) 
-    }
-
-    useEffect( () => {
-
-        if( !fetchMore ) return
-
-        fetchMoreMsgs( { msgsLength: [...msgs, ...paginated].length, channel: channelID } )
-        .subscribe( async res => {
-            if( !res.ok ) return 
-            const data = await res.json()
-
-            setPaginated( ( prev: any ) => [ ...prev, ...data ] )
-        } )
-    }, [ fetchMore, paginated, msgs, channelID ] )
+            if( scrollHeight + scrollTop === offsetHeight + 1 ){
+                setPaginate( msgs ) 
+            } 
+        }
+    } )
 
     if( msgs.length === 0 ) return (
         <div className={ styles.chat_wrap }>
@@ -90,9 +61,14 @@ const DisplayChat: FC = () => {
         <div 
             id={ 'mainchat' } 
             ref={ mainchatRef } 
-            className={ styles.chat_message_display }
-            onScroll={ handleScroll }>
-                <div className={ styles.chat_conversation_wrap }>
+            className={ styles.chat_message_display }>
+            <AnimatePresence exitBeforeEnter>
+                <motion.div
+                    initial={ { opacity: 0, transform: 'translate(10%, 0)' } }
+                    animate={ { opacity: 1, transform: 'translate(0%, 0)' } }
+                    exit={ { opacity: 0, transform: 'translate(-10%, 0)'} } 
+                    className={ styles.chat_conversation_wrap } 
+                    key="start new conversation">
                     <div className={ styles.chat_start_conversation }>
                         <Image
                             src={ newMessage }
@@ -102,7 +78,8 @@ const DisplayChat: FC = () => {
                             send a message to @{ selector }
                         </p>
                     </div>
-                </div>
+                </motion.div>
+                </AnimatePresence>
             </div>
         <ChatInput/>
     </div>
@@ -115,7 +92,7 @@ const DisplayChat: FC = () => {
                 id={ 'mainchat' } 
                 ref={ mainchatRef } 
                 className={ styles.chat_message_display }
-                onScroll={ handleScroll }
+                // onScroll={ handleScroll }
             >
             <UserIsTyping/>
             <ReceivedCall/>
@@ -124,7 +101,7 @@ const DisplayChat: FC = () => {
                         // everything is reversed 
                         // cause the way messages are displayed 
                         // is reversed 
-                        [...msgs, ...paginated].map( ( v: Msg, ind: number ) => (
+                        [...msgs, ...more].map( ( v: Msg, ind: number ) => (
                             channelID === v?.channelID && 
                             <motion.div 
                                 key={ v.messageID }

@@ -1,4 +1,4 @@
-import { Dispatch, Provider, SetStateAction, useCallback, useContext, useEffect, useState } from "react"
+import { Dispatch, Provider, SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { createContext } from "react"
 import { useUserInfo } from "../constants/userConstants"
 import { IOObservable, SocketType } from "../interfaces/WebSocketsTypes"
@@ -28,8 +28,8 @@ const ChatContext = createContext<ChatMsgContext>( {
 export const useChatContext = (): ChatContextType => {
 
     const [ initialMsg, setInitialMsg ] = useState( [] )
-    const { channelID, channels  } = useUserInfo()
-
+    const { channelID, channels } = useUserInfo()
+    
     useEffect( () => { 
         
         if( !channels ) return 

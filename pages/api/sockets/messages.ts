@@ -67,6 +67,31 @@ const ioHandler = (req: any, res: any) => {
        } )
      } )
 
+    connect.pipe( 
+      mergeMap( 
+        ( { client } )  => fromEvent( client, 'query-more' )
+        .pipe( map( data => ( { client, data } ) ) ) 
+      )
+     ).subscribe( ( { data }: any ) => {
+       ( async() => {
+
+        console.log( data )
+
+         const more_msgs = await prisma.message.findMany( {
+           where: { channelID: data?.channelID }, 
+           skip: data.msgsLength, 
+           take: 4,
+           orderBy: {
+             sentAt: 'desc'
+           }
+         } )
+         return more_msgs
+       } )().then( more_msgs => {
+
+         io.to( data.channelID ).emit( 'get-more-msgs', more_msgs )
+       } )
+     } )
+
     // listen to sent messages
     const channel = connect.pipe( 
       mergeMap( ( { client } ) =>
