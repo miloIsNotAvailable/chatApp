@@ -7,6 +7,7 @@ import { MessageType } from "../../../../store/interfaces";
 import DisplayMessage from "../displayMessage";
 import DisplayNoMessagesMainChat from './DisplayNoMessagesMainChat'
 import MainChatLayout from "./MainChatLayout";
+import { parseColor } from "../parseColorToString";
 
 type Msg = MessageType & { messageID: string }
 
@@ -20,7 +21,7 @@ const DisplayMessagesMainChat: FC = () => {
     
     useEffect( () => {
         const mainchatRef = document.getElementById( 'mainchat' )
-        
+
         if( !mainchatRef ) return
         
         mainchatRef.onscroll = () => {

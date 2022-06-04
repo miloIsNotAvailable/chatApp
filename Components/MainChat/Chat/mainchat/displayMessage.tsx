@@ -1,7 +1,8 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { motion } from 'framer-motion'
 import ReactMarkdown from "react-markdown";
 import { styles } from "../ChatStyles";
+import { parseColor } from "./parseColorToString";
 
 interface DisplayMessageProps {
     messageID: string
@@ -11,6 +12,10 @@ interface DisplayMessageProps {
 
 const DisplayMessage: FC<DisplayMessageProps> 
 = ( { content, ind, messageID } ) => {
+
+    useEffect(  () => {
+        console.log(parseColor( ":p:**hey**:p: I :r:am I ye:r: ye" ))
+    }, [])
 
     return(
             <div
