@@ -40,7 +40,7 @@ export const parseColor = ( str: string ) => {
       const c = () => {
         switch( col ) {
           case 'r':
-            return 'red'
+            return 'tomato'
           case 'p':
             return 'pink'
         }
@@ -50,12 +50,12 @@ export const parseColor = ( str: string ) => {
       /\:[r|p]:(.[^:p:]*)\:[r|p]:/gim, 
       `$1` 
       )
-      m.push( { content: e, color: c() } )
+      m.push( { text: e, color: c() } )
     } )  
     
     splitStr.forEach(
       n => {
-        const e = m.find( v => v.content == n ) || { content: n, color: 'white' }
+        const e = m.find( v => v.text == n ) || { text: n, color: 'white' }
         arr.push( e )
       }
     )
