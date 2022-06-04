@@ -48,7 +48,7 @@ const Proceed: FC = () => {
              )
         ).subscribe( ( res ) => {
             if( !res.ok ) return
-            router.push( "/home/[id]" )
+            router.push( "/home" )
             dispatch( isFetching( { isFetching: false } ) )
         } )
 

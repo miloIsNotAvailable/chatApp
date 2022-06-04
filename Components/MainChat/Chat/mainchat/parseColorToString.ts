@@ -21,8 +21,8 @@
 
 export const parseColor = ( str: string ) => {
   
-    const splitStr = str.split(/\:[r|p]:(.[^:]*)\:[r|p]:/gim);
-    const s = str.match(/\:[r|p]:(.[^:]*)\:[r|p]:/gim);
+    const splitStr = str.split(/\:[r|p|o|b|g|y]:(.[^:]*)\:[r|p|o|b|g|y]:/gim);
+    const s = str.match(/\:[r|p|o|b|g|y]:(.[^:]*)\:[r|p|o|b|g|y]:/gim);
     
     if(!s) return null
     
@@ -32,25 +32,33 @@ export const parseColor = ( str: string ) => {
     
     s.forEach( n => {
       // string to :[color]:....:
-      const v = n.match( /\:[r|p]:(.[^:p:]*)\:/gim )
+      const v = n.match( /\:[r|p|o|b|g|y]:(.[^:.:]*)\:/gim )
       // take the color ie. r for red or p for pink 
-      const col = v && v[0].split(/(^:[r|p]:)/)[1].split( /:/ )[1]
+      const col = v && v[0].split(/(^:[r|p|o|b|g|y]:)/)[1].split( /:/ )[1]
       
       // assign color to the letter
       const c = () => {
         switch( col ) {
           case 'r':
-            return 'tomato'
+            return 'var(--red)'
           case 'p':
-            return 'pink'
+            return 'var(--pink)'
+          case 'o':
+            return 'var(--orange)'
+          case 'b':
+            return 'var(--light-blue)'
+          case 'g':
+            return 'var(--green)'
+          case 'y':
+            return 'var(--yellow)'
         }
       }
-      // create html for each
-      const e = n.replace( 
-      /\:[r|p]:(.[^:p:]*)\:[r|p]:/gim, 
+      // get content of the string
+      const text = n.replace( 
+      /\:[r|p|o|b|g|y]:(.[^:p:]*)\:[r|p|o|b|g|y]:/gim, 
       `$1` 
       )
-      m.push( { text: e, color: c() } )
+      m.push( { text, color: c() } )
     } )  
     
     splitStr.forEach(

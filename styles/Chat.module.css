@@ -115,8 +115,14 @@
     max-width: 50%;
 }
 
-.chat_user_msg > * {
+.chat_user_msg  > * {
     margin: 0;
+    justify-self: center;
+}
+
+.chat_user_msg > span > * {
+    margin: 0;
+    justify-self: center;
 }
 
 .chat_user_icon {

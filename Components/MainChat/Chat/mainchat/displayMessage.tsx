@@ -13,10 +13,6 @@ interface DisplayMessageProps {
 const DisplayMessage: FC<DisplayMessageProps> 
 = ( { content, ind, messageID } ) => {
 
-    useEffect(  () => {
-        console.log(parseColor( ":p:**hey**:p: I :r:am I ye:r: ye" ))
-    }, [])
-
     if( parseColor( content ) ) return (
         <div
         className={ styles.chat_user_message_wrap } 
