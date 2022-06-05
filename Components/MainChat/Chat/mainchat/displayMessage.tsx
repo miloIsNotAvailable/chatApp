@@ -1,8 +1,10 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { motion } from 'framer-motion'
 import ReactMarkdown from "react-markdown";
 import { styles } from "../ChatStyles";
 import { parseColor } from "./parseColorToString";
+import MessageType from "./getMessageType";
+import { checkForLinks } from "./checkForLinks";
 
 interface DisplayMessageProps {
     messageID: string
@@ -11,43 +13,46 @@ interface DisplayMessageProps {
 }
 
 const DisplayMessage: FC<DisplayMessageProps> 
-= ( { content, ind, messageID } ) => {
+= ( v ) => {
 
-    if( parseColor( content ) ) return (
-        <div
-        className={ styles.chat_user_message_wrap } 
-        key={ messageID }
-        > 
-            <div className={ styles.chat_user_icon }/>
-            <div className={ styles.chat_user_msg }>
-                {
-                    parseColor( content )?.map(
-                        ( { text, color } ) => (
-                            <span key={ null } style={ { color } }>
-                                <ReactMarkdown>
-                                    { text.replace( / /g, '\u00A0' ) }
-                                </ReactMarkdown>
-                            </span>
-                        )
-                    )
-                }
-            </div>
+    const [ isLink, setIsLink ] = useState<
+    { 
+        link: string | undefined, 
+        image: string | undefined 
+    }
+    >( { link: undefined, image: undefined } )
+
+    useEffect( () => {
+        setIsLink( checkForLinks( v.content ) )
+    }, [ v.content ] )
+
+    if( isLink.link ) return (
+        <MessageType {...v} 
+            content={ v.content.replace( isLink.link, '' ) }
+            Links={
+                <iframe 
+                    key={ isLink.link }
+                    className={ styles.msg_link } 
+                    src={ isLink.link }
+                /> || 
+                <a
+                    key={ isLink.link }
+                    className={ styles.msg_link } 
+                    href={ isLink.link }>
+                        { isLink.link }
+                </a>
+        } />
+    )
+
+    if( checkForLinks( v.content )?.image ) return (
+        <div>
+            <img src={ checkForLinks( v.content ).image }/>
+            <MessageType {...v}/>
         </div>
     )
 
-    return(
-            <div
-            className={ styles.chat_user_message_wrap } 
-            key={ messageID }
-            > 
-                <div className={ styles.chat_user_icon }/>
-                <div className={ styles.chat_user_msg }> 
-                <ReactMarkdown>
-                    { content } 
-                </ReactMarkdown>
-                </div>
-            </div>
-        // </motion.div>
+    return (
+        <MessageType {...v}/>
     )
 }
 
