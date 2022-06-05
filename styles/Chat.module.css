@@ -24,8 +24,11 @@
 }
 
 .chat_input {
+    cursor: text;
     display: grid;
-    place-items: center;
+    align-items: center;
+    /* place-items: center; */
+    min-height: var(--icon-size);
     width: 100%;
     /* border-radius: 3rem; */
     background-color:var(--grey);
@@ -37,7 +40,18 @@
     overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--grey) var(--dark);
-    transition: all 100ms ease
+    transition: all 100ms ease;
+    outline: none;
+    z-index: 2;
+}
+
+.chat_input:empty::before {
+    content: "send a message";
+    position: absolute;
+    font-family: 'Outfit';
+    color: var(--dark);
+    font-size: 1vw;
+    font-weight: 600;
 }
 
 .chat_input::placeholder {
@@ -109,15 +123,25 @@
 
 .chat_user_msg {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     height: auto;
     width: clamp( 45ch, 50%, 75ch );
     max-width: 50%;
+    white-space: pre-wrap;
 }
 
 .chat_user_msg  > * {
+    display: flex;
     margin: 0;
     justify-self: center;
+    white-space: pre-wrap;
+}
+
+.chat_user_msg  > p > * {
+
+    white-space: pre-wrap;
+
 }
 
 .chat_user_msg > span > * {
@@ -278,3 +302,11 @@
     word-break: keep-all;
     text-align: center;
 }
+
+.upload_image > input {
+    cursor: inherit;
+    position: absolute;
+    opacity: 0;
+    width: var(--icon-size)
+}
+

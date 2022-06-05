@@ -6,7 +6,7 @@ import { SessionReroute, SessionRerouteContext } from "../../../contexts/context
 import { newMessage } from "../../../store/createMessage"
 import { useAppDispatch } from "../../../store/hooks"
 
-type evType = KeyboardEvent<HTMLTextAreaElement> | MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+type evType = KeyboardEvent<HTMLTextAreaElement> | KeyboardEvent<HTMLDivElement> | MouseEvent<HTMLDivElement, globalThis.MouseEvent>
 
 /**
  * check if 
@@ -24,7 +24,7 @@ e is MouseEvent<HTMLDivElement> => {
  * an event is a keyboard event,
  * if so on enter submit
  */
-const evIsKey = ( e: evType ): 
+export const evIsKey = ( e: evType ): 
 e is KeyboardEvent<HTMLTextAreaElement> => {
     const c = e as KeyboardEvent<HTMLTextAreaElement>
 
@@ -52,7 +52,7 @@ type inputRefDefault<T=any> = MutableRefObject<T>
  * in any other case this will return falsy
  */
 
-function triggerSubmit
+export function triggerSubmit
 // T is there just in case, 
 // S extends the input ref type 
 // based on type given 
@@ -60,7 +60,7 @@ function triggerSubmit
 <T extends evType, S extends inputRefDefault>
 ( c: T, s: S ): c is T & { s: S }
 {
-    const input = s as S
+    const input = s as S || s as inputRefDefault<HTMLDivElement>
     const e = c as evType
 
     /**
@@ -69,7 +69,7 @@ function triggerSubmit
      * and user pressed enter 
      * or the send button
      */
-    return !input.current?.value?.trim() || ( evIsKey( e ) && !evIsMouse( e ) )
+    return !input.current?.innerText.trim() || ( evIsKey( e ) && !evIsMouse( e ) )
 }
 /**
  * 
@@ -106,16 +106,16 @@ export function useSubmit
             console.log( data )
             socket.emit( 'pm', { 
                 channelID: data, 
-                content: inputRef.current?.value?.trim(),
+                content: inputRef.current?.innerText?.trim(),
                 from: name
             } )
         } )
     
         // socket.emit( 'message', inputRef.current?.value?.trim() )
     
-        dispatch( newMessage( { content: inputRef.current?.value?.trim(), channelID: '' } ) )
+        dispatch( newMessage( { content: inputRef.current?.innerText.trim() , channelID: '' } ) )
         
-        if( inputRef.current ) inputRef.current.value = ''
+        if( inputRef.current ) inputRef.current.innerText = ''
         inputRef.current.style.height = 'auto'
         
         setTimeout( () => {
