@@ -8,6 +8,7 @@ import { getChannelUsernameState } from "../../../interfaces/mainchatInterfaces"
 import { useAppSelector } from "../../../store/hooks";
 import { styles } from "../ChatStyles";
 import { evIsKey, triggerSubmit, useSubmit } from "./handleSubmit";
+import { fileDrop } from "./onFileDrop";
 
 interface MainChatTextareaProps {
     inputRef: MutableRefObject<HTMLTextAreaElement | null>
@@ -62,6 +63,7 @@ const MainChatTextarea: FC<MainChatTextareaProps>
             id="inp"
             ref={ editRef }
             className={ styles.chat_input }
+            onDrop={ e => fileDrop(e, editRef) }
             onKeyDown={ e => {submit( e ); changeHeight()} }
         />
         </>
