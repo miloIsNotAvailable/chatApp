@@ -1,4 +1,5 @@
-import { KeyboardEvent, MouseEvent, MutableRefObject, useContext } from "react"
+import { getDownloadURL } from "firebase/storage"
+import { KeyboardEvent, MouseEvent, MutableRefObject, useContext, useEffect, useState } from "react"
 import { map, mergeMap, Observable, of } from "rxjs"
 import { useUserInfo } from "../../../constants/userConstants"
 import { _io } from "../../../constants/WebSocketsConstants"
@@ -91,11 +92,17 @@ export function useSubmit
 
     const dispatch = useAppDispatch()
 
-    const selector = useAppSelector( ( { URLDataToLink }: getURLDataType ) => URLDataToLink )
-    const newImgLink = useDataToLink()
+    const getImageLink = useDataToLink()
+    const [ getNewImageLink, setGetImageLink ] = useState<string | null>( null )
 
     const IdObservable: Observable<SessionReroute | null> 
     = of( sessionContext?.id )
+
+    useEffect( () => { 
+        if( !inputRef.current ) return
+        console.log( getImageLink ) 
+        if( getImageLink ) inputRef.current.innerText = getImageLink+ " " + inputRef.current.innerText
+    }, [ getImageLink, inputRef ] )
 
     return ( e ) => {
         if( triggerSubmit<evType, T>( e, inputRef ) ) return
@@ -112,13 +119,14 @@ export function useSubmit
     
         m.subscribe( ( { data, socket } ) => {
             console.log( data )
+
             socket.emit( 'pm', { 
                 channelID: data, 
                 content: inputRef.current?.innerText?.trim(),
                 from: name
             } )
         } )
-    
+
         // socket.emit( 'message', inputRef.current?.value?.trim() )
     
         dispatch( newMessage( { content: inputRef.current?.innerText.trim() , channelID: '' } ) )
@@ -126,8 +134,6 @@ export function useSubmit
         if( inputRef.current ) inputRef.current.innerText = ''
         inputRef.current.style.height = 'auto'
         
-        console.log( newImgLink() )
-
         setTimeout( () => {
             const mainchat = document.getElementById( 'mainchat' )
             mainchat?.scrollTo( 0, mainchat?.scrollHeight )

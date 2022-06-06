@@ -323,8 +323,8 @@
     z-index: 4;
 }
 
-.msg_link::content {
-    color: aqua;
-    background-color: aquamarine;
-    height: 4vw;
+.msg_link_img {
+    width: 10rem;
+    height: auto;
+    border-radius: .6rem;
 }

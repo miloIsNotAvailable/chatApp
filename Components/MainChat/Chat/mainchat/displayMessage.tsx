@@ -27,7 +27,7 @@ const DisplayMessage: FC<DisplayMessageProps>
         setIsLink( checkForLinks( v.content ) )
     }, [ v.content ] )
 
-    if( isLink.link ) return (
+    if( isLink.link && !isLink.image ) return (
         <MessageType {...v} 
             content={ v.content.replace( isLink.link, '' ) }
             Links={
@@ -38,10 +38,14 @@ const DisplayMessage: FC<DisplayMessageProps>
             } />
     )
 
-    if( checkForLinks( v.content )?.image ) return (
+    if( isLink.image ) return (
         <div>
-            {/* <img src={ checkForLinks( v.content ).image }/> */}
-            <MessageType {...v}/>
+            <MessageType {...v}
+            content={ v.content.replace( isLink.image, '' ) }
+            Links={
+                <img className={ styles.msg_link_img } src={ isLink.image }/>
+            }
+            />
         </div>
     )
 

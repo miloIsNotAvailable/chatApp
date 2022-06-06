@@ -8,11 +8,11 @@ export const checkForLinks: (str: string) => {
     if( !e ) return { link: undefined, image: undefined }
 
     // check if link is an image (has .png jpeg etc. in its name)
-    const s = e && e[0].match(/\.(jpeg|jpg|gif|png)$/) 
+    const s = e && e[0].match(/\.(jpeg|jpg|gif|png)/) 
     if( !s ) return { link: e[0], image: undefined }
 
     return { 
         link: e[0], 
-        image: s[0] 
+        image: e[0] 
     }
 }

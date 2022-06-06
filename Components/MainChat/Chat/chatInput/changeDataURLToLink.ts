@@ -2,7 +2,8 @@ import { getDownloadURL, getStorage, ref, uploadString } from "firebase/storage"
 import { useEffect, useState } from "react";
 import { app } from "../../../constants/firebaseConstants";
 import { useUserInfo } from "../../../constants/userConstants";
-import { useAppSelector } from "../../../store/hooks";
+import { setURLData } from "../../../store/getURLDataAsLink";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { URLDataToLink } from "../../../store/interfaces";
 
 type getURLDataType = { URLDataToLink: URLDataToLink }
@@ -19,24 +20,40 @@ export const useDataToLink = () => {
     } )
 
     const [ getImageLink, setGetImageLink ] = useState<string | null>( null )
+    const [ updateLink, setUpdateLink ] = useState<string | null>( null )
 
     const selector = useAppSelector( 
         ( { URLDataToLink }: getURLDataType ) => URLDataToLink 
     )
 
+    const dispatch = useAppDispatch()
+
+    const imgRef = URLData ? ref( storage, `${channelID}/${ filename }` ) : null
+
     useEffect( () => {
+        
         setLink( selector )
-    }, [ selector ] )
 
-    const imgRef = ref( storage, `${channelID}/${ filename }` )
-    
-    return () => {
-        uploadString( imgRef, URLData, 'data_url' )
-        .then( ( e ) => {
-            getDownloadURL( imgRef )
-            .then( setGetImageLink )
-        } )
+        if( !imgRef ) return
+        
+        ( async() => {
+            const e = await uploadString( imgRef, URLData, 'data_url' )
+            const link = await getDownloadURL( imgRef )
 
-        return getImageLink
-    } 
+            setGetImageLink( link )
+        } )().then( () => {
+            dispatch( 
+                setURLData( 
+                    { 
+                        URLData: null, 
+                        filename: null 
+                    } 
+                ) 
+            )  
+        })
+
+    }, [ URLData, imgRef, dispatch, selector ] )
+        
+
+    return getImageLink
 }
