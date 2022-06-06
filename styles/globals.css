@@ -77,6 +77,11 @@ textarea {
     fill: tomato
 }
 
+meta {
+  width: 100%;
+  height: 100%;
+}
+
 /* @media ( max-width: 1200px ) {
   :root {
     --icon-size: 2vw

@@ -5,6 +5,7 @@ import { styles } from "../ChatStyles";
 import { parseColor } from "./parseColorToString";
 import MessageType from "./getMessageType";
 import { checkForLinks } from "./checkForLinks";
+import Head from "next/head";
 
 interface DisplayMessageProps {
     messageID: string
@@ -30,18 +31,11 @@ const DisplayMessage: FC<DisplayMessageProps>
         <MessageType {...v} 
             content={ v.content.replace( isLink.link, '' ) }
             Links={
-                <iframe 
-                    key={ isLink.link }
-                    className={ styles.msg_link } 
-                    src={ isLink.link }
-                /> || 
-                <a
-                    key={ isLink.link }
-                    className={ styles.msg_link } 
-                    href={ isLink.link }>
-                        { isLink.link }
+                // web scraping is for weird nerds
+                <a href={ isLink.link } target='iframe1'>
+                    { isLink.link }
                 </a>
-        } />
+            } />
     )
 
     if( checkForLinks( v.content )?.image ) return (

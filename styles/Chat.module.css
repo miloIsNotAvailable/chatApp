@@ -317,7 +317,14 @@
 
 .msg_link {
     width: 100%;
-    height: 4rem;
     font-family: 'Outfit';
-    font-size: 1.5vw;
+    text-decoration: underline;
+    /* background-color: antiquewhite; */
+    z-index: 4;
+}
+
+.msg_link::content {
+    color: aqua;
+    background-color: aquamarine;
+    height: 4vw;
 }
