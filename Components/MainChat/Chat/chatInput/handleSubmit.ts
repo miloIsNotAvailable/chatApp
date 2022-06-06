@@ -4,7 +4,9 @@ import { useUserInfo } from "../../../constants/userConstants"
 import { _io } from "../../../constants/WebSocketsConstants"
 import { SessionReroute, SessionRerouteContext } from "../../../contexts/context"
 import { newMessage } from "../../../store/createMessage"
-import { useAppDispatch } from "../../../store/hooks"
+import { useAppDispatch, useAppSelector } from "../../../store/hooks"
+import { URLDataToLink } from "../../../store/interfaces"
+import { useDataToLink } from "./changeDataURLToLink"
 
 type evType = KeyboardEvent<HTMLTextAreaElement> | KeyboardEvent<HTMLDivElement> | MouseEvent<HTMLDivElement, globalThis.MouseEvent>
 
@@ -18,6 +20,8 @@ e is MouseEvent<HTMLDivElement> => {
     let c = e as MouseEvent<HTMLDivElement>
     return typeof c.pageX === 'number'
 }
+
+type getURLDataType = { URLDataToLink: URLDataToLink }
 
 /**
  * check if 
@@ -86,6 +90,10 @@ export function useSubmit
     const { name } = useUserInfo()
 
     const dispatch = useAppDispatch()
+
+    const selector = useAppSelector( ( { URLDataToLink }: getURLDataType ) => URLDataToLink )
+    const newImgLink = useDataToLink()
+
     const IdObservable: Observable<SessionReroute | null> 
     = of( sessionContext?.id )
 
@@ -118,6 +126,8 @@ export function useSubmit
         if( inputRef.current ) inputRef.current.innerText = ''
         inputRef.current.style.height = 'auto'
         
+        console.log( newImgLink() )
+
         setTimeout( () => {
             const mainchat = document.getElementById( 'mainchat' )
             mainchat?.scrollTo( 0, mainchat?.scrollHeight )

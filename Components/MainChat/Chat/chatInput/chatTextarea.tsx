@@ -8,7 +8,7 @@ import { getChannelUsernameState } from "../../../interfaces/mainchatInterfaces"
 import { useAppSelector } from "../../../store/hooks";
 import { styles } from "../ChatStyles";
 import { evIsKey, triggerSubmit, useSubmit } from "./handleSubmit";
-import { fileDrop, useFileDrop } from "./onFileDrop";
+import { useFileDrop } from "./onFileDrop";
 
 interface MainChatTextareaProps {
     inputRef: MutableRefObject<HTMLTextAreaElement | null>

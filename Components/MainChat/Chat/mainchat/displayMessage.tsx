@@ -32,7 +32,7 @@ const DisplayMessage: FC<DisplayMessageProps>
             content={ v.content.replace( isLink.link, '' ) }
             Links={
                 // web scraping is for weird nerds
-                <a href={ isLink.link } target='iframe1'>
+                <a href={ isLink.link }>
                     { isLink.link }
                 </a>
             } />
@@ -40,7 +40,7 @@ const DisplayMessage: FC<DisplayMessageProps>
 
     if( checkForLinks( v.content )?.image ) return (
         <div>
-            <img src={ checkForLinks( v.content ).image }/>
+            {/* <img src={ checkForLinks( v.content ).image }/> */}
             <MessageType {...v}/>
         </div>
     )

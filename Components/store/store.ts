@@ -9,6 +9,7 @@ import createChannel from './createChannel'
 import createNewMessage from './createMessage'
 import channelUsername from './showChannelUsername'
 import newRTCPeerConnection from './createRTCPeer'
+import URLDataToLink from './getURLDataAsLink'
 
 export const store = configureStore( {
     reducer: {
@@ -22,7 +23,8 @@ export const store = configureStore( {
         newChannel: createChannel,
         createMessage: createNewMessage,
         channelUsername: channelUsername,
-        RTCPeerConnection: newRTCPeerConnection
+        RTCPeerConnection: newRTCPeerConnection,
+        URLDataToLink: URLDataToLink
     }
 } )
 

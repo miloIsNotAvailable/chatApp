@@ -35,3 +35,8 @@ export type RTCPeerType = {
 export type RTCPeerState = {
     RTCPeerConnection: RTCPeerType
 }
+
+export type URLDataToLink = {
+    URLData: FileReader['result'] | undefined
+    filename: string | null
+}
