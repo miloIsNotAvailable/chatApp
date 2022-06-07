@@ -26,7 +26,10 @@ export const useChannelImages = () => {
 
     useEffect( () => {
         
-        if( !selector ) return
+        if( !selector ) {
+            setImgLinks( null ) 
+            return
+        }
 
         ( async _ => {
             const channelStorage = await listAll( channelImgsRef )
