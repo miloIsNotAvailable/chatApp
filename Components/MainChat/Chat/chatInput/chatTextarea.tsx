@@ -11,14 +11,14 @@ import { evIsKey, triggerSubmit, useSubmit } from "./handleSubmit";
 import { useFileDrop } from "./onFileDrop";
 
 interface MainChatTextareaProps {
-    inputRef: MutableRefObject<HTMLTextAreaElement | null>
+    inputRef: MutableRefObject<HTMLDivElement | null>
 }
 
 const MainChatTextarea: FC<MainChatTextareaProps> 
 = ( { inputRef } ) => {
 
     const editRef = useRef<HTMLDivElement | null>( null )
-    const submit = useSubmit<MutableRefObject<HTMLDivElement | null>>( editRef )
+    const submit = useSubmit<MutableRefObject<HTMLDivElement | null>>( inputRef )
     const { name, channelID } = useUserInfo()
 
     const selector = useAppSelector( 
@@ -27,12 +27,12 @@ const MainChatTextarea: FC<MainChatTextareaProps>
         ) => channelUsername?.name 
     )
 
-    const dropFiles = useFileDrop( editRef )
+    const dropFiles = useFileDrop( inputRef )
 
     const userIsTyping = of( 'is-typing' )
 
     const changeHeight = () => {
-        if( !editRef.current ) return
+        if( !inputRef.current ) return
 
         const m = _io.pipe(
             mergeMap( 
@@ -63,7 +63,7 @@ const MainChatTextarea: FC<MainChatTextareaProps>
         <div
             contentEditable
             id="inp"
-            ref={ editRef }
+            ref={ inputRef }
             className={ styles.chat_input }
             onDrop={ dropFiles }
             onKeyDown={ submit }

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import { styles } from "../ChatStyles";
 import { parseColor } from "./parseColorToString";
@@ -7,7 +7,7 @@ interface MessageTypeProps {
     messageID: string
     ind: number
     content: string
-    Links?: JSX.Element | JSX.Element[] | string
+    Links?: JSX.Element | JSX.Element[] | string | ReactNode
 }
 
 const MessageType: FC<MessageTypeProps> 

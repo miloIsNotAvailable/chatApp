@@ -324,7 +324,9 @@
 }
 
 .msg_link_img {
+    cursor: pointer;
     width: 10rem;
     height: auto;
     border-radius: .6rem;
+    background-color: var(--grey);
 }

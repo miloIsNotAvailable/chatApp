@@ -53,6 +53,8 @@ export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerCo
         }
     }
 
+    if ( navigator.userAgent.indexOf("Firefox") != -1  ) setTimeout(() => { pc.onnegotiationneeded }, 5000);
+
     if(localVideo) {
         const lc = localVideo as HTMLAudioElement
         lc.srcObject = localStream

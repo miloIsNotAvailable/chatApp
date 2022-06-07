@@ -17,13 +17,11 @@ type evType = KeyboardEvent<HTMLTextAreaElement> | KeyboardEvent<HTMLDivElement>
  * an event is a mouse event,
  *  if so on click it'll return true
  */
-const evIsMouse = ( e: evType ): 
+export const evIsMouse = ( e: evType ): 
 e is MouseEvent<HTMLDivElement> => {
     let c = e as MouseEvent<HTMLDivElement>
     return typeof c.pageX === 'number'
 }
-
-type getURLDataType = { URLDataToLink: URLDataToLink }
 
 /**
  * check if 

@@ -9,8 +9,8 @@ import MainChatTextarea from "./chatTextarea";
 
 const ChatInput: FC = () => {
 
-    const inputRef = useRef<HTMLTextAreaElement | null>( null )
-    const submit = useSubmit<MutableRefObject<HTMLTextAreaElement | null>>( inputRef )
+    const inputRef = useRef<HTMLDivElement | null>( null )
+    const submit = useSubmit<MutableRefObject<HTMLDivElement | null>>( inputRef )
 
     return (
         <div className={ styles.chat_input_wrap }>
