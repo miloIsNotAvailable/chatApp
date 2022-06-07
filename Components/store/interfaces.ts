@@ -40,3 +40,7 @@ export type URLDataToLink = {
     URLData: FileReader['result'] | undefined
     filename: string | null
 }
+
+export type galleryIsOpenType = {
+    open: boolean
+}

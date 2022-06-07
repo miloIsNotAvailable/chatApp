@@ -6,6 +6,7 @@ import { parseColor } from "./parseColorToString";
 import MessageType from "./getMessageType";
 import { checkForLinks } from "./checkForLinks";
 import Head from "next/head";
+import Image from "next/image";
 
 interface DisplayMessageProps {
     messageID: string
@@ -43,7 +44,11 @@ const DisplayMessage: FC<DisplayMessageProps>
             <MessageType {...v}
             content={ v.content.replace( isLink.image, '' ) }
             Links={
-                <img className={ styles.msg_link_img } src={ isLink.image }/>
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                    alt=""
+                    className={ styles.msg_link_img } 
+                    src={ isLink.image }/>
             }
             />
         </div>

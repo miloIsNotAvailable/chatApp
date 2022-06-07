@@ -1,5 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { FC } from "react";
+import DisplayMenu from "../../../Navbar/menu/DisplayMenu";
 import ChatInput from "../../chatInput";
 import { styles } from "../../ChatStyles";
 import UserIsTyping from "../../userIsTyping";
@@ -15,6 +16,7 @@ const MainChatLayout: FC<MainChatLayoutProps>
 
     return (
         <div className={ styles.chat_wrap }>
+        <DisplayMenu/>
         <DisplayCall/>
         <div 
             id={ 'mainchat' }  
@@ -22,9 +24,9 @@ const MainChatLayout: FC<MainChatLayoutProps>
         >
         <UserIsTyping/>
         <ReceivedCall/>
-            { children }                
+            { children }  
         </div>
-        <ChatInput/>
+        <ChatInput/>             
     </div>
     )
 }
