@@ -7,7 +7,8 @@ import { _io } from "../../../constants/WebSocketsConstants";
 import { getChannelUsernameState } from "../../../interfaces/mainchatInterfaces";
 import { useAppSelector } from "../../../store/hooks";
 import { styles } from "../ChatStyles";
-import { evIsKey, triggerSubmit, useSubmit } from "./handleSubmit";
+import { useEmitOnChange } from "../userIsTyping/emitOnChange";
+import { evIsKey, triggerSubmit, useSubmit } from "./handleSubmit/handleSubmit";
 import { useFileDrop } from "./onFileDrop";
 
 interface MainChatTextareaProps {
@@ -19,7 +20,8 @@ const MainChatTextarea: FC<MainChatTextareaProps>
 
     const editRef = useRef<HTMLDivElement | null>( null )
     const submit = useSubmit<MutableRefObject<HTMLDivElement | null>>( inputRef )
-    const { name, channelID } = useUserInfo()
+
+    const getOnChange = useEmitOnChange( inputRef )
 
     const selector = useAppSelector( 
         ( 
@@ -28,26 +30,7 @@ const MainChatTextarea: FC<MainChatTextareaProps>
     )
 
     const dropFiles = useFileDrop( inputRef )
-
-    const userIsTyping = of( 'is-typing' )
-
-    const changeHeight = () => {
-        if( !inputRef.current ) return
-
-        const m = _io.pipe(
-            mergeMap( 
-                ( socket ) => userIsTyping
-                .pipe(
-                    map( data => ( { data, socket } ) )
-                )
-             )
-        )
-
-        m.subscribe( ( { data, socket } ) => {
-            socket.emit( data, { name, isTyping: true, channelID } )
-        } )
-    }
-
+    
     return (
         <>
         {/* <textarea
@@ -58,7 +41,7 @@ const MainChatTextarea: FC<MainChatTextareaProps>
         className={ styles.chat_input }
         placeholder={ `send a message to @${ selector }` } 
         onKeyDown={ submit }
-        onChange={ changeHeight }
+        onChange={ emitOnChange }
         /> */}
         <div
             contentEditable
@@ -67,7 +50,8 @@ const MainChatTextarea: FC<MainChatTextareaProps>
             className={ styles.chat_input }
             onDrop={ dropFiles }
             onKeyDown={ submit }
-            onInput={ changeHeight }
+            onInput={ getOnChange }
+            placeholder={ `send a message to @${ selector }` }
         />
         </>
     )

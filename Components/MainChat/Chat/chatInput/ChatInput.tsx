@@ -4,7 +4,7 @@ import { styles } from "../ChatStyles";
 import UploadImage from "./uploadImage";
 import SendIcon from '../../../../graphics/send.svg'
 import { _io } from "../../../constants/WebSocketsConstants";
-import { useSubmit } from "./handleSubmit";
+import { useSubmit } from "./handleSubmit/handleSubmit";
 import MainChatTextarea from "./chatTextarea";
 
 const ChatInput: FC = () => {
