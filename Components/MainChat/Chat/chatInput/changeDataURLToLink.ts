@@ -34,26 +34,8 @@ export const useDataToLink = () => {
         
         setLink( selector )
 
-        if( !imgRef ) return
-        
-        ( async() => {
-            const e = await uploadString( imgRef, URLData, 'data_url' )
-            const link = await getDownloadURL( imgRef )
-
-            setGetImageLink( link )
-        } )().then( () => {
-            dispatch( 
-                setURLData( 
-                    { 
-                        URLData: null, 
-                        filename: null 
-                    } 
-                ) 
-            )  
-        })
-
-    }, [ URLData, imgRef, dispatch, selector ] )
+    }, [ selector ] )
         
 
-    return getImageLink
+    return { URLData, filename }
 }
