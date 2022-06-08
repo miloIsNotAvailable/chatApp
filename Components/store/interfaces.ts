@@ -44,3 +44,7 @@ export type URLDataToLink = {
 export type galleryIsOpenType = {
     open: boolean
 }
+
+export type highlightMsgs = {
+    open: boolean
+}

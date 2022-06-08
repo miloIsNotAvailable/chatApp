@@ -1,5 +1,7 @@
 import { FC, ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
+import { useAppSelector } from "../../../store/hooks";
+import { highlightMsgs } from "../../../store/interfaces";
 import { styles } from "../ChatStyles";
 import { parseColor } from "./parseColorToString";
 

@@ -11,6 +11,7 @@ import channelUsername from './showChannelUsername'
 import newRTCPeerConnection from './createRTCPeer'
 import URLDataToLink from './getURLDataAsLink'
 import galleryOpen from './openImageGallery'
+import highlightMsgs from "./highlightMsgs";
 
 export const store = configureStore( {
     reducer: {
@@ -26,7 +27,8 @@ export const store = configureStore( {
         channelUsername: channelUsername,
         RTCPeerConnection: newRTCPeerConnection,
         URLDataToLink: URLDataToLink,
-        galleryOpen: galleryOpen
+        galleryOpen: galleryOpen,
+        highlightMsgs: highlightMsgs,
     }
 } )
 

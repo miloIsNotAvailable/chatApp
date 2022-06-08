@@ -3,20 +3,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useMessages } from "../useMessages";
 import { useUserInfo } from "../../../../constants/userConstants";
 import { usePagination } from "../pagination";
-import { MessageType } from "../../../../store/interfaces";
+import { highlightMsgs, MessageType } from "../../../../store/interfaces";
 import DisplayMessage from "../displayMessage";
 import DisplayNoMessagesMainChat from './DisplayNoMessagesMainChat'
 import MainChatLayout from "./MainChatLayout";
 import { parseColor } from "../parseColorToString";
+import { useAppSelector } from "../../../../store/hooks";
 
 type Msg = MessageType & { messageID: string }
+type highlightMsgsType = { highlightMsgs: highlightMsgs }
 
 const DisplayMessagesMainChat: FC = () => {
 
-    const { channelID, channels } = useUserInfo()        
+    const { channelID, name } = useUserInfo()        
     const [ msgs ] = useMessages()
 
     const { more, setPaginate } = usePagination( msgs )
+
+    const selector = useAppSelector( 
+        ( state: highlightMsgsType ) => state.highlightMsgs.open
+    )
 
     useEffect( () => {
         const mainchatRef = document.getElementById( 'mainchat' )
@@ -44,9 +50,18 @@ const DisplayMessagesMainChat: FC = () => {
             [...msgs, ...more].map( ( v: Msg, ind: number ) => (
                 channelID === v?.channelID && 
                 <motion.div 
+                style={ 
+                    selector && 
+                    { 
+                        backgroundColor: 'rgba(84, 90, 113, .2)', 
+                        borderRadius: '.5rem',
+                        // height: '1rem' 
+                        margin: '1rem 0'
+                    } 
+                    || { height: '1rem' } }
                     key={ v.messageID }
                     transition={  { delay: ind * .01 } }
-                    style={ { height: '1rem' } } 
+                    // style={ { height: '1rem' } } 
                     initial={ { opacity: 0, transform: 'translate(10%, 0)', height: 'auto' } }
                     animate={ { opacity: 1, transform: 'translate(0%, 0)', width: 'auto' } }
                     exit={ { opacity: 0, transform: 'translate(-10%, 0)', height: 'auto' } }>

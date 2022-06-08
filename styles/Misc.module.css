@@ -91,10 +91,12 @@
 .highlight_wrap {
     display: grid;
     grid-template-columns: auto auto;
+    align-items: center;
     margin: 1rem;
 }
 
 .highlight_button {
+    position: relative;
     width: 4vw;
     height: 2vw;
     background-color: var(--bg);
@@ -102,6 +104,8 @@
 }
 
 .highlight_button_inside {
+    position: absolute;
+    left: 0;
     width: 2vw;
     height: 2vw;
     background-color: var(--grey);
