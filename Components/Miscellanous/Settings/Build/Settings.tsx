@@ -16,6 +16,20 @@ const Settings: FC = () => {
                 <HighlightMsgs/>
             </div>
         </div>
+        <div className={ styles.privacy_wrap }>
+            <div className={ styles.title }>
+                privacy
+            </div>
+            <div>
+            </div>
+        </div>
+        <div className={ styles.account_wrap }>
+            <div className={ styles.title }>
+                account
+            </div>
+            <div>
+            </div>
+        </div>
     </MiscLayout>
     )
 }
