@@ -5,7 +5,7 @@ const FontSize: FC = () => {
 
     return (
         <div className={ styles.font_size_wrap }>
-            <div>
+            <div className={ styles.setting_title }>
                 font size
             </div>
             <div className={ styles.font_size_align }>
@@ -17,7 +17,7 @@ const FontSize: FC = () => {
                                 key={ ind }
                                 style={ { fontSize: `${ 1 + .5 * ind }vw` } }
                             >
-                                { n }
+                                <p>{ n }</p>
                             </div>
                         ) 
                     ) 

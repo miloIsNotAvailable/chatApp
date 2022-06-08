@@ -7,22 +7,39 @@
     background-color: var(--bg);
 }
 
+.appearance_wrap {
+    background-color: var(--dark);
+    border-radius: 0 20% 0 0;
+}
+
 .title {
     font-family: 'Outfit';
     font-size: 2vw;
     font-weight: bold;
     color: white;
+    margin: 1rem;
+}
+
+.setting_title {
+    font-family: 'Outfit';
+    font-size: 1vw;
+    font-weight: bold;
+    color: white;
+    /* margin: 1rem; */
 }
 
 .font_size_wrap {
     display: grid;
     grid-template-columns: auto auto;
-    align-items: center;
+    align-items: flex-end;
     font-family: "Outfit";   
     color: white;
+    margin: 1rem;
+    vertical-align: baseline;
 }
 
 .font_size_icon {
+    position: relative;
     display: flex;
     align-items: flex-end;
     font-family: inherit;
@@ -30,7 +47,18 @@
     font-size: 1vw;
     width: 3vw;
     height: 3vw;
-    /* margin: 1rem; */
+    vertical-align: middle;
+    line-height: normal;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.font_size_icon > p {
+    position: absolute;
+    top: 50%;
+    /* left: 50%; */
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .font_size_align {
@@ -39,14 +67,34 @@
     align-items: center;
 }
 
-.font_size_align div:first-child {
-    height: 3vw
+.font_size_align div:first-child p { 
+    top: 50%;
 }
 
-.font_size_align div:nth-child(2) {
-    height: 3.5vw
+.font_size_align div:nth-child(2) p {
+    top: 35%
 }
 
-.font_size_align div:nth-child(3) {
-    height: 3.5vw
+.font_size_align div:nth-child(3) p {
+    top: 20%
+}
+
+.highlight_wrap {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: 1rem;
+}
+
+.highlight_button {
+    width: 4vw;
+    height: 2vw;
+    background-color: var(--bg);
+    border-radius: 3rem;
+}
+
+.highlight_button_inside {
+    width: 2vw;
+    height: 2vw;
+    background-color: var(--grey);
+    border-radius: 50%;
 }
