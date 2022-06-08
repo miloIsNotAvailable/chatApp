@@ -1,7 +1,26 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { styles } from "../../MicStyles";
+import { motion } from 'framer-motion'
+
+type sizeType = {
+    content: string;
+    fontSize: string;
+}
 
 const FontSize: FC = () => {
+
+    const arr: sizeType[] = [
+        { content: 'Aa', fontSize: '1vw' },
+        { content: 'Aa', fontSize: '1.5vw' },
+        { content: 'Aa', fontSize: '2vw' },
+    ]
+
+    const[ selectedFont, setSelectedFont ] = useState<sizeType>( arr[1] )
+
+    useEffect( () => {
+
+        console.log( selectedFont )
+    }, [ selectedFont ] )
 
     return (
         <div className={ styles.font_size_wrap }>
@@ -10,15 +29,26 @@ const FontSize: FC = () => {
             </div>
             <div className={ styles.font_size_align }>
                 {
-                    Array(3).fill( 'Aa' ).map( 
-                        ( n: any, ind: number ) => (
-                            <div 
+                    arr.map( 
+                        ( 
+                            { content, fontSize }: sizeType, 
+                            ind: number 
+                        ) => (
+                            <motion.div 
                                 className={ styles.font_size_icon }
                                 key={ ind }
-                                style={ { fontSize: `${ 1 + .5 * ind }vw` } }
+                                style={ { fontSize } }
+                                onClick={ () => setSelectedFont( { content, fontSize } ) }
                             >
-                                <p>{ n }</p>
-                            </div>
+                                <p>{ content }</p>
+                                <motion.div
+                                    animate={ 
+                                        selectedFont?.fontSize === fontSize ? 
+                                        { width: '100%' } : { width: '0%' }
+                                    } 
+                                    className={ styles.underline }
+                                />
+                            </motion.div>
                         ) 
                     ) 
                 }

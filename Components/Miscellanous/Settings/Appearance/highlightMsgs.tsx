@@ -6,14 +6,23 @@ import { highlightedUserMsgs } from "../../../store/highlightMsgs";
 
 const HighlightMsgs: FC = () => {
 
-    const[ open, setOpen ] = useState( false )
+    const[ open, setOpen ] = useState( () => {
+        const local = localStorage.getItem( 'highlight' ) || null
+        const value = local ? JSON.parse( local ) : null
+        const open = value ? value.open : false
+
+        return open
+    } )
 
     const dispatch = useAppDispatch()
 
     useEffect( () => {
+        
         dispatch( 
             highlightedUserMsgs( { open: open } )
          )
+         localStorage.setItem( 'highlight', JSON.stringify( { open: open } ) )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ open ] )
 
     return (
