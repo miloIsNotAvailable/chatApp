@@ -34,7 +34,7 @@ const Settings: FC = () => {
                 arr.map( ( { link, Icon } ) => (
                     link ? 
                     <Link 
-                        href={ { pathname: `/home/${ link }` } }
+                        href={ { pathname: `/home/${ link }`, query: { id: link } } }
                         key={ link }>
                             <Image
                             key={ link } 

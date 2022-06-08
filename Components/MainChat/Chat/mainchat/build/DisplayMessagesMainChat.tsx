@@ -18,7 +18,6 @@ const DisplayMessagesMainChat: FC = () => {
 
     const { more, setPaginate } = usePagination( msgs )
 
-    
     useEffect( () => {
         const mainchatRef = document.getElementById( 'mainchat' )
 

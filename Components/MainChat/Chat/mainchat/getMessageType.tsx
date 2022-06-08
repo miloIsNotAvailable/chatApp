@@ -24,8 +24,8 @@ const MessageType: FC<MessageTypeProps>
 
                 {
                     parseColor( content )?.map(
-                        ( { text, color } ) => (
-                            <span key={ null } style={ { color } }>
+                        ( { text, color }, ind: number ) => (
+                            <span key={ ind } style={ { color } }>
                                 <ReactMarkdown>
                                     { text.replace( / /g, '\u00A0' ) }
                                 </ReactMarkdown>
