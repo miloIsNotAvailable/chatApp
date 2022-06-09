@@ -1,13 +1,13 @@
 import { FC, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useMessages } from "../useMessages";
+import { useMessages } from "./useMessages";
 import { useUserInfo } from "../../../../constants/userConstants";
 import { usePagination } from "../pagination";
 import { highlightMsgs, MessageType } from "../../../../store/interfaces";
-import DisplayMessage from "../displayMessage";
+import DisplayMessage from "./displayMessage";
 import DisplayNoMessagesMainChat from './DisplayNoMessagesMainChat'
 import MainChatLayout from "./MainChatLayout";
-import { parseColor } from "../parseColorToString";
+import { parseColor } from "./parseColorToString";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import useUserReadMsg from "./useUserReadMessage";
 import { messageIsUnread } from "../../../../store/checkForReadMessages";

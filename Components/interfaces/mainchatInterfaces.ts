@@ -1,5 +1,5 @@
 import { User } from "@prisma/client"
-import { ChannelUsername } from "../store/interfaces"
+import { ChannelUsername, unreadType } from "../store/interfaces"
 
 export interface SessionData {
     user: User, 
@@ -11,3 +11,5 @@ export type getChannelUsernameState = {
 }
 
 export type SessionProps = SessionData | null
+
+export type readMsgs = { checkForReadMessages: unreadType }

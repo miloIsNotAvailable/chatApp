@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { motion } from 'framer-motion'
 import ReactMarkdown from "react-markdown";
-import { styles } from "../ChatStyles";
+import { styles } from "../../ChatStyles";
 import { parseColor } from "./parseColorToString";
 import MessageType from "./getMessageType";
-import { checkForLinks } from "./checkForLinks";
+import { checkForLinks } from "../linkPreviews/checkForLinks";
 import Head from "next/head";
 import Image from "next/image";
 
