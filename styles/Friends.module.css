@@ -120,9 +120,12 @@
 
 .unread {
     position: absolute;
+    display: grid;
+    place-items: center;
     left: 80%;
     width: 1rem;
     height: 1rem;
     background-color: var(--red);
     border-radius: 50%;
+    font-size: .6rem;
 }

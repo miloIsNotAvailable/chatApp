@@ -53,8 +53,13 @@ const DisplayFriend: FC<DisplayFriendProps>
                     { name }
                 </Link>
             </div>
-            { selector?.unread && selector.channelID === redirectTo ? 
-            <div className={ styles.unread } /> : <></> }
+            { 
+                selector?.unread && selector.channelID === redirectTo ? 
+                <div className={ styles.unread } >
+                    { selector.unreadMsgs }
+                </div> 
+                : <></> 
+            }
         </li>
     )
 }

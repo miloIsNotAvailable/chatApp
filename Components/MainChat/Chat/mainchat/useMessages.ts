@@ -16,11 +16,16 @@ export const useMessages: () => Msg[][]
     
     const { channelID, name } = useUserInfo()
     const channelRef = useRef<string | null>( channelID )
+    const msgsRef = useRef<number>( msgs?.length )
 
     useEffect( () => {
         channelRef.current = channelID
         console.log( channelID, channelRef.current )
     }, [ channelID ] )
+
+    useEffect( () => {
+        msgsRef.current = msgs.length
+    }, [ msgs ] )
 
     const dispatch = useAppDispatch()
 
@@ -39,7 +44,8 @@ export const useMessages: () => Msg[][]
             messageIsUnread(
                 {
                     unread: e?.from === name || channelRef.current === e?.channelID ? false : true,
-                    channelID: e?.channelID
+                    channelID: e?.channelID,
+                    unreadMsgs: msgsRef.current - 9 > 9 ? '9+' : msgsRef.current - 9
                 }
             ) 
         )

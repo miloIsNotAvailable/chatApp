@@ -5,7 +5,8 @@ import { unreadType, U } from "./interfaces";
 
 const initialState: unreadType = {
     unread: false,
-    channelID: null
+    channelID: null,
+    unreadMsgs: 0,
 }
 
 const checkForUnreadMessages = createSlice( {
@@ -18,6 +19,7 @@ const checkForUnreadMessages = createSlice( {
             ) => {
                 state.unread = action.payload.unread
                 state.channelID = action.payload.channelID
+                state.unreadMsgs = action.payload.unreadMsgs
             }
         }   
     } 

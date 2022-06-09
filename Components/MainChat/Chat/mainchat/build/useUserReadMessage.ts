@@ -19,7 +19,8 @@ export const useUserReadMsg = () => {
             messageIsUnread(
                 {
                     unread: false,
-                    channelID: findChannel?.id
+                    channelID: findChannel?.id,
+                    unreadMsgs: 0
                 }
             ) 
         )

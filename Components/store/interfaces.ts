@@ -52,4 +52,5 @@ export type highlightMsgs = {
 export type unreadType = {
     unread: boolean
     channelID: string | null
+    unreadMsgs: string | number;
 }
