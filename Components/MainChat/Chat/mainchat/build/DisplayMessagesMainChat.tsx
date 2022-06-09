@@ -34,7 +34,8 @@ const DisplayMessagesMainChat: FC = () => {
             
             const { scrollTop, offsetHeight, scrollHeight } = mainchatRef
 
-            if( scrollHeight + scrollTop === offsetHeight + 1 ){
+            console.log( (scrollHeight + scrollTop) - offsetHeight < 10 )
+            if( (scrollHeight + scrollTop) - offsetHeight <= 1 ){
                 setPaginate( msgs ) 
             } 
         }
