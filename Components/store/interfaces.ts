@@ -48,3 +48,8 @@ export type galleryIsOpenType = {
 export type highlightMsgs = {
     open: boolean
 }
+
+export type unreadType = {
+    unread: boolean
+    channelID: string | null
+}

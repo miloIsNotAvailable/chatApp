@@ -2,9 +2,11 @@ import { FC, useState, CSSProperties } from "react";
 import { styles } from "../FriendListStyles";
 import { motion } from 'framer-motion'
 import Link from "next/link";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { getChannelUsername } from "../../../store/showChannelUsername";
 import { useFriendListContext } from "../../../contexts/friendListContext";
+import { unreadType } from "../../../store/interfaces";
+import { useUserInfo } from "../../../constants/userConstants";
 
 interface DisplayFriendProps {
     name: string | any
@@ -12,6 +14,8 @@ interface DisplayFriendProps {
     redirectTo: string | null
     handleClick: ( name: any ) => any
 }
+
+type readMsgs = { checkForReadMessages: unreadType }
 
 const DisplayFriend: FC<DisplayFriendProps> 
 = ( { 
@@ -21,6 +25,12 @@ const DisplayFriend: FC<DisplayFriendProps>
 
     const dispatch = useAppDispatch()
     const { selected, setSelected } = useFriendListContext()
+
+    const { channelID } = useUserInfo()
+
+    const selector = useAppSelector( 
+        ( state: readMsgs ) => state.checkForReadMessages
+    )
 
     return (
         <li 
@@ -43,6 +53,8 @@ const DisplayFriend: FC<DisplayFriendProps>
                     { name }
                 </Link>
             </div>
+            { selector?.unread && selector.channelID === redirectTo && 
+            <div className={ styles.unread } /> }
         </li>
     )
 }

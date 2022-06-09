@@ -9,6 +9,7 @@ import DisplayNoMessagesMainChat from './DisplayNoMessagesMainChat'
 import MainChatLayout from "./MainChatLayout";
 import { parseColor } from "../parseColorToString";
 import { useAppSelector } from "../../../../store/hooks";
+import useUserReadMsg from "./useUserReadMessage";
 
 type Msg = MessageType & { messageID: string, from: string }
 type highlightMsgsType = { highlightMsgs: highlightMsgs }
@@ -24,6 +25,12 @@ const DisplayMessagesMainChat: FC = () => {
         ( state: highlightMsgsType ) => state.highlightMsgs.open
     )
 
+    const readMsg = useUserReadMsg()
+
+    useEffect( () => {
+        readMsg( msgs )
+    }, [ msgs ] ) 
+
     useEffect( () => {
         const mainchatRef = document.getElementById( 'mainchat' )
 
@@ -34,7 +41,6 @@ const DisplayMessagesMainChat: FC = () => {
             
             const { scrollTop, offsetHeight, scrollHeight } = mainchatRef
 
-            console.log( (scrollHeight + scrollTop) - offsetHeight < 10 )
             if( (scrollHeight + scrollTop) - offsetHeight <= 1 ){
                 setPaginate( msgs ) 
             } 

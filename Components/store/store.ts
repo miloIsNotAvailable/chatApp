@@ -12,6 +12,7 @@ import newRTCPeerConnection from './createRTCPeer'
 import URLDataToLink from './getURLDataAsLink'
 import galleryOpen from './openImageGallery'
 import highlightMsgs from "./highlightMsgs";
+import checkForReadMessages from "./checkForReadMessages";
 
 export const store = configureStore( {
     reducer: {
@@ -29,6 +30,7 @@ export const store = configureStore( {
         URLDataToLink: URLDataToLink,
         galleryOpen: galleryOpen,
         highlightMsgs: highlightMsgs,
+        checkForReadMessages
     }
 } )
 
