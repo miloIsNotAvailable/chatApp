@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useUserInfo } from "../../../../constants/userConstants"
 import { messageIsUnread } from "../../../../store/checkForReadMessages"
 import { useAppDispatch } from "../../../../store/hooks"
@@ -5,7 +6,7 @@ import { MessageType } from "../../../../store/interfaces"
 
 type Msg = MessageType & { messageID: string, from: string }
 
-export const useUserReadMsg = () => {
+export const useUserReadMsg = ( msgs: any[] ) => {
 
     const { channelID, name, channels } = useUserInfo()        
     const dispatch = useAppDispatch()
@@ -22,7 +23,6 @@ export const useUserReadMsg = () => {
                 }
             ) 
         )
-
     }
 }
 

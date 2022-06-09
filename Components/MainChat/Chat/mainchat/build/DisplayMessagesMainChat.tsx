@@ -8,8 +8,9 @@ import DisplayMessage from "../displayMessage";
 import DisplayNoMessagesMainChat from './DisplayNoMessagesMainChat'
 import MainChatLayout from "./MainChatLayout";
 import { parseColor } from "../parseColorToString";
-import { useAppSelector } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import useUserReadMsg from "./useUserReadMessage";
+import { messageIsUnread } from "../../../../store/checkForReadMessages";
 
 type Msg = MessageType & { messageID: string, from: string }
 type highlightMsgsType = { highlightMsgs: highlightMsgs }
@@ -25,11 +26,24 @@ const DisplayMessagesMainChat: FC = () => {
         ( state: highlightMsgsType ) => state.highlightMsgs.open
     )
 
-    const readMsg = useUserReadMsg()
+    const readMsg = useUserReadMsg( msgs )
+    const dispatch = useAppDispatch()
 
     useEffect( () => {
-        readMsg( msgs )
-    }, [ msgs ] ) 
+
+        if( !channels ) return
+        const findChannel = channels.find( (n: any) => msgs[0]?.channelID === n.id )
+
+        findChannel?.id === channelID && dispatch( 
+            messageIsUnread(
+                {
+                    unread: false,
+                    channelID: findChannel?.id
+                }
+            ) 
+        )
+
+    }, [ channelID ] )
 
     useEffect( () => {
         const mainchatRef = document.getElementById( 'mainchat' )

@@ -4,7 +4,7 @@ import { Observable, of } from "rxjs";
 import { unreadType, U } from "./interfaces";
 
 const initialState: unreadType = {
-    unread: true,
+    unread: false,
     channelID: null
 }
 
