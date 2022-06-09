@@ -26,23 +26,12 @@ const DisplayMessagesMainChat: FC = () => {
         ( state: highlightMsgsType ) => state.highlightMsgs.open
     )
 
-    const readMsg = useUserReadMsg( msgs )
+    const readMsg = useUserReadMsg()
     const dispatch = useAppDispatch()
 
     useEffect( () => {
 
-        if( !channels ) return
-        const findChannel = channels.find( (n: any) => msgs[0]?.channelID === n.id )
-
-        findChannel?.id === channelID && dispatch( 
-            messageIsUnread(
-                {
-                    unread: false,
-                    channelID: findChannel?.id
-                }
-            ) 
-        )
-
+        readMsg( msgs )
     }, [ channelID ] )
 
     useEffect( () => {

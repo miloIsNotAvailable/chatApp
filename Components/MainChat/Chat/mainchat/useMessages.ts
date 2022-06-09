@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useUserInfo } from "../../../constants/userConstants"
 import { useChatContext } from "../../../contexts/ChatContext"
 import { IOObservable, SocketType } from "../../../interfaces/WebSocketsTypes"
@@ -13,7 +13,15 @@ export const useMessages: () => Msg[][]
 = () => {
 
     const { msgs, setMsg } = useChatContext()
-    const { channelID } = useUserInfo()
+    
+    const { channelID, name } = useUserInfo()
+    const channelRef = useRef<string | null>( channelID )
+
+    useEffect( () => {
+        channelRef.current = channelID
+        console.log( channelID, channelRef.current )
+    }, [ channelID ] )
+
     const dispatch = useAppDispatch()
 
     const handle = ( v: IOObservable<SocketType> ) => {
@@ -25,11 +33,12 @@ export const useMessages: () => Msg[][]
         }, 300 )
 
         const e: any = v;
+        console.log( channelRef.current, e?.channelID )
 
-        v && dispatch( 
+        dispatch( 
             messageIsUnread(
                 {
-                    unread: channelID !== e?.channelID,
+                    unread: e?.from === name || channelRef.current === e?.channelID ? false : true,
                     channelID: e?.channelID
                 }
             ) 

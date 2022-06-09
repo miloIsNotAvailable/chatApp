@@ -6,19 +6,19 @@ import { MessageType } from "../../../../store/interfaces"
 
 type Msg = MessageType & { messageID: string, from: string }
 
-export const useUserReadMsg = ( msgs: any[] ) => {
+export const useUserReadMsg = () => {
 
-    const { channelID, name, channels } = useUserInfo()        
+    const { channelID, channels } = useUserInfo()        
     const dispatch = useAppDispatch()
 
     return ( msgs: any[] ) => {
         if( !channels ) return
         const findChannel = channels.find( (n: any) => msgs[0]?.channelID === n.id )
-        
-        dispatch( 
+
+        findChannel?.id === channelID && dispatch( 
             messageIsUnread(
                 {
-                    unread: findChannel?.id !== channelID,
+                    unread: false,
                     channelID: findChannel?.id
                 }
             ) 
