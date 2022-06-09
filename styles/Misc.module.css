@@ -4,21 +4,21 @@
     height: 100%;
     display: grid;
     grid-template-columns: repeat(3, calc(100%/3));
-    background-color: var(--dark);
+    background-color: var(--bg);
 }
 
 .appearance_wrap {
-    background-color: var(--dark);
+    background-color: var(--bg);
 }
 
 .privacy_wrap {
     border-radius: 0 2rem 0 2rem;
-    background-color: var(--bg);
+    background-color: var(--dark);
 
 }
 
 .account_wrap {
-    background-color: var(--dark);
+    background-color: var(--bg);
 }
 
 .title {
@@ -100,7 +100,7 @@
     position: relative;
     width: 4vw;
     height: 2vw;
-    background-color: var(--bg);
+    background-color: var(--dark);
     border-radius: 3rem;
 }
 

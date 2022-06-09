@@ -3,11 +3,12 @@ import { styles } from "../../MicStyles";
 import { motion } from "framer-motion";
 import { useAppDispatch } from "../../../store/hooks";
 import { highlightedUserMsgs } from "../../../store/highlightMsgs";
+import { clientSide } from "../../../constants/clientSide";
 
 const HighlightMsgs: FC = () => {
 
     const[ open, setOpen ] = useState( () => {
-        const local = localStorage.getItem( 'highlight' ) || null
+        const local = clientSide ? localStorage.getItem( 'highlight' ) : null
         const value = local ? JSON.parse( local ) : null
         const open = value ? value.open : false
 

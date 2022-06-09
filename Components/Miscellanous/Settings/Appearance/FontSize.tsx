@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { styles } from "../../MicStyles";
 import { motion } from 'framer-motion'
+import { clientSide } from "../../../constants/clientSide";
 
 type sizeType = {
     content: string;
@@ -15,9 +16,25 @@ const FontSize: FC = () => {
         { content: 'Aa', fontSize: '2vw' },
     ]
 
-    const[ selectedFont, setSelectedFont ] = useState<sizeType>( arr[1] )
+    const[ selectedFont, setSelectedFont ] = useState<sizeType>( () => {
+        
+        if ( !clientSide ) return arr[1]
+
+        const val = clientSide ? localStorage.getItem( 'selectedFont' ) : null
+        const parsed = val ? JSON.parse( val ) : null
+
+
+        return parsed || arr[1]
+    
+    } )
 
     useEffect( () => {
+
+        document.body.style.cssText=`
+            --msg-font-size: ${ selectedFont.fontSize }
+        `
+
+        localStorage.setItem( 'selectedFont', JSON.stringify( selectedFont ) )
 
         console.log( selectedFont )
     }, [ selectedFont ] )

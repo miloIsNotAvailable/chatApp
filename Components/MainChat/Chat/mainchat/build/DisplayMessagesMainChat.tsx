@@ -10,12 +10,12 @@ import MainChatLayout from "./MainChatLayout";
 import { parseColor } from "../parseColorToString";
 import { useAppSelector } from "../../../../store/hooks";
 
-type Msg = MessageType & { messageID: string }
+type Msg = MessageType & { messageID: string, from: string }
 type highlightMsgsType = { highlightMsgs: highlightMsgs }
 
 const DisplayMessagesMainChat: FC = () => {
 
-    const { channelID, name } = useUserInfo()        
+    const { channelID, name, channels } = useUserInfo()        
     const [ msgs ] = useMessages()
 
     const { more, setPaginate } = usePagination( msgs )

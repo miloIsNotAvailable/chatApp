@@ -141,17 +141,21 @@
     margin: 0;
     justify-self: center;
     white-space: pre-wrap;
+    font-size: var(--msg-font-size);
+
 }
 
 .chat_user_msg  > p > * {
 
     white-space: pre-wrap;
+    font-size: var(--msg-font-size);
 
 }
 
 .chat_user_msg > span > * {
     margin: 0;
     justify-self: center;
+    font-size: var(--msg-font-size);
 }
 
 .chat_user_icon {
