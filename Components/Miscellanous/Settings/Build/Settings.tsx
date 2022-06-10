@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { styles } from "../../MicStyles";
 import MiscLayout from "../../MiscellanousLayout";
+import Account from "../Account/Account";
 import FontSize from "../Appearance/FontSize";
 import HighlightMsgs from "../Appearance/highlightMsgs";
 
@@ -28,6 +29,7 @@ const Settings: FC = () => {
                 account
             </div>
             <div>
+                <Account/>
             </div>
         </div>
     </MiscLayout>

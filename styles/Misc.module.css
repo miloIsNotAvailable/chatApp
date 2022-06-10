@@ -118,3 +118,28 @@
     height: 2px;
     background-color: white;
 }
+
+.logout_wrap {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 1rem;
+    font-family: 'Outfit';
+    color: white;
+    font-weight: bold;
+    align-items: center;
+}
+.logout_button {
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    width: 5vw;
+    height: 2vw;
+    background-color: tomato;
+    border: 3px solid tomato;
+    border-radius: .5rem;
+    transition: all 100ms ease;
+}
+
+.logout_button:active {
+    background-color: var(--dark);
+}

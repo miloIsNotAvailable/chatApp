@@ -14,7 +14,7 @@ export const useMessages: () => Msg[][]
 
     const { msgs, setMsg } = useChatContext()
     
-    const { channelID, name } = useUserInfo()
+    const { channelID, name, channels } = useUserInfo()
     
     const channelRef = useRef<string | null>( channelID )
     const msgsRef = useRef<any[]>( [] )

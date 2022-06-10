@@ -9,7 +9,8 @@ export type SessionReroute = {
     id: any
     user?: User | undefined 
     iat?: number | undefined
-    channels: Channel[]
+    channels: Channel[],
+    jwt?: string | null
 }
 type v = SessionReroute | null
 

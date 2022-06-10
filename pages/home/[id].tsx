@@ -97,7 +97,8 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
             value={  { 
                 ...jwtDecoded, 
                 id, 
-                channels
+                channels,
+                jwt: sessionLogout
                 } }>
                 <MainChat/>
             </SessionRerouteContext.Provider>
