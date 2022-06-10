@@ -15,6 +15,7 @@ export const useMessages: () => Msg[][]
     const { msgs, setMsg } = useChatContext()
     
     const { channelID, name } = useUserInfo()
+    
     const channelRef = useRef<string | null>( channelID )
     const msgsRef = useRef<any[]>( [] )
 
@@ -22,10 +23,6 @@ export const useMessages: () => Msg[][]
         channelRef.current = channelID
         console.log( channelID, channelRef.current )
     }, [ channelID ] )
-
-    // useEffect( () => {
-    //     msgsRef.current = msgs.length
-    // }, [ msgs ] )
 
     const dispatch = useAppDispatch()
 

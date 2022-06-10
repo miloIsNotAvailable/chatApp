@@ -3,21 +3,20 @@ import { map, mergeMap, of, switchMap } from "rxjs"
 import { fromFetch } from "rxjs/fetch"
 import { _io } from "../../../constants/WebSocketsConstants"
 import { createChannelFromData } from "../../../store/createChannel"
+import { useAppDispatch } from "../../../store/hooks"
 import { U } from "../../../store/interfaces"
 
 interface CreateChannelProps {
     name: ( string | undefined )[], 
     id: ( string | undefined )[], 
-    Dispatch: ThunkDispatch<any, undefined, AnyAction>
+    // Dispatch: ThunkDispatch<any, undefined, AnyAction>
 }
 
-export const CreateChannel = ( { 
-        name, 
-        id, 
-        Dispatch
-    }: CreateChannelProps ) => {
+export const useCreateChannel = () => {
 
-    _io.pipe( 
+    const dispatch = useAppDispatch() 
+
+    return ( { name, id }: CreateChannelProps ) => _io.pipe( 
         mergeMap( 
             socket => of( { socket, data: { name, id } } )
             .pipe( map( data => data )  ) 
@@ -28,7 +27,7 @@ export const CreateChannel = ( {
         const _id = id.map( id => ({ id }) )
         console.log( _id, id )
 
-        Dispatch( 
+        dispatch( 
             createChannelFromData( { users: [ "loading", 'loading' ], id: 'loading' } ) 
         )    
 

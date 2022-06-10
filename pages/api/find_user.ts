@@ -8,12 +8,15 @@ export default async function handler(
 
     console.log( req.body )
     const result = await JSON.parse( req.body )
-    const { name } = result
+    const { name, currUser } = result
 
     const user = await prisma.user.findMany( {
         where: {
           name: {
             contains: name
+          },
+          NOT: {
+            name: currUser
           }
         }
     } )

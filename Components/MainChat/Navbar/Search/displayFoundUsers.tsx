@@ -1,15 +1,17 @@
 import { FC } from "react";
 import { styles } from "../Build/NavbarStyles";
 import { motion } from "framer-motion";
+import { useCreateChannel } from "./CreateChannel";
 
 interface DisplayFoundUsersProps {
     name: string
     ind: number
     handleClick: () => void
+    isLoading: boolean
 }
 
 const DisplayFoundUser: FC<DisplayFoundUsersProps> 
-= ( { name, ind, handleClick } ) => {
+= ( { name, ind, handleClick, isLoading } ) => {
 
     return(
         <motion.div
