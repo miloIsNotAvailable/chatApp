@@ -35,11 +35,11 @@ GetServerSideProps = async( { req, res } ) => {
     // encoded jwt token
     const sessionLogout = session || 'hey'
 
-    const d = await fetch( 'http://localhost:3000/api/get_channels', {
-        method: 'POST', 
-        body: JSON.stringify( jwtDecoded )
-    } )
-    const data = await d.json()
+    // const d = await fetch( 'http://localhost:3000/api/get_channels', {
+    //     method: 'POST', 
+    //     body: JSON.stringify( jwtDecoded )
+    // } )
+    const data: any = ''
 
     return {
         props: { 
