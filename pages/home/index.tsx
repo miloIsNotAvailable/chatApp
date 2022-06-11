@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType, GetStaticProps } from "next";
 import jwt from "jsonwebtoken"
 import { Channel } from "@prisma/client";
@@ -85,8 +85,17 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      * so we can get the session token 
      * in every child of MainChat
      */
-    //  const [ channels, setChannels ] = useState<Channel[] | null>( null )
-     const { channels } = useFetch<Channel[]>( '/api/get_channels', { ...jwtDecoded, id, channels: [] } ) || []
+     const [ channels, setChannels ] = useState<Channel[] | null>( null )
+    //  const { channels } = useFetch<Channel[]>( '/api/get_channels', { ...jwtDecoded, id, channels: [] } ) || []
+
+    useEffect( () => {
+        fetch( '/api/get_channels', {
+            method: "POST",
+            body: JSON.stringify({ ...jwtDecoded, id, channels: [] })
+        } )
+        .then( v => v.json() )
+        .then( v => console.log( v ) )
+    }, [ jwtDecoded, id ] )
 
     return (
         // <AnimatePresence exitBeforeEnter>
@@ -97,7 +106,7 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
             value={  { 
                 ...jwtDecoded, 
                 id, 
-                channels: channels || [],
+                channels: [],
                 jwt: sessionLogout
                 } }>
                 <MainChat/>
