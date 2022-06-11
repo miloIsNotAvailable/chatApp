@@ -1,5 +1,5 @@
 import { getDownloadURL, getStorage, ref, uploadString } from "firebase/storage"
-import { KeyboardEvent, MouseEvent, MutableRefObject, useContext, useEffect, useState } from "react"
+import { KeyboardEvent, MouseEvent, MutableRefObject, useContext, useEffect, useRef, useState } from "react"
 import { map, mergeMap, Observable, of } from "rxjs"
 import { useUserInfo } from "../../../../constants/userConstants"
 import { _io } from "../../../../constants/WebSocketsConstants"
@@ -31,6 +31,8 @@ export function useSubmit
     const { URLData, filename } = useDataToLink()
     const [ inputString, setGetInputString ] = useState<string | null>( null )
 
+    const urlRef = useRef<string | null>( null )
+
     const IdObservable: Observable<SessionReroute | null> 
     = of( sessionContext?.id )
 
@@ -42,12 +44,17 @@ export function useSubmit
         
         
         ( async() => {
+            
+            urlRef.current = inputRef.current.innerText
+            if( inputRef.current ) inputRef.current.innerText = ''
+            console.log( urlRef.current )
+
             const imgRef = ref( storage, `${channelID}/${ filename }` )
             
             const e = await uploadString( imgRef, URLData, 'data_url' )
             const link = await getDownloadURL( imgRef )
 
-            return link
+            return link + " " + urlRef.current
         } )().then( ( link ) => {
             dispatch( 
                 setURLData( 
@@ -59,6 +66,8 @@ export function useSubmit
             )  
             e.preventDefault()
     
+            if( inputRef.current ) inputRef.current.innerText = ''
+
             const m = _io.pipe( 
                 mergeMap( 
                     socket => IdObservable.pipe(
@@ -72,7 +81,7 @@ export function useSubmit
     
                 socket.emit( 'pm', { 
                     channelID: data, 
-                    content: link + " " + inputRef.current?.innerText?.trim(),
+                    content: link,
                     from: name
                 } )
             } )
