@@ -20,7 +20,10 @@ function MyApp({ Component, pageProps, router }: AppProps) {
             <Head>
             <title>Babble</title>
             <meta  property="og:title" content="babble"/>
-            {/* <meta  property="og:image" content={ Preview }/> */}
+            <link rel="shortcut icon" href="/images/appIcon.png"/>
+            <link rel="icon" type="image/png" sizes="16x16" href="/images/appIcon.png"/>
+            <link rel="icon" type="image/png" sizes="32x32" href="/images/appIcon.png"/>
+            {/* <meta  property="og:image" content="http://localhost:3000/graphics/preview.png"/> */}
             <meta  property="og:description" content="justa quick hobby project"/>
           </Head>
           <Component {...pageProps} />
