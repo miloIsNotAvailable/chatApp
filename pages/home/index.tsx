@@ -86,7 +86,7 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      * in every child of MainChat
      */
     //  const [ channels, setChannels ] = useState<Channel[] | null>( null )
-    //  const { channels } = useFetch<Channel[]>( '/api/get_channels', { ...jwtDecoded, id, channels: [] } )
+     const { channels } = useFetch<Channel[]>( '/api/get_channels', { ...jwtDecoded, id, channels: [] } )
 
     return (
         // <AnimatePresence exitBeforeEnter>
@@ -97,7 +97,7 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
             value={  { 
                 ...jwtDecoded, 
                 id, 
-                channels: [],
+                channels,
                 jwt: sessionLogout
                 } }>
                 <MainChat/>
