@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { MessageType } from "./interfaces";
 
 const initialState: MessageType = {
-    message: null
+    channelID: '',
+    content: ""
 }
 
 const newMessageSlice = createSlice( {
@@ -13,7 +14,8 @@ const newMessageSlice = createSlice( {
             state: MessageType, 
             action: PayloadAction<MessageType> 
             ) => {
-                state.message = action.payload.message
+                state.channelID = action.payload.channelID
+                state.content = action.payload.content
             }
         }   
     } 
