@@ -21,6 +21,5 @@ export default async function handler(
         }
     } )
 
-  if( name.length > 0 ) res.json( user )
-  res.json( null )
+  name.length > 0 ? res.json( user ) : res.json( null )
 }
