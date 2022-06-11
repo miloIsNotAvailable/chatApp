@@ -1,5 +1,7 @@
 import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
 import Login from '../Components/Auth/login'
+import Head from 'next/head'
+import Preview from '../graphics/preview.png'
 
 /**
  * load the cookies before html 
@@ -22,7 +24,7 @@ GetServerSideProps = async( { req } ) => {
     if( session ) return {
         redirect: {
           destination: "/home", 
-          // go knows what this does
+          // god knows what this does
           permanent: false
         }
     }

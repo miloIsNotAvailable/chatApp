@@ -14,15 +14,15 @@ export const usePagination = ( msgs: Msg[] ) => {
 
     const [ moreMsgs, setMoreMsgs ] = useState<any[]>( [] )
 
-    useEffect( () => console.log( moreMsgs ), [ moreMsgs ] )
+    // useEffect( () => console.log( moreMsgs ), [ moreMsgs ] )
     const handle = ( data: any ) => setMoreMsgs( prev => [ ...prev, ...data ] )
 
     const e = useMemo( () => listenToFetch( handle ), [] )
     const _setPaginate = ( msgs: any ) => setPaginate( { msgs, channelID, moreMsgs } )
 
-    useEffect( () => {e; console.log(moreMsgs)}, [ moreMsgs, e ] )
+    useEffect( () => {e}, [ moreMsgs, e ] )
     // reset everytime channelID changes (user switches channel they're in)
     useEffect( () => setMoreMsgs( [] ), [ channelID ] )
 
-    return { more: moreMsgs, setPaginate: _setPaginate}
+    return { more: moreMsgs, setPaginate: _setPaginate }
     }

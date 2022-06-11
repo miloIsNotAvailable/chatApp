@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { store } from '../Components/store/store'
 import { Provider } from 'react-redux'
 import { GetServerSideProps } from 'next'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
 
@@ -16,7 +17,12 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           initial={{opacity: 0}} 
           animate={{opacity: 1}} 
           exit={{opacity: 0}} >
-
+            <Head>
+            <title>Babble</title>
+            <meta  property="og:title" content="babble"/>
+            {/* <meta  property="og:image" content={ Preview }/> */}
+            <meta  property="og:description" content="justa quick hobby project"/>
+          </Head>
           <Component {...pageProps} />
         </motion.div>
       </AnimatePresence>
