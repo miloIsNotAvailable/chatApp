@@ -15,12 +15,24 @@ export default async function handler(
                 some: { id: user.id }
             }
         }, 
-        include: { message: {
-            orderBy: {
-                sentAt: 'desc'
+        include: { 
+            message: {
+                orderBy: {
+                    sentAt: 'desc'
+                }, 
+                take: 10
             }, 
-            take: 10
-        } }
+            user: {
+                where: {
+                    id: {
+                        not: {
+                            equals: user?.id
+                        }
+                    }
+                },
+                select: { name: true }
+            } 
+        }
     } )
 
     data ? res.json( data ) :

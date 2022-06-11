@@ -13,12 +13,11 @@ interface DisplayChannelsProps {
 const DisplayChannels: FC<DisplayChannelsProps> 
 = ( { id, users } ) => {
 
-    const { name } = useUserInfo()
-    const { selected, setSelected } = useFriendListContext()
+    const { setSelected } = useFriendListContext()
 
     return <DisplayFriend 
     redirectTo={ id }
-    name={ displayFriendName( users, name ) }
+    name={ users }
     key={ id } 
     cssStyles={ null }
     handleClick={ setSelected }/>

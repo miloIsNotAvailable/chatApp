@@ -111,7 +111,6 @@ export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerCo
              )
          )
     ).subscribe( ( { data, client } ) => {
-        console.log( data )
         client.emit( 'call-started', data  )
     } )
 
@@ -192,7 +191,6 @@ export const answerCall = async(
                             )
                         )
                 ).subscribe( ( { data, client } ) => {
-                    console.log( data )
                     client.emit( 'answer-candidate', { ...data, channelID, name } )
                 } )
             }

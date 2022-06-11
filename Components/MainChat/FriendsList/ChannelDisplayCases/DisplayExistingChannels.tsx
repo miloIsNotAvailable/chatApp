@@ -4,6 +4,8 @@ import { useUserInfo } from "../../../constants/userConstants";
 import DisplayChannels from "../DisplayChannels";
 import { styles } from "../FriendListStyles";
 
+type ChannelType = Channel & { user?: any[] }
+
 interface DisplayExistingChannels {
     channels: Channel[] | []
     // selected: string
@@ -12,15 +14,13 @@ interface DisplayExistingChannels {
 const DisplayExistingChannels: FC<DisplayExistingChannels> 
 = ( { channels } ) => {
 
-    const { name } = useUserInfo()
-
     return (
         <div className={ styles.display_friend_list }>
             {
-                channels && channels.map( ( { users, id }: Channel ) => (
+                channels && channels.map( ( { users, id, user }: ChannelType ) => (
                     <DisplayChannels
                         id={ id }
-                        users={ users }
+                        users={ user && user[0]?.name }
                         key={ id }
                     />
                 ) )
