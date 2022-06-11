@@ -15,6 +15,7 @@ import DisplayNewChannels from "./ChannelDisplayCases/DisplayNewlyAddedChannels"
 import ChannelsNotFound from "./ChannelDisplayCases/ChannelsNotFound";
 import ChannelsLoading from "./ChannelDisplayCases/LoadingChannels";
 import { useUserInfo } from "../../constants/userConstants";
+import { clientSide } from "../../constants/clientSide";
 
 type State = { newChannel: ObservableType }
 
@@ -23,14 +24,28 @@ const FriendList: FC = () => {
     const sessionContext = useContext( SessionRerouteContext )
 
     const arr: Channel[] | null = sessionContext?.channels || null
-    const[ selected, setSelected ] = useState<string | null>( arr ? arr[0]?.id : null )
-    // const { channels } = useFetch<Channel[]>( '/api/get_channels', sessionContext ) || { channels: null }
-    const { channels } = useUserInfo()
+    const[ selected, setSelected ] = useState<string | null>( () => {
+        
+        if( !clientSide ) return arr ? arr[0]?.id : null
+ 
+        const store = localStorage.getItem( 'selected' )
+        const parsed = store && JSON.parse( store )
 
+        const value = parsed && parsed.sel
+        console.log( value )
+
+        return value
+    } )
+    // const { channels } = useFetch<Channel[]>( '/api/get_channels', sessionContext ) || { channels: null }
+    const { channels, channelID } = useUserInfo()
 
     const selector = useAppSelector( ( state: State ) => state?.newChannel || [] )
 
     const roomObservable = of( selected )
+
+    useEffect( () => {
+        localStorage.setItem( 'selected', JSON.stringify( { sel: channelID } ) )
+    }, [ channelID ] )
 
     // join the room on click
     useEffect( () => {

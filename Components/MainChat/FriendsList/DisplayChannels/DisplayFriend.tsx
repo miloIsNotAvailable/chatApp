@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { styles } from "../FriendListStyles";
 import Link from "next/link";
 import { useAppDispatch } from "../../../store/hooks";
@@ -21,6 +21,16 @@ const DisplayFriend: FC<DisplayFriendProps>
 
     const dispatch = useAppDispatch()
     const { selected, setSelected } = useFriendListContext()
+
+    useEffect( () => {
+
+        const store = localStorage.getItem( 'selected' )
+        const parsed = store && JSON.parse( store )
+
+        const value = parsed && parsed.sel
+        setSelected( value )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [] )
 
     return (
         <li 
