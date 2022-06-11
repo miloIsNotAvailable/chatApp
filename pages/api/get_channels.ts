@@ -7,9 +7,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-    const { user, channelLength } = JSON.parse( req.body )
+    const { user } = JSON.parse( req.body )
 
-    console.log( user, channelLength )
+    console.log( user )
 
     const data = await prisma.channel.findMany( {
         where: {
