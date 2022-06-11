@@ -2,10 +2,11 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import jwt from "jsonwebtoken"
-import { User } from "@prisma/client";
+import { Channel, User } from "@prisma/client";
 import MainChat from "../../Components/MainChat";
 import { SessionContext, SessionRerouteContext } from "../../Components/contexts/context";
 import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
+import { useFetch } from "../../Components/MainChat/FriendsList/FetchChannels";
 
 /**
  * decide whether user exists 
@@ -89,10 +90,11 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      * so we can get the session token 
      * in every child of MainChat
      */
+     const { channels } = useFetch<Channel[]>( '/api/get_channels', { ...jwtDecoded, id, channels: [] } )
 
     return (
         <div onClick={  () => {} }>
-            <SessionRerouteContext.Provider value={  { ...jwtDecoded, id, channels: data } }>
+            <SessionRerouteContext.Provider value={  { ...jwtDecoded, id, channels: channels } }>
                 <MainChat/>
             </SessionRerouteContext.Provider>
         </div>
