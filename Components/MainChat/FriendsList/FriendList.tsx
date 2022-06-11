@@ -68,6 +68,8 @@ const FriendList: FC = () => {
     useEffect( () => {
         if( !channels || channels.length === 0 ) return
         
+        console.log( channels )
+
         setSelected( channels[0]?.id )
         const name = displayFriendName( channels[0].users, currentUsername ) 
         dispatch( getChannelUsername( { name } ) )
