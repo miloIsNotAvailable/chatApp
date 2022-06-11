@@ -94,7 +94,7 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
             body: JSON.stringify({ ...jwtDecoded, id, channels: [] })
         } )
         .then( v => v.json() )
-        .then( v => console.log( v ) )
+        .then( setChannels )
     }, [ jwtDecoded, id ] )
 
     return (
@@ -106,7 +106,7 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
             value={  { 
                 ...jwtDecoded, 
                 id, 
-                channels: [],
+                channels: channels || [],
                 jwt: sessionLogout
                 } }>
                 <MainChat/>
