@@ -9,6 +9,8 @@ export default async function handler(
 
     const { user, channelLength } = JSON.parse( req.body )
 
+    console.log( user, channelLength )
+
     const data = await prisma.channel.findMany( {
         where: {
             user: {
