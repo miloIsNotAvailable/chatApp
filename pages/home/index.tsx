@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
-import { FC } from "react";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { FC, useState } from "react";
+import { GetServerSideProps, InferGetServerSidePropsType, GetStaticProps } from "next";
 import jwt from "jsonwebtoken"
-import { Channel, User } from "@prisma/client";
+import { Channel } from "@prisma/client";
 import MainChat from "../../Components/MainChat";
-import { SessionContext, SessionRerouteContext } from "../../Components/contexts/context";
-import { SessionProps } from "../../Components/interfaces/mainchatInterfaces";
+import { SessionRerouteContext } from "../../Components/contexts/context";
+import { _io } from "../../Components/constants/WebSocketsConstants";
+import { AnimatePresence, motion } from 'framer-motion'
 import { useFetch } from "../../Components/MainChat/FriendsList/FetchChannels";
 
 /**
@@ -40,7 +41,8 @@ GetServerSideProps = async( { req, res } ) => {
     //     method: 'POST', 
     //     body: JSON.stringify( jwtDecoded )
     // } )
-    const data: any = ''
+    const data: any = []
+    console.log( req.headers['authorization'] )
 
     return {
         props: { 
@@ -49,11 +51,6 @@ GetServerSideProps = async( { req, res } ) => {
             data
          }
     }
-}
-
-interface MainChatProps {
-    jwtDecoded: SessionProps
-    sessionLogout: string | null, 
 }
 
 const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>> 
@@ -75,8 +72,6 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      * and moving them back to login screen
      */
 
-    console.log( data )
-
     const handleLogOut = () => {
         fetch( "/api/logout", {
             method: "POST", 
@@ -90,14 +85,25 @@ const Chat: FC<InferGetServerSidePropsType<typeof getServerSideProps>>
      * so we can get the session token 
      * in every child of MainChat
      */
+    //  const [ channels, setChannels ] = useState<Channel[] | null>( null )
      const { channels } = useFetch<Channel[]>( '/api/get_channels', { ...jwtDecoded, id, channels: [] } )
 
     return (
-        <div onClick={  () => {} }>
-            <SessionRerouteContext.Provider value={  { ...jwtDecoded, id, channels: channels } }>
+        // <AnimatePresence exitBeforeEnter>
+        <div 
+        // onClick={  () => { handleLogOut() } }
+        >
+            <SessionRerouteContext.Provider 
+            value={  { 
+                ...jwtDecoded, 
+                id, 
+                channels,
+                jwt: sessionLogout
+                } }>
                 <MainChat/>
             </SessionRerouteContext.Provider>
         </div>
+        // </AnimatePresence>
     )
 }
 
