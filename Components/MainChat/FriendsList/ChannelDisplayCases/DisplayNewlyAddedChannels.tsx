@@ -46,6 +46,7 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
         <div className={ styles.display_friend_list }>
         <>
         {
+           channels && 
            channels.map( ( { users, id, user }: ChannelType ) => (
                 users && 
                 <DisplayChannels
