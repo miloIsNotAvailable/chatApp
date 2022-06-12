@@ -29,8 +29,6 @@ export const useMessages: () => Msg[][]
     const handle = useCallback(( v: IOObservable<SocketType> ) => {
         setMsg( ( prev: any[] ): Msg[] => [ v, ...prev ] )
 
-        console.log( msgs )
-
         setTimeout( () => {
             const mainchat = document.getElementById( 'mainchat' )
             mainchat?.scrollTo( 0, mainchat?.scrollHeight )
@@ -56,6 +54,7 @@ export const useMessages: () => Msg[][]
     // this works for develpoment
     const memoizeReceived = useCallback( () => listenToMessages( handle ), [ handle ] )
     useEffect( () => listenToMessages( handle ), [ handle ] )
+    useEffect( () => setMsg( [] ), [ channelID ] )
 
     return [ msgs ]
 }
