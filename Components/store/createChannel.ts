@@ -9,7 +9,8 @@ type StateObservable = {
 
 const initialState: ObservableType = {
     users: null, 
-    id: null 
+    id: null,
+    user: null
 }
 
 const createChannelSlice = createSlice( {
@@ -22,6 +23,7 @@ const createChannelSlice = createSlice( {
             ) => {
                 state.id = action.payload.id
                 state.users = action.payload.users
+                state.user = action.payload.user
             }
         }   
     } 

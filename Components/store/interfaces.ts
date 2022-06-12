@@ -16,7 +16,8 @@ export type U = {
 
 export type ObservableType = {
     users: string[] | null
-    id: string | null
+    id: string | null,
+    user: any
 }
 
 export type MessageType = {

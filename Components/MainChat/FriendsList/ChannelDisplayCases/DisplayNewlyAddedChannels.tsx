@@ -1,5 +1,5 @@
 import { Channel } from "@prisma/client";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../../store/hooks";
 import { ObservableType } from "../../../store/interfaces";
 import DisplayChannels from "../DisplayChannels";
@@ -8,6 +8,8 @@ import { fromEvent, map, mergeMap, of } from "rxjs";
 import { _io } from "../../../constants/WebSocketsConstants";
 import { useUserInfo } from "../../../constants/userConstants";
 import { ChannelType } from "./DisplayExistingChannels";
+import { getChannelUsername } from "../../../store/showChannelUsername";
+import { displayFriendName } from "../displayFriendName";
 
 interface DisplayNewChannelsProps {
     channels: Channel[]
@@ -24,6 +26,8 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
     const { name } = useUserInfo()
     const [ newChannel, setNewChannel ] = useState<Channel | null>( null )
 
+    const newChannelRef = useRef<any>( null )
+
     useEffect( () => {
         // selector?.users && console.log( selector )
         _io.pipe(
@@ -36,18 +40,22 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
                 )
             )
         ).subscribe( data => {
-            data?.users.find( ( n: string ) => n === name )
-            && setNewChannel( data )
+            console.log( data )
+            newChannelRef.current = {...data, user: [ { name: displayFriendName( data?.users, name ) } ]}
+            if(data?.users.find( ( n: string ) => n === name )) {
+
+                setNewChannel( data )
+            }
         } )
 
     } )
 
     useEffect( () => {
-        console.log( newChannel )
+        console.log( newChannelRef.current )
         console.log( selector )
     }, [ newChannel, selector ] )
 
-    if( !newChannel ) return (
+    if( !newChannelRef.current ) return (
         <div className={ styles.display_friend_list }>
         <>
         {
@@ -65,16 +73,16 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
     </div>
     )
 
-    if( !newChannel && selector?.id ) return (
+    if( !newChannelRef.current && selector?.id ) return (
         <div className={ styles.display_friend_list }>
         <>
         {
            [...channels, selector]
-           .map( ( { users, id } ) => (
+           .map( ( { users, id, user }: any ) => (
                 users && 
                 <DisplayChannels
                     id={ id }
-                    users={ users }
+                    users={ user[0]?.name }
                     key={ id }
                 />
             ) )
@@ -87,7 +95,7 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
         <div className={ styles.display_friend_list }>
             <>
             {
-               newChannel && [...channels, newChannel]
+               newChannelRef.current && [...channels, newChannelRef.current]
                 .map( ( { users, id, user }: ChannelType ) => (
                     users && 
                     <DisplayChannels
@@ -95,7 +103,7 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
                         users={ user && user[0]?.name }
                         key={ id }
                     />
-                ) )
+                ) ) || <div>error</div>
             }
             </>
         </div>

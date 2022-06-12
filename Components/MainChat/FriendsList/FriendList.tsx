@@ -28,8 +28,11 @@ const FriendList: FC = () => {
     // const { channels } = useFetch<Channel[]>( '/api/get_channels', sessionContext ) || { channels: null }
     const { channels, channelID } = useUserInfo()
 
-    const selector = useAppSelector( ( state: State ) => state?.newChannel || [] )
+    const selector = useAppSelector( ( state: State ) => state?.newChannel || { users: '', user: [ { name : "" } ], id: "" } )
 
+    useEffect( () => {
+        console.log( selector )
+    }, [ selector ] )
     const roomObservable = of( selected )
 
     useEffect( () => {
@@ -68,14 +71,13 @@ const FriendList: FC = () => {
     if( channels.length === 0 && !selector?.users ) return <ChannelsNotFound/>
 
     if( selector?.users ) return (
-        // <FriendListContext value={ { selected, setSelected } }>
+        <FriendListContext value={ { selected, setSelected } }>
             <>
-                <DisplayNewChannels
-                    channels={ channels }
-                />
+            <DisplayNewChannels 
+                channels={ channels }/>
             </>
-        // </FriendListContext>
-    ) 
+        </FriendListContext>
+    )  
 
     return (
         <FriendListContext value={ { selected, setSelected } }>
