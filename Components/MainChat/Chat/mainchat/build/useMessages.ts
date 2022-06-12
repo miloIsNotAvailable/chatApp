@@ -54,7 +54,7 @@ export const useMessages: () => Msg[][]
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const memoizeReceived = useCallback( () => listenToMessages( handle ), [] )
-    useEffect( () => memoizeReceived, [ memoizeReceived ] )
+    useEffect( () => { listenToMessages( handle ) } )
 
     return [ msgs ]
 }

@@ -27,7 +27,7 @@ const DisplayMessagesMainChat: FC = () => {
         ( state: highlightMsgsType ) => state.highlightMsgs.open
     )
 
-    const memoizeReceived = useCallback( () => listenToMessages( console.log ), [] )
+    // const memoizeReceived = useCallback( () => listenToMessages( console.log ), [] )
     useEffect( () => { listenToMessages( console.log ) } )
     
     const readMsg = useUserReadMsg()
