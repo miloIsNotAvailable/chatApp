@@ -11,6 +11,7 @@ import { parseColor } from "./parseColorToString";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import useUserReadMsg from "./useUserReadMessage";
 import { messageIsUnread } from "../../../../store/checkForReadMessages";
+import { listenToMessages } from "../listenToMessages";
 
 type Msg = MessageType & { messageID: string, from: string }
 type highlightMsgsType = { highlightMsgs: highlightMsgs }
@@ -27,8 +28,8 @@ const DisplayMessagesMainChat: FC = () => {
     )
 
     useEffect( () => {
-        console.log( msgs )
-    }, [ msgs ] )
+        listenToMessages( console.log )
+    } )
 
     const readMsg = useUserReadMsg()
     const dispatch = useAppDispatch()
