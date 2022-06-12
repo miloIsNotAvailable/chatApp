@@ -34,7 +34,7 @@ const DisplayMessagesMainChat: FC = () => {
     const dispatch = useAppDispatch()
 
     useEffect( () => {
-
+        console.log( msgs )
         readMsg( msgs )
     }, [ channelID ] )
 
