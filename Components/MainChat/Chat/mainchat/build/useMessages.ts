@@ -28,6 +28,8 @@ export const useMessages: () => Msg[][]
     const handle = ( v: IOObservable<SocketType> ) => {
         setMsg( ( prev: any[] ): Msg[] => [ v, ...prev ] )
 
+        console.log( v )
+
         setTimeout( () => {
             const mainchat = document.getElementById( 'mainchat' )
             mainchat?.scrollTo( 0, mainchat?.scrollHeight )
