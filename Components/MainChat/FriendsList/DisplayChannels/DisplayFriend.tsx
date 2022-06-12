@@ -41,6 +41,7 @@ const DisplayFriend: FC<DisplayFriendProps>
             key={ name }
             onClick={ () => { 
                 setSelected( redirectTo ) 
+                console.log( redirectTo )
                 dispatch( getChannelUsername( { name } ) )
             } }>
             <div className={ styles.friend_icon }/>

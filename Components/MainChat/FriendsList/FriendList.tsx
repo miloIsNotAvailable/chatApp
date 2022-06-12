@@ -24,18 +24,7 @@ const FriendList: FC = () => {
     const sessionContext = useContext( SessionRerouteContext )
 
     const arr: Channel[] | null = sessionContext?.channels || null
-    const[ selected, setSelected ] = useState<string | null>( () => {
-        
-        if( !clientSide ) return arr ? arr[0]?.id : null
- 
-        const store = localStorage.getItem( 'selected' )
-        const parsed = store && JSON.parse( store )
-
-        const value = parsed && parsed.sel
-        console.log( value )
-
-        return value
-    } )
+    const[ selected, setSelected ] = useState<string | null>(  arr ? arr[0]?.id : null )
     // const { channels } = useFetch<Channel[]>( '/api/get_channels', sessionContext ) || { channels: null }
     const { channels, channelID } = useUserInfo()
 
@@ -67,10 +56,10 @@ const FriendList: FC = () => {
     
     useEffect( () => {
         if( !channels || channels.length === 0 ) return
+        console.log( channels )
         
-        setSelected( channels[0]?.id )
-        const name = displayFriendName( channels[0].users, currentUsername ) 
-        dispatch( getChannelUsername( { name } ) )
+        const find = channels.find( ( v: any ) => v.id === selected )
+        dispatch( getChannelUsername( { name: find?.user[0]?.name } ) )
 
     }, [ channels, dispatch, currentUsername ])
 
