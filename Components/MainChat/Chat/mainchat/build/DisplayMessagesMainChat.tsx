@@ -27,9 +27,8 @@ const DisplayMessagesMainChat: FC = () => {
         ( state: highlightMsgsType ) => state.highlightMsgs.open
     )
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const memoizeReceived = useCallback( () => listenToMessages( console.log ), [] )
-    useEffect( () => memoizeReceived, [ memoizeReceived ] )
+    useEffect( () => { memoizeReceived } )
     
     const readMsg = useUserReadMsg()
     const dispatch = useAppDispatch()
