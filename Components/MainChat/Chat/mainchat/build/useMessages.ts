@@ -25,7 +25,7 @@ export const useMessages: () => Msg[][]
 
     const dispatch = useAppDispatch()
 
-    const handle = ( v: IOObservable<SocketType> ) => {
+    const handle = useCallback(( v: IOObservable<SocketType> ) => {
         setMsg( ( prev: any[] ): Msg[] => [ v, ...prev ] )
 
         console.log( v )
@@ -50,11 +50,10 @@ export const useMessages: () => Msg[][]
                 }
             ) 
         )
-    }
+    }, [ setMsg, dispatch, name ])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const memoizeReceived = useCallback( () => listenToMessages( handle ), [] )
-    useEffect( () => { listenToMessages( handle ) } )
+    const memoizeReceived = useCallback( () => listenToMessages( handle ), [ handle ] )
+    useEffect( () => memoizeReceived, [ memoizeReceived ] )
 
     return [ msgs ]
 }
