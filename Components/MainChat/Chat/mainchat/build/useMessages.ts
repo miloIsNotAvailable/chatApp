@@ -53,7 +53,7 @@ export const useMessages: () => Msg[][]
     }, [ setMsg, dispatch, name ])
 
     const memoizeReceived = useCallback( () => listenToMessages( handle ), [ handle ] )
-    useEffect( () => { listenToMessages( handle ) }, [ handle ] )
+    useEffect( () => listenToMessages( handle ), [ handle ] )
 
     return [ msgs ]
 }
