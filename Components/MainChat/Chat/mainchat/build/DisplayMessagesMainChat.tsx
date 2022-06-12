@@ -26,6 +26,10 @@ const DisplayMessagesMainChat: FC = () => {
         ( state: highlightMsgsType ) => state.highlightMsgs.open
     )
 
+    useEffect( () => {
+        console.log( msgs )
+    }, [ msgs ] )
+
     const readMsg = useUserReadMsg()
     const dispatch = useAppDispatch()
 

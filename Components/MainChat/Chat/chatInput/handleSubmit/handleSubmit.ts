@@ -114,8 +114,6 @@ export function useSubmit
         )
     
         m.subscribe( ( { data, socket } ) => {
-            console.log( data )
-
             socket.emit( 'pm', { 
                 channelID: data, 
                 content: inputRef.current?.innerText?.trim(),
