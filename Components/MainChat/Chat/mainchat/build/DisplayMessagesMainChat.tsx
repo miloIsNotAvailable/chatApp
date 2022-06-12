@@ -28,7 +28,7 @@ const DisplayMessagesMainChat: FC = () => {
     )
 
     const memoizeReceived = useCallback( () => listenToMessages( console.log ), [] )
-    useEffect( () => { memoizeReceived } )
+    useEffect( () => { listenToMessages( console.log ) } )
     
     const readMsg = useUserReadMsg()
     const dispatch = useAppDispatch()
