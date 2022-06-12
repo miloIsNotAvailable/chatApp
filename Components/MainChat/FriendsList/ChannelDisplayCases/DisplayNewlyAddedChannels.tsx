@@ -42,6 +42,11 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
 
     } )
 
+    useEffect( () => {
+        console.log( newChannel )
+        console.log( selector )
+    }, [ newChannel, selector ] )
+
     if( !newChannel ) return (
         <div className={ styles.display_friend_list }>
         <>
