@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMessages } from "./useMessages";
 import { useUserInfo } from "../../../../constants/userConstants";
@@ -27,10 +27,10 @@ const DisplayMessagesMainChat: FC = () => {
         ( state: highlightMsgsType ) => state.highlightMsgs.open
     )
 
-    useEffect( () => {
-        listenToMessages( console.log )
-    } )
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const memoizeReceived = useCallback( () => listenToMessages( console.log ), [] )
+    useEffect( () => memoizeReceived, [ memoizeReceived ] )
+    
     const readMsg = useUserReadMsg()
     const dispatch = useAppDispatch()
 
