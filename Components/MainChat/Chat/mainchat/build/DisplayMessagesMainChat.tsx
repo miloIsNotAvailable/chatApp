@@ -35,6 +35,7 @@ const DisplayMessagesMainChat: FC = () => {
 
     useEffect( () => {
         readMsg( msgs )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ channelID ] )
 
     useEffect( () => {

@@ -19,9 +19,9 @@ export const useMessages: () => Msg[][]
     const channelRef = useRef<string | null>( channelID )
     const msgsRef = useRef<any[]>( [] )
 
+    // get current channelID
     useEffect( () => {
         channelRef.current = channelID
-        // setMsg( msgs )
     }, [ channelID ] )
 
     const dispatch = useAppDispatch()
@@ -36,8 +36,14 @@ export const useMessages: () => Msg[][]
 
         
         const e: any = v;
+        /**
+         * check the amount of unread
+         * messages by checking the length 
+         * of messages in chat ( 10 by default )
+         */
         msgsRef.current = [ ...msgsRef.current, v ]
 
+        // reset on read
         if( channelRef.current === e?.channelID ) msgsRef.current=[]
 
         dispatch( 
@@ -53,8 +59,20 @@ export const useMessages: () => Msg[][]
 
     // this works for develpoment
     const memoizeReceived = useCallback( () => listenToMessages( handle ), [ handle ] )
+    // useEffect( () => memoizeReceived, [ memoizeReceived ] )
+    
+    // this works for production
     useEffect( () => listenToMessages( handle ), [ handle ] )
+    
+    /**
+     * reset msgs array cause upon reentering the channel
+     * evevrything gets cached, so new data 
+     * would get displayed twice
+     */
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect( () => setMsg( [] ), [ channelID ] )
 
+    // returns new messages and initial messages
     return [ msgs ]
 }

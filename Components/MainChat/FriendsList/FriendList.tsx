@@ -69,9 +69,11 @@ const FriendList: FC = () => {
 
     if( selector?.users ) return (
         <FriendListContext value={ { selected, setSelected } }>
-            <DisplayNewChannels
-                channels={ channels }
-            />
+            <>
+                <DisplayNewChannels
+                    channels={ channels }
+                />
+            </>
         </FriendListContext>
     ) 
 
