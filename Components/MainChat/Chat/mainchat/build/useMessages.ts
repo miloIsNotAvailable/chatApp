@@ -29,7 +29,7 @@ export const useMessages: () => Msg[][]
     const handle = useCallback(( v: IOObservable<SocketType> ) => {
         setMsg( ( prev: any[] ): Msg[] => [ v, ...prev ] )
 
-        console.log( v )
+        console.log( msgs )
 
         setTimeout( () => {
             const mainchat = document.getElementById( 'mainchat' )
