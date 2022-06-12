@@ -68,13 +68,13 @@ const FriendList: FC = () => {
     if( channels.length === 0 && !selector?.users ) return <ChannelsNotFound/>
 
     if( selector?.users ) return (
-        <FriendListContext value={ { selected, setSelected } }>
+        // <FriendListContext value={ { selected, setSelected } }>
             <>
                 <DisplayNewChannels
                     channels={ channels }
                 />
             </>
-        </FriendListContext>
+        // </FriendListContext>
     ) 
 
     return (
