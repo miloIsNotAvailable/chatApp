@@ -7,6 +7,7 @@ import { styles } from "../FriendListStyles";
 import { fromEvent, map, mergeMap, of } from "rxjs";
 import { _io } from "../../../constants/WebSocketsConstants";
 import { useUserInfo } from "../../../constants/userConstants";
+import { ChannelType } from "./DisplayExistingChannels";
 
 interface DisplayNewChannelsProps {
     channels: Channel[]
@@ -43,21 +44,24 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
 
     if( !newChannel ) return (
         <div className={ styles.display_friend_list }>
+        <>
         {
-           channels.map( ( { users, id } ) => (
+           channels.map( ( { users, id, user }: ChannelType ) => (
                 users && 
                 <DisplayChannels
                     id={ id }
-                    users={ users }
+                    users={ user && user[0]?.name }
                     key={ id }
                 />
             ) )
         }
+        </>
     </div>
     )
 
     if( !newChannel && selector?.id ) return (
         <div className={ styles.display_friend_list }>
+        <>
         {
            [...channels, selector]
            .map( ( { users, id } ) => (
@@ -69,22 +73,25 @@ const DisplayNewChannels: FC<DisplayNewChannelsProps>
                 />
             ) )
         }
+        </>
     </div>
     )
 
     return (
         <div className={ styles.display_friend_list }>
+            <>
             {
                newChannel && [...channels, newChannel]
-                .map( ( { users, id } ) => (
+                .map( ( { users, id, user }: ChannelType ) => (
                     users && 
                     <DisplayChannels
                         id={ id }
-                        users={ users }
+                        users={ user && user[0]?.name }
                         key={ id }
                     />
                 ) )
             }
+            </>
         </div>
     )
 }

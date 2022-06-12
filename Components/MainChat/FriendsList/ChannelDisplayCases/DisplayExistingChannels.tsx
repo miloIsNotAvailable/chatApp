@@ -4,7 +4,7 @@ import { useUserInfo } from "../../../constants/userConstants";
 import DisplayChannels from "../DisplayChannels";
 import { styles } from "../FriendListStyles";
 
-type ChannelType = Channel & { user?: any[] }
+export type ChannelType = Channel & { user?: any[] }
 
 interface DisplayExistingChannels {
     channels: Channel[] | []
