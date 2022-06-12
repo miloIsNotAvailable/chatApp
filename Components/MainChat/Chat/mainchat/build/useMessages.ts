@@ -21,6 +21,7 @@ export const useMessages: () => Msg[][]
 
     useEffect( () => {
         channelRef.current = channelID
+        setMsg( msgs )
     }, [ channelID ] )
 
     const dispatch = useAppDispatch()
@@ -52,6 +53,7 @@ export const useMessages: () => Msg[][]
         )
     }, [ setMsg, dispatch, name ])
 
+    // this works for develpoment
     const memoizeReceived = useCallback( () => listenToMessages( handle ), [ handle ] )
     useEffect( () => listenToMessages( handle ), [ handle ] )
 
