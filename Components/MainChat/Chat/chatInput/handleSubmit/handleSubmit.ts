@@ -122,10 +122,10 @@ export function useSubmit
                 from: name
             } )
         } )
-
+        console.log( inputRef.current?.innerText?.trim() )
         // socket.emit( 'message', inputRef.current?.value?.trim() )
     
-        dispatch( newMessage( { content: inputRef.current?.innerText.trim() , channelID: '' } ) )
+        // dispatch( newMessage( { content: inputRef.current?.innerText.trim() , channelID: '' } ) )
         
         if( inputRef.current ) inputRef.current.innerText = ''
         inputRef.current.style.height = 'auto'
