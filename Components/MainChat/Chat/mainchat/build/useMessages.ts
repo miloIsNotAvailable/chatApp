@@ -21,7 +21,7 @@ export const useMessages: () => Msg[][]
 
     useEffect( () => {
         channelRef.current = channelID
-        setMsg( msgs )
+        // setMsg( msgs )
     }, [ channelID ] )
 
     const dispatch = useAppDispatch()
