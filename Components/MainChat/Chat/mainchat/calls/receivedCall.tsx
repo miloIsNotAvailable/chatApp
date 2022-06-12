@@ -69,6 +69,10 @@ const ReceivedCall: FC = () => {
                 animate={ { height: 'calc( var(--icon-size) * 7 + 2rem )' } } 
                 exit={ { height: 0 } } 
                 className={ styles.received_call_wrap }
+                onCanPlay={ () => {
+                    // const audio = new Audio(  )
+                    // audio.play()
+                } }
                 onClick={ () => answerCall( 
                     { channelID, name }, 
                     pc, 
@@ -86,6 +90,11 @@ const ReceivedCall: FC = () => {
                     { call.name } is starting a call
                 </div>
             </motion.div>
+        }
+        {   call.type === 'offer' &&
+            call.name !== name && 
+            call.channelID === channelID &&  
+            <audio key="ringtone" src='/resources/Owl City - Fireflies (Official Music Video) (mp3cut.net).mp3' autoPlay={true} playsInline/>
         }
         </AnimatePresence>
         </>
