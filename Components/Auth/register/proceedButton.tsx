@@ -23,7 +23,6 @@ const Proceed: FC = () => {
         } }: fetchingType ) => isFetching
      )
 
-
     const selector = useAppSelector( 
         ( { formReducer }: SelectorType ) => formReducer 
      )
@@ -35,22 +34,30 @@ const Proceed: FC = () => {
 
     const Submit = () => {
 
-        dispatch( isFetching( { isFetching: true } ) )
 
-        registerFetch.pipe(
-            switchMap( 
-                () => fromFetch( '/api/signin', {
-                    method: "POST",
-                    body: JSON.stringify( selector )
-                } ).pipe(
-                    map( res => res )
-                )
-             )
-        ).subscribe( ( res ) => {
-            if( !res.ok ) return
-            router.push( "/home" )
-            dispatch( isFetching( { isFetching: false } ) )
-        } )
+        if(
+            selector.getEmail.email && 
+            selector.getPassword.password && 
+            selector.getUsername.username 
+        ) {
+            dispatch( isFetching( { isFetching: true } ) )
+
+            registerFetch.pipe(
+                switchMap( 
+                    () => fromFetch( '/api/signin', {
+                        method: "POST",
+                        body: JSON.stringify( selector )
+                    } ).pipe(
+                        map( res => res )
+                    )
+                 )
+            ).subscribe( ( res ) => {
+                if( !res.ok ) return
+                router.push( "/home" )
+                dispatch( isFetching( { isFetching: false } ) )
+            } )
+        }
+
 
         // fetch( "/api/signin", {
         //     method: "POST", 
@@ -62,11 +69,11 @@ const Proceed: FC = () => {
         // } )
         // .then( () => dispatch( isFetching( { isFetching: false } ) ) )
     } 
-
-    if( loading ) return ( 
+    
+     if( loading ) return ( 
         <div>
             <div className={ styles.proceed_button }
-            onClick={ Submit }>
+            onClick={ () => {} }>
                 loading
             </div>
         </div>

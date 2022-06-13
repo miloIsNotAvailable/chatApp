@@ -28,25 +28,30 @@ const LoginButton: FC = () => {
 
     const Submit = () => {
 
-        dispatch( isFetching( { isFetching: true } ) )
-
-        loginFetch.pipe(
-            switchMap(
-                ({ fetching } ) => fromFetch( 
-                    '/api/post', {
-                    method: 'POST',
-                    body: JSON.stringify( selector )        
-                } )
-                .pipe(
-                    map( ( res ) => res) 
+        if (
+            selector.getEmail.email && 
+            selector.getPassword.password
+         ) {
+            dispatch( isFetching( { isFetching: true } ) )
+        
+            loginFetch.pipe(
+                switchMap(
+                    ({ fetching } ) => fromFetch( 
+                        '/api/post', {
+                        method: 'POST',
+                        body: JSON.stringify( selector )        
+                    } )
+                    .pipe(
+                        map( ( res ) => res) 
+                    )
                 )
-            )
-        ).subscribe( ( res ) => {
-            if( !res.ok ) return
-            console.log( 'done' )
-            router.push( '/home' )
-            dispatch( isFetching( { isFetching: false } ) )
-        } )
+            ).subscribe( ( res ) => {
+                if( !res.ok ) return
+                console.log( 'done' )
+                router.push( '/home' )
+                dispatch( isFetching( { isFetching: false } ) )
+            } )
+        }
     } 
     
     return(

@@ -15,7 +15,7 @@ import Bg from './svgBg'
 import RotateSvg from "./rotateSvg";
 import LoginButton from "./loginButton";
 import { useAppSelector } from "../../store/hooks";
-import { fetchingType } from "../../interfaces/formInterfaces";
+import { fetchingType, SelectorType } from "../../interfaces/formInterfaces";
 
 const BuildLogin: FC = ( ) => {
 
@@ -23,6 +23,10 @@ const BuildLogin: FC = ( ) => {
      * load the DOM before 
      * the rest with useEffect
      */
+
+    const formSelector = useAppSelector( 
+        ( { formReducer }: SelectorType ) => formReducer
+     )
 
     useEffect( () => RotateSvg(), [] )
 
@@ -40,6 +44,9 @@ const BuildLogin: FC = ( ) => {
                 <LoginButton />
                 <RedirectToRegister/>
                 { selector && 
+                formSelector.getEmail.email && 
+                formSelector.getPassword.password && 
+
                     <div className={ styles.login_loading }>
                             loading data...
                     </div> 

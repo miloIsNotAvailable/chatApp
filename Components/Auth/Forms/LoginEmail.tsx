@@ -11,10 +11,14 @@ import { setUserEmail } from "../../store/getEmail";
 
 const LoginEmail: FC = (  ) => { 
 
-    const ref=  useRef<HTMLInputElement | null>( null )
+    const ref = useRef<HTMLInputElement | null>( null )
     const dispatch = useAppDispatch()
 
     const handleChange = () => {
+        
+        const validEmail = ref.current?.value.match( /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i )
+        
+        validEmail && 
         dispatch( setUserEmail( {
             email: ref.current?.value
         } ) )
