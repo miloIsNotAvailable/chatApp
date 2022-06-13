@@ -28,7 +28,7 @@
     .mainchat_display {
         position: absolute;
         display: grid;
-        grid-template-rows: 10% auto;
+        grid-template-rows: 7% auto;
         width: 100%;
         height: 100%;
         word-break: break-all;
@@ -39,9 +39,9 @@
     .mainchat_body {
         position: absolute;
         display: grid;
-        top: 10%;
+        top: 7%;
         /* grid-template-columns: var(--main-chat-proportion); */
-        height: calc(90% - .5rem);
+        height: calc(93% - .5rem);
         overflow: auto;
         z-index: 2;
     }    
