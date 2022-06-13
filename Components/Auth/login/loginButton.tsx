@@ -29,8 +29,8 @@ const LoginButton: FC = () => {
     const Submit = () => {
 
         if (
-            selector.getEmail.email && 
-            selector.getPassword.password
+            selector.getEmail?.email && 
+            selector.getPassword?.password
          ) {
             dispatch( isFetching( { isFetching: true } ) )
         

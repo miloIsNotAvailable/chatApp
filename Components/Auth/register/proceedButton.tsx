@@ -34,11 +34,10 @@ const Proceed: FC = () => {
 
     const Submit = () => {
 
-
         if(
-            selector.getEmail.email && 
-            selector.getPassword.password && 
-            selector.getUsername.username 
+            selector.getEmail?.email && 
+            selector.getPassword?.password && 
+            selector.getUsername?.username 
         ) {
             dispatch( isFetching( { isFetching: true } ) )
 
