@@ -23,6 +23,7 @@ import { Observable } from "rxjs";
 import { ObservableType, U } from "../../../store/interfaces";
 import { getChannelQuery, useFetch } from "../../FriendsList/FetchChannels";
 import { useUserInfo } from "../../../constants/userConstants";
+import { json } from "micro";
 
 type StateObservable = {
     observer: ObservableType
@@ -116,12 +117,21 @@ const Search: FC = () => {
                                 key={ name } 
                                 name={ name } 
                                 isLoading={ loading }
-                                handleClick={ () => 
+                                handleClick={ ( v ) => {
+                                    
                                     createChannel( { 
                                     name: [name, sessionContext?.user?.name], 
                                     id: [ id, sessionContext?.user?.id ], 
-                                    } ) 
-                                }
+                                    } )
+                                    
+                                    const jason = document.getElementById( name )
+                                    
+                                    if( jason ) {
+                                        jason.style.maxHeight="0"
+                                        jason.style.height="0"
+                                        jason.style.overflowY="hidden"
+                                    }
+                                } }
                             />
                         ) ) 
                     }

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEvent, MouseEventHandler } from "react";
 import { styles } from "../Build/NavbarStyles";
 import { motion } from "framer-motion";
 import { useCreateChannel } from "./CreateChannel";
@@ -6,7 +6,7 @@ import { useCreateChannel } from "./CreateChannel";
 interface DisplayFoundUsersProps {
     name: string
     ind: number
-    handleClick: () => void
+    handleClick: ( e: MouseEvent<HTMLDivElement> ) => void
     isLoading: boolean
 }
 
@@ -16,6 +16,7 @@ const DisplayFoundUser: FC<DisplayFoundUsersProps>
     return(
         <motion.div
         key={ name } 
+        id={ name }
         className={ styles.show_user }
         onClick={ handleClick }
         transition={{ 
