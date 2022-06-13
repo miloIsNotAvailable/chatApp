@@ -22,3 +22,39 @@
     max-height: 100%;
     overflow-y: auto;
 }
+
+@media ( max-width: 400px ) {
+  
+    .mainchat_display {
+        position: absolute;
+        display: grid;
+        grid-template-rows: 10% auto;
+        width: 100%;
+        height: 100%;
+        word-break: break-all;
+        background-color: var(--bg);
+        overflow-x: hidden;
+    }
+
+    .mainchat_body {
+        position: absolute;
+        display: grid;
+        top: 10%;
+        /* grid-template-columns: var(--main-chat-proportion); */
+        height: calc(90% - .5rem);
+        overflow: auto;
+        z-index: 2;
+    }    
+
+    .sidebar {
+        /* position: absolute; */
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        height: calc( 100% - 1rem );
+        max-height: calc( 100% - 1rem );
+        width: 85%;
+        overflow-y: auto;
+        z-index: 1;
+    }
+}

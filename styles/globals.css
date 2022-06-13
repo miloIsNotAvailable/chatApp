@@ -33,7 +33,8 @@ a {
   --font-color: white;
   --main-chat-proportion: 21% auto;
   --chat-input-height: 3vw;
-  --icon-size: 2.5vw
+  --icon-size: 2.5vw;
+  --mobile: 680px;
 }
 
 input:focus, textarea:focus {
@@ -82,8 +83,11 @@ meta {
   height: 100%;
 }
 
-/* @media ( max-width: 1200px ) {
+@media ( max-width: 400px ) {
   :root {
-    --icon-size: 2vw
+    --icon-size: 2vw;
+    --main-chat-proportion: 0 100%;
+    --icon-size: 1.5rem;
+    --chat-input-height: 1.5rem;
   }
-} */
+}

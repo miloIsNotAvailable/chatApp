@@ -36,20 +36,23 @@ const Settings: FC = () => {
                     <Link 
                         href={ { pathname: `/home/${ link }`, query: { id: link } } }
                         key={ link }>
-                            <Image
-                            key={ link } 
+                            <div className={ styles.settings_icon }>
+                                <Image
+                                key={ link } 
+                                className={ styles.settings_icon } 
+                                src={ Icon } 
+                                alt=""
+                                layout="intrinsic"/>
+                            </div>
+                    </Link>:
+                        <div key="micr" className={ styles.settings_icon }>
+                            <Image 
+                            key={ "mic" } 
                             className={ styles.settings_icon } 
                             src={ Icon } 
                             alt=""
                             layout="intrinsic"/>
-                    </Link>:
-                    <div key={ "micr" }>
-                        <Image 
-                        key={ "mic" } 
-                        className={ styles.settings_icon } 
-                        src={ Icon } 
-                        alt=""/>
-                    </div>
+                        </div>
                 ) )
             }
         </div>

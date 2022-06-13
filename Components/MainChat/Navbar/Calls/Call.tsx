@@ -8,12 +8,12 @@ const Call: FC = () => {
 
     return (
         <div className={ styles.wrap_call } tabIndex={ 0 }>
-            <div>
+            <div className={ styles.call_icon }>
                 <Image 
                 className={ styles.call_icon } 
                 src={ CallIcon }
                 alt=""
-                layout="fixed"/>
+                layout="intrinsic"/>
             </div>
             <div className={ styles.call_options }>
                 <VoiceCall/>

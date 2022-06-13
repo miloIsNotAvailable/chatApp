@@ -259,3 +259,78 @@
     height: 100%;
     /* aspect-ratio: 1; */
 }
+
+@media ( max-width: 400px ) {
+ 
+    .navbar_display {
+        position: relative;
+        display: grid;
+        grid-template-columns: var( --main-chat-proportion );
+        height: calc(100%);
+        align-self: center;
+    }
+    
+    .display_user {
+        display: grid;
+        width: 50%;
+        grid-template-columns: var(--icon-size) auto;
+        place-items: center;
+        font-family: 'Outfit';
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 1rem;
+        color: var( --font-color );
+    }
+    
+    .call_icon, .menu_icon {
+        width: calc(var(--icon-size));
+        height: calc(var(--icon-size));
+        align-self: center;
+        justify-self: center; 
+    }
+    
+    .search_display {
+        display: grid;
+        grid-template-columns: 0 0;
+        place-items: center;
+        width: calc( 100% - 2rem );
+        height: var(--icon-size);
+        background-color: var(--grey);
+        border-radius: 3rem;
+    }
+
+    .search_icon {
+        width: 0;
+        height: calc(var(--icon-size)/3);
+        transform-origin: center;
+        transition: all 300ms ease;
+    }
+    
+    .call_and_menu {
+        display: grid;
+        align-self: center;
+        justify-items: end;
+        grid-template-columns: 50% 50%;
+        width: 40%;
+    }
+
+    .display_right {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .menu_wrap {
+        position: absolute;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        max-width: 50%;
+        overflow-x: hidden;
+        height: calc(100% - var(--chat-input-height) - 1rem);
+        background-color: var(--grey);
+        border-radius: 0 0 0 1rem;
+        z-index: 5;
+    }
+    
+}

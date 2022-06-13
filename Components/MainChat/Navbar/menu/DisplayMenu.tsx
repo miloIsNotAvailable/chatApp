@@ -25,7 +25,7 @@ const DisplayMenu: FC = () => {
                 <motion.div 
                     className={ styles.menu_wrap }
                     initial={ { width: 0 } }
-                    animate={ { width: "30%" } }
+                    animate={ { width: "100%" } }
                     exit={ { width: 0 } }
                 >
                 <DisplayChannelImgs imgsList={ imgsList }/>
