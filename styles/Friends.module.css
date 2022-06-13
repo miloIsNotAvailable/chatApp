@@ -131,7 +131,7 @@
     font-size: .6rem;
 }
 
-@media ( max-width: 400px ) {
+@media ( max-width: 680px ) {
     
     .display_friend {
         position: relative;

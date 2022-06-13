@@ -83,7 +83,7 @@ meta {
   height: 100%;
 }
 
-@media ( max-width: 400px ) {
+@media ( max-width: 680px ) {
   :root {
     --icon-size: 2vw;
     --main-chat-proportion: 0 100%;

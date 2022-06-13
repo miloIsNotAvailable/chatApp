@@ -23,7 +23,7 @@
     overflow-y: auto;
 }
 
-@media ( max-width: 400px ) {
+@media ( max-width: 680px ) {
   
     .mainchat_display {
         position: absolute;

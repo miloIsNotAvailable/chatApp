@@ -25,6 +25,11 @@ const BuildMainChat: FC = () => {
 
     const mainchatRef = useRef<HTMLDivElement | null>( null )
     const [ pos, setPos ] = useState<{ x: number | null, y: number | null }>( { x: null, y: null } )
+    const [ width, setWidth ] = useState( clientSide ? window.innerWidth : null )
+
+    useEffect( () => {
+        setWidth( clientSide ? window.innerWidth : null )
+    }, [ setWidth ] )
 
     const sessionContext = useContext( SessionContext )
     const [ webRTC, setwebRTC ] = useState<RTCPeerConnection | null>( null )
@@ -35,6 +40,8 @@ const BuildMainChat: FC = () => {
     
     }, [] )
 
+    // if( !clientSide ) return <></>
+
     return (
         <RTCConnectionContext value={ webRTC }>
             <div className={ styles.mainchat_display }>
@@ -42,7 +49,7 @@ const BuildMainChat: FC = () => {
                 <motion.div 
                 ref={ mainchatRef }
                 animate={ 
-                    clientSide && window?.innerWidth < 400 &&
+                    (width && width < 680)  &&
                     pos.x && mainchatRef.current && 
                     pos.x > mainchatRef.current.clientWidth * .25 ? 
                     { transform: 'translateX( 80% )' } :
@@ -59,11 +66,11 @@ const BuildMainChat: FC = () => {
                     <div className={ styles.sidebar }>
                         <FriendList/>
                         <Settings/>
-                    </div>
+                    </div> 
                     <Chat/>
                 </motion.div>
                 {
-                    (clientSide && window.innerWidth < 400) ? 
+                    (width && width < 680) ? 
                     <div className={ styles.sidebar }>
                         <FriendList/>
                         <Settings/>

@@ -340,7 +340,7 @@
     background-color: var(--grey);
 }
 
-@media ( max-width: 400px ) {
+@media ( max-width: 680px ) {
  
     .chat_wrap {
         position: relative;
