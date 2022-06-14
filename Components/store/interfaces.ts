@@ -57,3 +57,7 @@ export type unreadType = {
     channelID: string | null
     unreadMsgs: string | number;
 }
+
+export type getLoginErrorsType = {
+    error: string | undefined
+}

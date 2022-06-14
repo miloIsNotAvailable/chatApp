@@ -42,7 +42,6 @@ GetServerSideProps = async( { req, res } ) => {
     //     body: JSON.stringify( jwtDecoded )
     // } )
     const data: any = []
-    console.log( req.headers['authorization'] )
 
     return {
         props: { 

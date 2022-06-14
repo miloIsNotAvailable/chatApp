@@ -15,7 +15,7 @@ import Bg from './svgBg'
 import RotateSvg from "./rotateSvg";
 import LoginButton from "./loginButton";
 import { useAppSelector } from "../../store/hooks";
-import { fetchingType, SelectorType } from "../../interfaces/formInterfaces";
+import { fetchingType, loginErrorsSelector, SelectorType } from "../../interfaces/formInterfaces";
 
 const BuildLogin: FC = ( ) => {
 
@@ -36,6 +36,8 @@ const BuildLogin: FC = ( ) => {
         } }: fetchingType ) => isFetching
      )
 
+     const validEmail = useAppSelector( ( state: loginErrorsSelector ) => state.getLoginErrors.error )
+
     return(
         <div className={ styles.login_form_wrap }>
             <div className={ styles.login_form }>
@@ -46,10 +48,11 @@ const BuildLogin: FC = ( ) => {
                 { selector && 
                 formSelector.getEmail.email && 
                 formSelector.getPassword.password && 
+                !validEmail ?
 
                     <div className={ styles.login_loading }>
                             loading data...
-                    </div> 
+                    </div> : <></>
                 }
             </div>
             <Bg/>            

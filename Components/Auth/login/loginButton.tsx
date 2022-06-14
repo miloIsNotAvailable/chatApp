@@ -7,6 +7,7 @@ import { isFetching } from "../../store/isFetching";
 import { map, of, switchMap } from "rxjs";
 import { fromFetch } from "rxjs/fetch";
 import { subscribe } from "graphql";
+import { setLoginError } from "../../store/getLoginErrors";
 
 const LoginButton: FC = () => {
 
@@ -45,8 +46,20 @@ const LoginButton: FC = () => {
                         map( ( res ) => res) 
                     )
                 )
-            ).subscribe( ( res ) => {
+            ).subscribe( async( res ) => {
+                
+                const data = await res.json()
+                
                 if( !res.ok ) return
+
+                if( data?.error ) {
+                    dispatch( setLoginError( {
+                        error: 'invalid email'
+                    } ) )
+
+                    return
+                }
+
                 console.log( 'done' )
                 router.push( '/home' )
                 dispatch( isFetching( { isFetching: false } ) )

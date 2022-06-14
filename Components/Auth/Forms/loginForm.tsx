@@ -1,7 +1,5 @@
 import { FC, MutableRefObject, useRef } from "react";
 import style from '../../../styles/Login.module.css'
-import { setUserData } from "../../store/getRegisterInfo";
-import { useAppDispatch } from "../../store/hooks";
 import { LoginFormType } from "../../interfaces/formInterfaces";
 
 interface loginFormProps {
@@ -22,6 +20,7 @@ const LoginForm: FC<loginFormProps & LoginFormType>
             ref={ loginFormRef }
             className={ style.input }
             placeholder={ title }
+            type={ title }
             onChange={ handleChange }/>
         </div>
     )

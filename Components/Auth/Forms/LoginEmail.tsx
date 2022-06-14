@@ -1,7 +1,9 @@
 import { FC, useRef } from "react";
 import LoginForm from "./loginForm";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setUserEmail } from "../../store/getEmail";
+import { loginErrorsSelector } from "../../interfaces/formInterfaces";
+import style from '../../../styles/Login.module.css'
 
 /**
  * @function LoginEmail
@@ -13,6 +15,8 @@ const LoginEmail: FC = (  ) => {
 
     const ref = useRef<HTMLInputElement | null>( null )
     const dispatch = useAppDispatch()
+
+    const selector = useAppSelector( ( state: loginErrorsSelector ) => state.getLoginErrors.error )
 
     const handleChange = () => {
         
@@ -26,8 +30,14 @@ const LoginEmail: FC = (  ) => {
 
     return(
         <div>
+            {
+                selector && 
+                <div className={ style.login_error }>
+                    { selector }
+                </div>
+            }
             <LoginForm  
-                title={ 'email/username' } 
+                title={ 'email' } 
                 loginFormRef={ ref }
                 handleChange={ handleChange }/>
         </div>

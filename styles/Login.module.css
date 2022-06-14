@@ -79,3 +79,20 @@
     justify-content: center;
     width: calc(var(--input-width) + 4rem);
 }
+
+.login_error {
+    display: grid;
+    width: var(--input-width);
+    justify-content: center;
+    font-size: 1vw;
+    font-family: 'Outfit';
+    color: var(--red)
+}
+
+.input:invalid {
+    color: var(--red);
+}
+
+.input:valid {
+    color: var(--green);
+}

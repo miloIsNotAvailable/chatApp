@@ -1,6 +1,6 @@
 import { CombinedState } from "@reduxjs/toolkit";
 import { ChangeEvent, RefObject } from "react";
-import { getRegisterInfoState, isFetchingState } from "../store/interfaces";
+import { getLoginErrorsType, getRegisterInfoState, isFetchingState } from "../store/interfaces";
 
 export interface LoginFormType {
 
@@ -25,3 +25,5 @@ export type SelectorType = {
 export type fetchingType = {
     fetching: isFetchingState
 }
+
+export type loginErrorsSelector = { getLoginErrors: getLoginErrorsType }

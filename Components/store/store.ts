@@ -13,6 +13,7 @@ import URLDataToLink from './getURLDataAsLink'
 import galleryOpen from './openImageGallery'
 import highlightMsgs from "./highlightMsgs";
 import checkForReadMessages from "./checkForReadMessages";
+import getLoginErrors from './getLoginErrors'
 
 export const store = configureStore( {
     reducer: {
@@ -30,7 +31,8 @@ export const store = configureStore( {
         URLDataToLink: URLDataToLink,
         galleryOpen: galleryOpen,
         highlightMsgs: highlightMsgs,
-        checkForReadMessages
+        checkForReadMessages, 
+        getLoginErrors
     }
 } )
 
