@@ -53,12 +53,34 @@ export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerCo
         }
     }
 
-    if ( navigator.userAgent.indexOf("Firefox") != -1  ) setTimeout(() => { pc.onnegotiationneeded }, 5000);
+    // if ( navigator.userAgent.indexOf("Firefox") != -1  ) setTimeout(() => { pc.onnegotiationneeded }, 5000);
 
     if(localVideo) {
         const lc = localVideo as HTMLAudioElement
         lc.srcObject = localStream
         lc.muted = true
+    }
+
+
+    /**
+     * @description emit new ice candidates.
+     * 
+     *  ===> it HAS to be defined after 
+     * setting local description
+     */
+
+     pc.onicecandidate = event => {
+        event.candidate && _io.pipe(
+            mergeMap( 
+                ( client ) => of( { candidate: event.candidate } )
+                .pipe( 
+                    map( data => ( { data, client } ) )
+                    )
+                )
+        ).subscribe( ( { data, client } ) => {
+            console.log( data )
+            client.emit( 'offer-candidate', data )
+        } )
     }
 
     /**
@@ -76,27 +98,6 @@ export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerCo
     await pc.setLocalDescription( offer )
 
     /**
-     * @description emit new ice candidates.
-     * 
-     *  ===> it HAS to be defined after 
-     * setting local description
-     */
-
-    pc.onicecandidate = event => {
-        event.candidate && _io.pipe(
-            mergeMap( 
-                ( client ) => of( { candidate: event.candidate } )
-                .pipe( 
-                    map( data => ( { data, client } ) )
-                    )
-                )
-        ).subscribe( ( { data, client } ) => {
-            console.log( data )
-            client.emit( 'offer-candidate', data )
-        } )
-    }
-
-    /**
      * @description emit new offer 
      **/
 
@@ -108,8 +109,8 @@ export const callUser = async( { name, channelID }: callUserTypes, pc: RTCPeerCo
             ( client ) => of( { name, channelID, sdp: offer.sdp, type: offer.type } )
             .pipe( 
                 map( data => ( { data, client } ) )
-             )
-         )
+            )
+        )
     ).subscribe( ( { data, client } ) => {
         client.emit( 'call-started', data  )
     } )
@@ -171,46 +172,87 @@ export const answerCall = async(
 
     if( !pc ) return
 
+    localStream = await navigator.mediaDevices.getUserMedia( { audio: true } )
+    remoteStream = new MediaStream()
+    // if ( navigator.userAgent.indexOf("Firefox") != -1  ) setTimeout(() => { pc.onnegotiationneeded }, 5000);
+
     // set offer as remote description
     offer && 
-    await pc.setRemoteDescription( 
+    pc.setRemoteDescription( 
         new RTCSessionDescription( { sdp: offer?.sdp, type: offer?.type } ) 
-    )
-
-    // set answer as local description
-    // then emit calee's candidate data
-    const answer = await pc.createAnswer( { offerToReceiveAudio: true, offerToReceiveVideo: true } )
-    await pc.setLocalDescription( answer ).then(
-        () => {
-            pc.onicecandidate = event => {
-                event.candidate && _io.pipe(
-                    mergeMap( 
-                        ( client ) => of( { candidate: event.candidate } )
-                        .pipe( 
-                            map( data => ( { data, client } ) )
+    ).then( async() => {
+        // set answer as local description
+        // then emit calee's candidate data
+        const answer = await pc.createAnswer( { offerToReceiveAudio: true, offerToReceiveVideo: true } )
+        pc.setLocalDescription( answer ).then(
+            () => {
+                pc.onicecandidate = event => {
+                    event.candidate && _io.pipe(
+                        mergeMap( 
+                            ( client ) => of( { candidate: event.candidate } )
+                            .pipe( 
+                                map( data => ( { data, client } ) )
+                                )
                             )
-                        )
-                ).subscribe( ( { data, client } ) => {
-                    client.emit( 'answer-candidate', { ...data, channelID, name } )
-                } )
+                    ).subscribe( ( { data, client } ) => {
+                        client.emit( 'answer-candidate', { ...data, channelID, name } )
+                    } )
+                }
+            }
+        )
+    
+        // emit answer 
+        answer && _io.pipe(
+            mergeMap( 
+                // and why spread syntax didn't 
+                // wanna work on this one
+                // shall forever remain a mystery 
+                ( client ) => of( { name, channelID, sdp: answer.sdp, type: answer.type } )
+                .pipe( 
+                    map( data => ( { data, client } ) )
+                    )
+                )
+        ).subscribe( ( { data, client } ) => {
+            client.emit( 'call-answered', data  )
+        } )
+    
+        // navigator.userAgent.indexOf("Firefox") != -1 &&
+        // pc.onnegotiationneeded && 
+        // setTimeout( pc.onnegotiationneeded, 5000 )
+
+    } ).then( () => {
+        
+        localStream.getTracks().forEach( track => {
+            pc.addTrack( track, localStream )
+        } )
+    
+        localVideo = document.getElementById( 'webcam' )
+        remoteVideo = document.getElementById( 'remote' )
+    
+        pc.ontrack = event => {
+            event.streams[0].getTracks().forEach( track => {
+                remoteStream.addTrack( track )
+            } )
+    
+            const [ remote ] = event.streams
+    
+            if( remoteVideo ) {
+                const rc = remoteVideo as HTMLAudioElement
+                if( rc ) {
+                    rc.srcObject = remote
+                    rc && rc.play()
+                }
             }
         }
-    )
 
-    // emit answer 
-    answer && _io.pipe(
-        mergeMap( 
-            // and why spread syntax didn't 
-            // wanna work on this one
-            // shall forever remain a mystery 
-            ( client ) => of( { name, channelID, sdp: answer.sdp, type: answer.type } )
-            .pipe( 
-                map( data => ( { data, client } ) )
-             )
-         )
-    ).subscribe( ( { data, client } ) => {
-        client.emit( 'call-answered', data  )
+        if(localVideo) {
+            const lc = localVideo as HTMLAudioElement
+            if( lc ) {
+                lc.srcObject = localStream
+                lc.muted = true
+            }
+        } 
+
+        offerCandidates && pc.addIceCandidate( new RTCIceCandidate( offerCandidates ) )   
     } )
-
-    offerCandidates && pc.addIceCandidate( new RTCIceCandidate( offerCandidates ) )
 }
