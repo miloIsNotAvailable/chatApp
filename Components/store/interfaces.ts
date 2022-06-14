@@ -23,6 +23,8 @@ export type ObservableType = {
 export type MessageType = {
     channelID: string
     content: string
+    from: string
+    messageID: string
 }
 
 export type ChannelUsername = {

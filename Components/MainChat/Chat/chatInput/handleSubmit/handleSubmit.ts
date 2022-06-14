@@ -46,6 +46,14 @@ export function useSubmit
         ( async() => {
             
             urlRef.current = inputRef.current.innerText
+
+            dispatch( newMessage( {
+                channelID: channelID, 
+                content: urlRef.current ? urlRef.current : "",
+                from: name ? name : "",
+                messageID: 'xxxxxxxxxx'.replace( /x/g, String.fromCharCode(65 + Math.floor(Math.random() * 60)) )
+            } ) )
+
             if( inputRef.current ) inputRef.current.innerText = ''
             console.log( urlRef.current )
 
@@ -65,7 +73,14 @@ export function useSubmit
                 ) 
             )  
             e.preventDefault()
-    
+
+            dispatch( newMessage( {
+                channelID: "", 
+                content: "",
+                from: "",
+                messageID: ""
+            } ) )
+
             if( inputRef.current ) inputRef.current.innerText = ''
 
             const m = _io.pipe( 

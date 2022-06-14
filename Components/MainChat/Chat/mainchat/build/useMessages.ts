@@ -3,11 +3,11 @@ import { useUserInfo } from "../../../../constants/userConstants"
 import { useChatContext } from "../../../../contexts/ChatContext"
 import { IOObservable, SocketType } from "../../../../interfaces/WebSocketsTypes"
 import { messageIsUnread } from "../../../../store/checkForReadMessages"
-import { useAppDispatch } from "../../../../store/hooks"
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks"
 import { MessageType } from "../../../../store/interfaces"
 import { listenToMessages } from "../listenToMessages"
 
-type Msg = MessageType & { messageID: string }
+type Msg = MessageType
 
 export const useMessages: () => Msg[][] 
 = () => {

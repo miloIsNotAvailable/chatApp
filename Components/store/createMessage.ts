@@ -3,7 +3,9 @@ import { MessageType } from "./interfaces";
 
 const initialState: MessageType = {
     channelID: '',
-    content: ""
+    content: "",
+    from: "",
+    messageID: ""
 }
 
 const newMessageSlice = createSlice( {
@@ -16,6 +18,8 @@ const newMessageSlice = createSlice( {
             ) => {
                 state.channelID = action.payload.channelID
                 state.content = action.payload.content
+                state.from = action.payload.from
+                state.messageID = action.payload.messageID
             }
         }   
     } 

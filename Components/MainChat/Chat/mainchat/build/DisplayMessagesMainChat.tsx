@@ -13,8 +13,10 @@ import useUserReadMsg from "./useUserReadMessage";
 import { messageIsUnread } from "../../../../store/checkForReadMessages";
 import { listenToMessages } from "../listenToMessages";
 
-type Msg = MessageType & { messageID: string, from: string }
+type Msg = MessageType
 type highlightMsgsType = { highlightMsgs: highlightMsgs }
+type MsgSkellyType = { createMessage: MessageType }
+
 
 const DisplayMessagesMainChat: FC = () => {
 
@@ -32,6 +34,8 @@ const DisplayMessagesMainChat: FC = () => {
     
     const readMsg = useUserReadMsg()
     const dispatch = useAppDispatch()
+
+    const imgSkelly = useAppSelector( ( { createMessage }: MsgSkellyType ) => createMessage )
 
     useEffect( () => {
         readMsg( msgs )
@@ -60,6 +64,19 @@ const DisplayMessagesMainChat: FC = () => {
 
     return (
         <AnimatePresence exitBeforeEnter>
+            {
+                imgSkelly.channelID &&
+                imgSkelly.content &&
+                imgSkelly.messageID &&
+                imgSkelly.from ?
+                <motion.div>
+                    <DisplayMessage
+                        ind={ msgs.length + 1 }
+                        { ...imgSkelly }
+                    />
+                </motion.div> : 
+                <></>
+            }
         {
             [...msgs, ...more].map( ( v: Msg, ind: number ) => (
                 channelID === v?.channelID && 
@@ -86,6 +103,7 @@ const DisplayMessagesMainChat: FC = () => {
                 </motion.div>
                 ) )
             }
+ 
         </AnimatePresence>
     )
 }
