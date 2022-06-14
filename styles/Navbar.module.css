@@ -51,6 +51,9 @@
     background-color: var(--grey);
     border-radius: 1rem;
     z-index: 5;
+    max-height: 0%;
+    overflow-y: hidden;
+    transition: all 1s ease
 }
 
 .show_user_wrap > div:first-child {
@@ -143,6 +146,13 @@
     font-size: 1.5vw;
     font-weight: 500;
     color: var( --font-color );
+}
+
+.search_wrap:focus-within .show_user_wrap, 
+.search_wrap:active .show_user_wrap {    
+    max-height: max-content;
+    overflow-y: hidden;
+
 }
 
 .user_profile {

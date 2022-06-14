@@ -67,12 +67,10 @@ const Search: FC = () => {
     if( loading ) return (
         <div className={ styles.search_wrap }>
         <div className={ styles.search_display }>
-            <div className={ styles.search_icon }>
             <Image src={ SearchIcon }
             className={ styles.search_icon }
             alt=""
-            layout="responsive"/>
-            </div>
+            layout="intrinsic"/>
             <input 
                 className={ styles.search }
                 placeholder={ 'search' }
