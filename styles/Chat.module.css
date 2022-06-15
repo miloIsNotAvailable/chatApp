@@ -48,6 +48,7 @@
 .chat_input[contenteditable=true]:empty:before {
     content: attr(placeholder);
     display: block;
+    z-index: -1;
   }
 
 .chat_input:empty::before {

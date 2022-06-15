@@ -69,7 +69,7 @@ const DisplayMessagesMainChat: FC = () => {
                 imgSkelly.content &&
                 imgSkelly.messageID &&
                 imgSkelly.from ?
-                <motion.div>
+                <motion.div style={ { opacity: .5 } }>
                     <DisplayMessage
                         ind={ msgs.length + 1 }
                         { ...imgSkelly }

@@ -45,7 +45,7 @@ export function useSubmit
         
         ( async() => {
             
-            urlRef.current = inputRef.current.innerText
+            urlRef.current = inputRef.current.innerText.trim()
 
             dispatch( newMessage( {
                 channelID: channelID, 
@@ -80,8 +80,6 @@ export function useSubmit
                 from: "",
                 messageID: ""
             } ) )
-
-            if( inputRef.current ) inputRef.current.innerText = ''
 
             const m = _io.pipe( 
                 mergeMap( 
